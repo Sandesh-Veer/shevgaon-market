@@ -9,6 +9,10 @@ import VendorDashboard from './pages/VendorDashboard';
 import VendorRegistration from './pages/VendorRegistration';
 import BusinessDetail from './pages/BusinessDetail';
 import AdminDashboard from './pages/AdminDashboard';
+import MerchantProfile from './pages/MerchantProfile';
+import OfflineFallback from './components/OfflineFallback';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function AppContent() {
   const location = useLocation();
@@ -99,6 +103,8 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans relative overflow-x-hidden selection:bg-brand-purple/20 selection:text-brand-purple flex">
+      {/* Global Offline Network Status Overlay */}
+      <OfflineFallback />
       
       {/* Animated Background Blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -225,10 +231,37 @@ function AppContent() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginRegistration />} />
-            <Route path="/vendor/dashboard" element={<VendorDashboard />} />
+            
+            {/* Protected Merchant Routes */}
+            <Route 
+              path="/merchant-profile" 
+              element={
+                <ProtectedRoute allowedRoles={['merchant', 'admin']}>
+                  <MerchantProfile />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/vendor/dashboard" 
+              element={
+                <ProtectedRoute allowedRoles={['merchant', 'admin']}>
+                  <VendorDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            
             <Route path="/vendor/register" element={<VendorRegistration />} />
             <Route path="/business/:category/:id" element={<BusinessDetail />} />
-            <Route path="/admin" element={<AdminDashboard />} />
+            
+            {/* Strict Protected Admin Route */}
+            <Route 
+              path="/admin" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } 
+            />
           </Routes>
         </main>
 
@@ -241,7 +274,9 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <AppContent />
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </Router>
   );
 }
