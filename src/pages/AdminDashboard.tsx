@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { db, Business, Review, Section, WebsiteSettings, Report, ActivityLog, SubscriptionPlan } from '../services/db';
+import AddShopForm from '../components/admin/AddShopForm';
 
 export default function AdminDashboard() {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(() => {
@@ -436,6 +437,7 @@ export default function AdminDashboard() {
       <div className="flex gap-2 border-b border-gray-200/60 dark:border-slate-800 pb-3 overflow-x-auto no-scrollbar">
         {[
           { id: 'analytics', label: 'सांख्यिकी (Analytics)', icon: BarChart2 },
+          { id: 'add-shop', label: 'नवीन दुकान जोडा (Add Shop)', icon: Plus },
           { id: 'businesses', label: 'व्यापारी प्रोफाइल व्यवस्थापन', icon: UserCheck },
           { id: 'plans', label: 'सबस्क्रिप्शन प्लॅन्स (Post Limits)', icon: Package },
           { id: 'activity', label: 'क्रियाकलाप इतिहास (Audit Log)', icon: History },
@@ -479,6 +481,13 @@ export default function AdminDashboard() {
         transition={{ duration: 0.3 }}
       >
         
+        {/* ADD SHOP PROFILE VIEW */}
+        {activeTab === 'add-shop' && (
+          <div className="py-4">
+            <AddShopForm />
+          </div>
+        )}
+
         {/* A. ADMIN DASHBOARD ANALYTICS VIEW */}
         {activeTab === 'analytics' && (
           <div className="space-y-8">

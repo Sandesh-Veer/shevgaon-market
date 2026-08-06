@@ -599,13 +599,6 @@ export default function Home() {
                 नवीन ऑफर्स पहा
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </a>
-
-              <Link
-                to="/login"
-                className="w-full sm:w-auto bg-white/60 border border-gray-200/80 backdrop-blur-md text-brand-dark font-semibold px-8 py-4 rounded-2xl hover:bg-white hover:-translate-y-1 transition-all duration-300 flex items-center justify-center text-center"
-              >
-                लॉगिन / नोंदणी
-              </Link>
             </motion.div>
 
             {/* Glass Mockup Preview */}

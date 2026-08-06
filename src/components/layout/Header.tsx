@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, ArrowUpRight, User, Sun, Moon } from 'lucide-react';
+import { Menu, ArrowUpRight, Sun, Moon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface HeaderProps {
@@ -81,14 +81,6 @@ export default function Header({ onMenuToggle }: HeaderProps) {
           >
             {isDarkMode ? <Sun size={16} className="text-amber-400" /> : <Moon size={16} className="text-slate-700" />}
           </button>
-
-          <Link 
-            to="/login"
-            className="py-2 px-4 rounded-full border border-brand-purple/20 bg-brand-purple/5 text-brand-purple hover:bg-brand-purple hover:text-white transition-all text-xs font-bold flex items-center gap-1.5"
-          >
-            <User size={13} />
-            लॉगिन / नोंदणी
-          </Link>
 
           <Link
             to="/vendor/register"
