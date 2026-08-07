@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, ArrowUpRight, Sun, Moon } from 'lucide-react';
+import { Menu, Sun, Moon, Store, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface HeaderProps {
@@ -69,7 +69,7 @@ export default function Header({ onMenuToggle }: HeaderProps) {
           </Link>
         </div>
 
-        {/* Right: Theme Toggle, Partner Registration & Login triggers */}
+        {/* Right: Theme Toggle & Prominent Add Shop button */}
         <div className="flex items-center gap-3 shrink-0">
           
           {/* Universal Theme Toggle Button */}
@@ -82,12 +82,14 @@ export default function Header({ onMenuToggle }: HeaderProps) {
             {isDarkMode ? <Sun size={16} className="text-amber-400" /> : <Moon size={16} className="text-slate-700" />}
           </button>
 
+          {/* Prominent Public Add Shop Button */}
           <Link
-            to="/vendor/register"
-            className="hidden sm:inline-flex items-center gap-1 bg-gradient-brand text-white font-semibold text-xs px-4.5 py-2 rounded-full hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group"
+            to="/add-shop"
+            className="inline-flex items-center gap-1.5 bg-gradient-brand text-white font-bold text-xs px-4 py-2 rounded-full hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 shadow-md shadow-brand-blue/20 group"
           >
-            भागीदार व्हा
-            <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            <Store size={14} />
+            <span>दुकान नोंदणी करा</span>
+            <Plus size={14} className="group-hover:rotate-90 transition-transform duration-300" />
           </Link>
         </div>
 

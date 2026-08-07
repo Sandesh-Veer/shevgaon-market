@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldAlert, X } from 'lucide-react';
+import { ShieldAlert, X, Store } from 'lucide-react';
 import Header from './components/layout/Header';
 import Home from './pages/Home';
 import LoginRegistration from './pages/LoginRegistration';
@@ -10,6 +10,7 @@ import VendorRegistration from './pages/VendorRegistration';
 import BusinessDetail from './pages/BusinessDetail';
 import AdminDashboard from './pages/AdminDashboard';
 import MerchantProfile from './pages/MerchantProfile';
+import AddShopPage from './pages/AddShopPage';
 import OfflineFallback from './components/OfflineFallback';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -189,7 +190,18 @@ function AppContent() {
         </div>
 
         {/* Footer actions inside Sidebar */}
-        <div className="space-y-3 pt-4 border-t border-gray-200/50 dark:border-slate-800 shrink-0">
+        <div className="space-y-2 pt-4 border-t border-gray-200/50 dark:border-slate-800 shrink-0">
+          <Link 
+            to="/add-shop"
+            onClick={() => {
+              if (window.innerWidth < 1024) setIsSidebarOpen(false);
+            }}
+            className="w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 text-brand-purple dark:text-purple-300 bg-brand-purple/10 hover:bg-brand-purple/20 transition-colors"
+          >
+            <Store size={15} />
+            दुकान नोंदणी करा (Add Shop)
+          </Link>
+
           <Link 
             to="/admin"
             onClick={() => {
@@ -200,7 +212,7 @@ function AppContent() {
             <ShieldAlert size={15} />
             प्रशासक पॅनेल (Admin)
           </Link>
-          <p className="text-[10px] text-slate-400 dark:text-slate-500 font-light px-2">© {new Date().getFullYear()} Shevgaon Market</p>
+          <p className="text-[10px] text-slate-400 dark:text-slate-500 font-light px-2 pt-1">© {new Date().getFullYear()} Shevgaon Market</p>
         </div>
       </aside>
 
@@ -251,6 +263,7 @@ function AppContent() {
             />
             
             <Route path="/vendor/register" element={<VendorRegistration />} />
+            <Route path="/add-shop" element={<AddShopPage />} />
             <Route path="/business/:category/:id" element={<BusinessDetail />} />
             
             {/* Strict Protected Admin Route */}

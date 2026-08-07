@@ -11,7 +11,8 @@ import {
   ArrowUp,
   Phone,
   MapPin,
-  PlusCircle
+  PlusCircle,
+  Store
 } from 'lucide-react';
 
 // Countdown Timer Component in Marathi
@@ -599,6 +600,14 @@ export default function Home() {
                 नवीन ऑफर्स पहा
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </a>
+
+              <Link
+                to="/add-shop"
+                className="w-full sm:w-auto bg-white/70 dark:bg-slate-900/70 border border-brand-purple/30 backdrop-blur-md text-brand-purple dark:text-purple-300 font-bold px-8 py-4 rounded-2xl hover:bg-brand-purple hover:text-white hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 text-center shadow-sm"
+              >
+                <Store size={18} />
+                <span>दुकान नोंदणी करा (Add Shop)</span>
+              </Link>
             </motion.div>
 
             {/* Glass Mockup Preview */}
