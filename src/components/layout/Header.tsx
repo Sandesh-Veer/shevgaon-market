@@ -57,7 +57,7 @@ export default function Header({ onMenuToggle }: HeaderProps) {
           
           {/* Logo */}
           <Link 
-            to="/" 
+            to="/home" 
             className="flex items-center gap-2 group shrink-0"
           >
             <span className="w-8.5 h-8.5 rounded-lg bg-gradient-brand flex items-center justify-center text-white font-bold text-sm shadow-sm group-hover:scale-105 transition-transform">

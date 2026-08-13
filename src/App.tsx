@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldAlert, X, Store } from 'lucide-react';
 import Header from './components/layout/Header';
 import Home from './pages/Home';
+import WelcomeLanding from './pages/WelcomeLanding';
 import LoginRegistration from './pages/LoginRegistration';
 import VendorDashboard from './pages/VendorDashboard';
 import VendorRegistration from './pages/VendorRegistration';
@@ -18,6 +19,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const isLandingPage = location.pathname === '/' || location.pathname === '/welcome' || location.pathname === '/landing';
+
   // Responsive sidebar state (collapsible on desktop & mobile)
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
     return window.innerWidth >= 1024;
@@ -26,7 +30,7 @@ function AppContent() {
 
   // Sidebar Items
   const sidebarItems = [
-    { id: 'home', label: '🏠 Home', href: 'home' },
+    { id: 'home', label: '🏠 Home (मुख्य पान)', href: 'home' },
     { id: 'shetkari', label: '👨‍🌾 शेतकरी (Farmers)', href: 'shetkari' },
     { id: 'gharguti-seva', label: '🛠️ घरगुती सेवा (Home Services)', href: 'gharguti-seva' },
     { id: 'hotel', label: '🍔 हॉटेल (Hotel)', href: 'hotel' },
@@ -52,8 +56,8 @@ function AppContent() {
     }
     setActiveSection(href);
 
-    if (location.pathname !== '/') {
-      navigate('/');
+    if (location.pathname !== '/home') {
+      navigate('/home');
       setTimeout(() => {
         const element = document.getElementById(href);
         if (element) {
@@ -78,7 +82,7 @@ function AppContent() {
   // Listen to window scroll to update active scrollspy section
   useEffect(() => {
     const handleScroll = () => {
-      if (location.pathname !== '/') return;
+      if (location.pathname !== '/home') return;
       const scrollPosition = window.scrollY + 200;
 
       for (const item of sidebarItems) {
@@ -101,6 +105,20 @@ function AppContent() {
   const toggleSidebar = () => {
     setIsSidebarOpen(prev => !prev);
   };
+
+  // Dedicated Fullscreen Landing Page rendering
+  if (isLandingPage) {
+    return (
+      <div className="w-full min-h-screen bg-slate-950">
+        <OfflineFallback />
+        <Routes>
+          <Route path="/" element={<WelcomeLanding />} />
+          <Route path="/welcome" element={<WelcomeLanding />} />
+          <Route path="/landing" element={<WelcomeLanding />} />
+        </Routes>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans relative overflow-x-hidden selection:bg-brand-purple/20 selection:text-brand-purple flex">
@@ -146,7 +164,7 @@ function AppContent() {
         {/* Sidebar Header with Brand & Close Button */}
         <div className="flex justify-between items-center pb-4 border-b border-gray-200/50 dark:border-slate-800 shrink-0">
           <Link 
-            to="/" 
+            to="/home" 
             onClick={() => handleSidebarClick('home')}
             className="flex items-center gap-2 group shrink-0"
           >
@@ -178,7 +196,7 @@ function AppContent() {
                 key={item.id}
                 onClick={() => handleSidebarClick(item.href)}
                 className={`w-full text-left px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-all duration-200 ${
-                  activeSection === item.href && location.pathname === '/'
+                  activeSection === item.href && location.pathname === '/home'
                     ? 'bg-gradient-brand text-white shadow-sm shadow-brand-blue/20'
                     : 'text-slate-600 dark:text-slate-300 hover:text-brand-purple dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-slate-800/60'
                 }`}
@@ -191,6 +209,16 @@ function AppContent() {
 
         {/* Footer actions inside Sidebar */}
         <div className="space-y-2 pt-4 border-t border-gray-200/50 dark:border-slate-800 shrink-0">
+          <Link 
+            to="/welcome"
+            onClick={() => {
+              if (window.innerWidth < 1024) setIsSidebarOpen(false);
+            }}
+            className="w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 text-amber-600 dark:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 transition-colors"
+          >
+            ✨ वेल्कम स्क्रीन (Welcome Page)
+          </Link>
+
           <Link 
             to="/add-shop"
             onClick={() => {
@@ -241,7 +269,7 @@ function AppContent() {
         {/* Pages Content */}
         <main className="flex-grow w-full max-w-7xl mx-auto px-4 md:px-8 py-6 overflow-x-hidden">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/login" element={<LoginRegistration />} />
             
             {/* Protected Merchant Routes */}
