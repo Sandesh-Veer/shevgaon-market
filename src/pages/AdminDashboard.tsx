@@ -434,7 +434,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Tabs selectors list */}
-      <div className="flex gap-2 border-b border-gray-200/60 dark:border-slate-800 pb-3 overflow-x-auto no-scrollbar">
+      <div className="flex gap-2 border-b border-gray-200/60 dark:border-slate-800 pb-3 overflow-x-auto touch-scroll-x custom-scrollbar">
         {[
           { id: 'analytics', label: 'सांख्यिकी (Analytics)', icon: BarChart2 },
           { id: 'add-shop', label: 'नवीन दुकान जोडा (Add Shop)', icon: Plus },

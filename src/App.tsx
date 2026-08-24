@@ -102,6 +102,20 @@ function AppContent() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [location.pathname]);
 
+  // Window resize handler to sync sidebar on breakpoint shifts
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsSidebarOpen(true);
+      } else {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const toggleSidebar = () => {
     setIsSidebarOpen(prev => !prev);
   };

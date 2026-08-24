@@ -38,17 +38,17 @@ export default function Header({ onMenuToggle }: HeaderProps) {
     <header 
       className={`sticky top-0 z-40 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-white/75 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200/50 dark:border-slate-800 shadow-sm py-3' 
-          : 'bg-transparent py-5'
+          ? 'bg-white/80 dark:bg-slate-900/85 backdrop-blur-md border-b border-gray-200/50 dark:border-slate-800 shadow-sm py-2.5 sm:py-3' 
+          : 'bg-transparent py-3 sm:py-5'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 md:px-6 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 flex justify-between items-center gap-2">
         
         {/* Left: Hamburger menu toggle button & Logo */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <button 
             onClick={onMenuToggle}
-            className="p-2 rounded-xl bg-white/70 dark:bg-slate-800/80 border border-gray-200/60 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 transition-all shadow-sm flex items-center justify-center text-brand-dark dark:text-slate-200"
+            className="p-2 rounded-xl bg-white/70 dark:bg-slate-800/80 border border-gray-200/60 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 transition-all shadow-sm flex items-center justify-center text-brand-dark dark:text-slate-200 shrink-0"
             title="मेन्यू उघडा/बंद करा (Toggle Menu)"
             aria-label="Toggle Navigation Sidebar"
           >
@@ -58,24 +58,24 @@ export default function Header({ onMenuToggle }: HeaderProps) {
           {/* Logo */}
           <Link 
             to="/home" 
-            className="flex items-center gap-2 group shrink-0"
+            className="flex items-center gap-1.5 sm:gap-2 group shrink-0 min-w-0"
           >
-            <span className="w-8.5 h-8.5 rounded-lg bg-gradient-brand flex items-center justify-center text-white font-bold text-sm shadow-sm group-hover:scale-105 transition-transform">
+            <span className="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-lg bg-gradient-brand flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-sm group-hover:scale-105 transition-transform shrink-0">
               S
             </span>
-            <span className="text-base font-display font-bold tracking-tight text-brand-dark dark:text-white">
+            <span className="text-sm sm:text-base font-display font-bold tracking-tight text-brand-dark dark:text-white truncate">
               Shevgaon<span className="text-brand-blue">.</span>Market
             </span>
           </Link>
         </div>
 
         {/* Right: Theme Toggle & Prominent Add Shop button */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           
           {/* Universal Theme Toggle Button */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-full border border-gray-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-slate-700 dark:text-amber-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all shadow-sm flex items-center justify-center"
+            className="p-2 rounded-full border border-gray-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-slate-700 dark:text-amber-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all shadow-sm flex items-center justify-center shrink-0"
             title={isDarkMode ? 'लाइट मोड चालू करा (Light Mode)' : 'डार्क मोड चालू करा (Dark Mode)'}
             aria-label="Toggle Theme"
           >
@@ -85,11 +85,13 @@ export default function Header({ onMenuToggle }: HeaderProps) {
           {/* Prominent Public Add Shop Button */}
           <Link
             to="/add-shop"
-            className="inline-flex items-center gap-1.5 bg-gradient-brand text-white font-bold text-xs px-4 py-2 rounded-full hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 shadow-md shadow-brand-blue/20 group"
+            className="inline-flex items-center gap-1 sm:gap-1.5 bg-gradient-brand text-white font-bold text-[11px] sm:text-xs px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 shadow-md shadow-brand-blue/20 group shrink-0"
           >
-            <Store size={14} />
-            <span>दुकान नोंदणी करा</span>
-            <Plus size={14} className="group-hover:rotate-90 transition-transform duration-300" />
+            <Store size={14} className="shrink-0" />
+            <span className="whitespace-nowrap">
+              <span className="hidden xs:inline sm:inline">दुकान </span>नोंदणी<span className="hidden md:inline"> करा</span>
+            </span>
+            <Plus size={14} className="group-hover:rotate-90 transition-transform duration-300 shrink-0 hidden sm:block" />
           </Link>
         </div>
 

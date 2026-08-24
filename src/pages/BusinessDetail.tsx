@@ -235,19 +235,19 @@ export default function BusinessDetail() {
         </div>
 
         {/* Profile Details Block */}
-        <div className="p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex gap-4 md:gap-5 items-start">
+        <div className="p-4 sm:p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
+          <div className="flex gap-3 sm:gap-5 items-start min-w-0">
             {biz.logo ? (
-              <img src={biz.logo} alt="shop logo" className="w-16 h-16 md:w-20 md:h-20 rounded-2xl object-cover border border-gray-200/50 shadow-sm shrink-0 bg-white" />
+              <img src={biz.logo} alt="shop logo" className="w-14 h-14 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-2xl object-cover border border-gray-200/50 shadow-sm shrink-0 bg-white" />
             ) : (
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-slate-100 border border-gray-200 flex items-center justify-center shrink-0">
-                <ImageIcon size={32} className="text-slate-400" />
+              <div className="w-14 h-14 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-2xl bg-slate-100 border border-gray-200 flex items-center justify-center shrink-0">
+                <ImageIcon size={28} className="text-slate-400" />
               </div>
             )}
-            <div className="space-y-1">
+            <div className="space-y-1 min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-2xl md:text-3xl font-extrabold text-brand-dark">{biz.name}</h1>
-                <span className="bg-brand-purple/5 text-brand-purple text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-brand-purple/10">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-brand-dark leading-snug">{biz.name}</h1>
+                <span className="bg-brand-purple/5 text-brand-purple text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-brand-purple/10 shrink-0">
                   {biz.category === 'mandi' && 'शेतकरी'}
                   {biz.category === 'technician' && 'घरगुती सेवा'}
                   {biz.category === 'material' && 'बांधकाम साहित्य'}
@@ -278,10 +278,10 @@ export default function BusinessDetail() {
           </div>
 
           {/* Quick contact actions */}
-          <div className="flex gap-2.5 shrink-0 self-start md:self-auto">
+          <div className="flex flex-wrap gap-2.5 shrink-0 w-full sm:w-auto pt-2 md:pt-0 border-t md:border-t-0 border-gray-100 dark:border-slate-800">
             <a 
               href={`tel:${biz.phone}`}
-              className="py-3 px-5 rounded-xl border border-gray-200 text-brand-dark font-bold text-xs hover:bg-slate-50 transition-all flex items-center justify-center gap-1.5 shadow-sm bg-white"
+              className="flex-1 sm:flex-initial py-2.5 sm:py-3 px-4 sm:px-5 rounded-xl border border-gray-200 text-brand-dark font-bold text-xs hover:bg-slate-50 transition-all flex items-center justify-center gap-1.5 shadow-sm bg-white"
             >
               <Phone size={14} /> कॉल करा
             </a>
@@ -289,7 +289,7 @@ export default function BusinessDetail() {
               href={`https://wa.me/${biz.whatsapp}?text=नमस्कार, मला तुमच्या व्यवसायाबद्दल माहिती हवी आहे.`}
               target="_blank"
               rel="noreferrer"
-              className="py-3 px-5 rounded-xl bg-emerald-500 text-white font-bold text-xs hover:bg-emerald-600 transition-all flex items-center justify-center gap-1.5 shadow-sm shadow-emerald-500/10"
+              className="flex-1 sm:flex-initial py-2.5 sm:py-3 px-4 sm:px-5 rounded-xl bg-emerald-500 text-white font-bold text-xs hover:bg-emerald-600 transition-all flex items-center justify-center gap-1.5 shadow-sm shadow-emerald-500/10"
             >
               WhatsApp
             </a>

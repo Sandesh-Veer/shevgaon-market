@@ -567,9 +567,9 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-extrabold max-w-4xl tracking-tight leading-[1.1] mb-6 text-brand-dark text-center"
+              className="text-3xl sm:text-5xl lg:text-7xl font-extrabold max-w-4xl tracking-tight leading-[1.15] mb-4 sm:mb-6 text-brand-dark text-center px-2"
             >
-              {settings.title !== 'Shevgaon Market' ? settings.title : <>सर्व स्थानिक सेवा आणि व्यवहार <br /> <span className="text-gradient">आता एकाच ठिकाणी</span></>}
+              {settings.title !== 'Shevgaon Market' ? settings.title : <>सर्व स्थानिक सेवा आणि व्यवहार <br className="hidden sm:inline" /> <span className="text-gradient">आता एकाच ठिकाणी</span></>}
             </motion.h1>
 
             {/* Sub-headline */}
@@ -577,7 +577,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-base md:text-lg text-brand-muted max-w-2xl font-light mb-10 px-4 leading-relaxed text-center"
+              className="text-sm sm:text-base md:text-lg text-brand-muted max-w-2xl font-light mb-8 sm:mb-10 px-4 leading-relaxed text-center"
             >
               {settings.description}
             </motion.p>
@@ -587,7 +587,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4 w-full justify-center px-6 max-w-md mb-16 z-10 mx-auto"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full justify-center px-4 sm:px-6 max-w-lg mb-12 sm:mb-16 z-10 mx-auto"
             >
               <a
                 href="#offers"
@@ -595,7 +595,7 @@ export default function Home() {
                   e.preventDefault();
                   document.getElementById('offers')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }}
-                className="w-full sm:w-auto bg-gradient-brand text-white font-semibold px-8 py-4 rounded-2xl hover:shadow-[0_12px_24px_rgba(79,124,255,0.3)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 group"
+                className="w-full sm:w-auto bg-gradient-brand text-white font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl hover:shadow-[0_12px_24px_rgba(79,124,255,0.3)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 group text-sm sm:text-base"
               >
                 नवीन ऑफर्स पहा
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -603,10 +603,10 @@ export default function Home() {
 
               <Link
                 to="/add-shop"
-                className="w-full sm:w-auto bg-white/70 dark:bg-slate-900/70 border border-brand-purple/30 backdrop-blur-md text-brand-purple dark:text-purple-300 font-bold px-8 py-4 rounded-2xl hover:bg-brand-purple hover:text-white hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 text-center shadow-sm"
+                className="w-full sm:w-auto bg-white/70 dark:bg-slate-900/70 border border-brand-purple/30 backdrop-blur-md text-brand-purple dark:text-purple-300 font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl hover:bg-brand-purple hover:text-white hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 text-center shadow-sm text-sm sm:text-base"
               >
                 <Store size={18} />
-                <span>दुकान नोंदणी करा (Add Shop)</span>
+                <span>दुकान नोंदणी करा</span>
               </Link>
             </motion.div>
 
