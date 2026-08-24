@@ -589,6 +589,9 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full justify-center px-4 sm:px-6 max-w-lg mb-12 sm:mb-16 z-10 mx-auto"
             >
+
+
+              {/* done */}
               <a
                 href="#offers"
                 onClick={(e) => {
