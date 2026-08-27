@@ -49,6 +49,15 @@ function AppContent() {
     { id: 'contact', label: '📞 संपर्क (Contact)', href: 'contact' }
   ];
 
+
+
+
+
+
+
+
+  // done
+
   // Scroll to section helper
   const handleSidebarClick = (href: string) => {
     if (window.innerWidth < 1024) {
