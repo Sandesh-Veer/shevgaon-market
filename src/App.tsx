@@ -20,6 +20,9 @@ function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
 
+
+  // done very done
+
   const isLandingPage = location.pathname === '/' || location.pathname === '/welcome' || location.pathname === '/landing';
 
   // Responsive sidebar state (collapsible on desktop & mobile)
@@ -58,7 +61,7 @@ function AppContent() {
 
 
 
-  
+
 
 
 
@@ -153,7 +156,7 @@ function AppContent() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans relative overflow-x-hidden selection:bg-brand-purple/20 selection:text-brand-purple flex">
       {/* Global Offline Network Status Overlay */}
       <OfflineFallback />
-      
+
       {/* Animated Background Blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <motion.div
@@ -185,15 +188,14 @@ function AppContent() {
       </div>
 
       {/* A. DESKTOP & MOBILE RESPONSIVE SIDEBAR */}
-      <aside 
-        className={`fixed left-0 top-0 h-screen w-64 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-r border-gray-200/50 dark:border-slate-800 z-50 flex flex-col justify-between transition-transform duration-300 ease-in-out ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } shadow-2xl lg:shadow-none p-5 text-left`}
+      <aside
+        className={`fixed left-0 top-0 h-screen w-64 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-r border-gray-200/50 dark:border-slate-800 z-50 flex flex-col justify-between transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          } shadow-2xl lg:shadow-none p-5 text-left`}
       >
         {/* Sidebar Header with Brand & Close Button */}
         <div className="flex justify-between items-center pb-4 border-b border-gray-200/50 dark:border-slate-800 shrink-0">
-          <Link 
-            to="/home" 
+          <Link
+            to="/home"
             onClick={() => handleSidebarClick('home')}
             className="flex items-center gap-2 group shrink-0"
           >
@@ -204,8 +206,8 @@ function AppContent() {
               Shevgaon<span className="text-brand-blue">.</span>Market
             </span>
           </Link>
-          
-          <button 
+
+          <button
             onClick={toggleSidebar}
             className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
             title="नेव्हिगेशन बंद करा"
@@ -224,11 +226,10 @@ function AppContent() {
               <button
                 key={item.id}
                 onClick={() => handleSidebarClick(item.href)}
-                className={`w-full text-left px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-all duration-200 ${
-                  activeSection === item.href && location.pathname === '/home'
+                className={`w-full text-left px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-all duration-200 ${activeSection === item.href && location.pathname === '/home'
                     ? 'bg-gradient-brand text-white shadow-sm shadow-brand-blue/20'
                     : 'text-slate-600 dark:text-slate-300 hover:text-brand-purple dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-slate-800/60'
-                }`}
+                  }`}
               >
                 <span>{item.label}</span>
               </button>
@@ -238,7 +239,7 @@ function AppContent() {
 
         {/* Footer actions inside Sidebar */}
         <div className="space-y-2 pt-4 border-t border-gray-200/50 dark:border-slate-800 shrink-0">
-          <Link 
+          <Link
             to="/welcome"
             onClick={() => {
               if (window.innerWidth < 1024) setIsSidebarOpen(false);
@@ -248,7 +249,7 @@ function AppContent() {
             ✨ वेल्कम स्क्रीन (Welcome Page)
           </Link>
 
-          <Link 
+          <Link
             to="/add-shop"
             onClick={() => {
               if (window.innerWidth < 1024) setIsSidebarOpen(false);
@@ -259,7 +260,7 @@ function AppContent() {
             दुकान नोंदणी करा (Add Shop)
           </Link>
 
-          <Link 
+          <Link
             to="/admin"
             onClick={() => {
               if (window.innerWidth < 1024) setIsSidebarOpen(false);
@@ -287,50 +288,49 @@ function AppContent() {
       </AnimatePresence>
 
       {/* MAIN RIGHT CONTAINER */}
-      <div 
-        className={`relative z-10 flex flex-col min-h-screen flex-grow transition-all duration-300 ease-in-out overflow-x-hidden w-full ${
-          isSidebarOpen ? 'lg:pl-64' : 'lg:pl-0'
-        }`}
+      <div
+        className={`relative z-10 flex flex-col min-h-screen flex-grow transition-all duration-300 ease-in-out overflow-x-hidden w-full ${isSidebarOpen ? 'lg:pl-64' : 'lg:pl-0'
+          }`}
       >
         {/* Sticky Header with Hamburger trigger */}
         <Header onMenuToggle={toggleSidebar} />
-        
+
         {/* Pages Content */}
         <main className="flex-grow w-full max-w-7xl mx-auto px-4 md:px-8 py-6 overflow-x-hidden">
           <Routes>
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<LoginRegistration />} />
-            
+
             {/* Protected Merchant Routes */}
-            <Route 
-              path="/merchant-profile" 
+            <Route
+              path="/merchant-profile"
               element={
                 <ProtectedRoute allowedRoles={['merchant', 'admin']}>
                   <MerchantProfile />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/vendor/dashboard" 
+            <Route
+              path="/vendor/dashboard"
               element={
                 <ProtectedRoute allowedRoles={['merchant', 'admin']}>
                   <VendorDashboard />
                 </ProtectedRoute>
-              } 
+              }
             />
-            
+
             <Route path="/vendor/register" element={<VendorRegistration />} />
             <Route path="/add-shop" element={<AddShopPage />} />
             <Route path="/business/:category/:id" element={<BusinessDetail />} />
-            
+
             {/* Strict Protected Admin Route */}
-            <Route 
-              path="/admin" 
+            <Route
+              path="/admin"
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AdminDashboard />
                 </ProtectedRoute>
-              } 
+              }
             />
           </Routes>
         </main>
