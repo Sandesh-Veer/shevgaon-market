@@ -478,7 +478,7 @@ export default function VendorDashboard() {
                     Shevgaon Market
                   </div>
                 )}
-                <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[9px] font-bold text-brand-purple border border-white/60 uppercase">
+                <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-brand-purple border border-white/60">
                   {biz.category === 'mandi' && 'शेतकरी बाजार'}
                   {biz.category === 'technician' && 'घरगुती सेवा'}
                   {biz.category === 'material' && 'साहित्य पुरवठादार'}
@@ -544,15 +544,15 @@ export default function VendorDashboard() {
                 <div className="flex gap-2">
                   <button 
                     onClick={() => openEditModal(biz)}
-                    className="p-2 rounded-lg bg-white border border-gray-200 text-brand-dark hover:bg-slate-50 hover:border-brand-purple transition-all flex items-center gap-1 font-bold text-[10px]"
+                    className="p-2 min-h-[36px] rounded-lg bg-white border border-gray-200 text-brand-dark hover:bg-slate-50 hover:border-brand-purple transition-all flex items-center gap-1 font-bold text-xs"
                   >
-                    <Edit2 size={10} /> बदला
+                    <Edit2 size={12} /> बदला
                   </button>
                   <button 
                     onClick={() => handleDelete(biz.id, biz.category)}
-                    className="p-2 rounded-lg bg-white border border-gray-200 text-rose-600 hover:bg-rose-50 hover:border-rose-300 transition-all flex items-center gap-1 font-bold text-[10px]"
+                    className="p-2 min-h-[36px] rounded-lg bg-white border border-gray-200 text-rose-600 hover:bg-rose-50 hover:border-rose-300 transition-all flex items-center gap-1 font-bold text-xs"
                   >
-                    <Trash2 size={10} /> डिलीट
+                    <Trash2 size={12} /> डिलीट
                   </button>
                 </div>
               </div>
@@ -560,10 +560,10 @@ export default function VendorDashboard() {
               {/* Collapsible Reviews & Replies List */}
               {expandedBizId === biz.id && (
                 <div className="border-t border-gray-100 p-5 bg-slate-50/30 space-y-4 text-xs">
-                  <h5 className="font-bold text-brand-dark flex items-center gap-1.5">
-                    <MessageSquare size={12} className="text-brand-purple" />
+                  <h4 className="font-bold text-brand-dark flex items-center gap-1.5 text-xs sm:text-sm">
+                    <MessageSquare size={14} className="text-brand-purple" />
                     ग्राहकांचे पुनरावलोकने (Customer Reviews)
-                  </h5>
+                  </h4>
                   {db.getReviewsForBusiness(biz.id).length === 0 ? (
                     <p className="text-brand-muted font-light italic">या व्यवसायासाठी अद्याप कोणतीही पुनरावलोकने नाहीत.</p>
                   ) : (
@@ -572,18 +572,18 @@ export default function VendorDashboard() {
                         <div key={r.id} className="p-3.5 bg-white border border-gray-100 rounded-2xl space-y-3 shadow-sm">
                           <div className="flex justify-between items-start">
                             <div>
-                              <span className="font-bold text-brand-dark">{r.userName}</span>
-                              <span className="text-[10px] text-brand-muted ml-2">{r.userEmail}</span>
+                              <span className="font-bold text-brand-dark text-xs sm:text-sm">{r.userName}</span>
+                              <span className="text-xs text-brand-muted ml-2">{r.userEmail}</span>
                               <div className="flex text-amber-400 gap-0.5 mt-0.5">
                                 {[1, 2, 3, 4, 5].map((star) => (
-                                  <Star key={star} size={10} className={star <= r.rating ? 'fill-amber-400 text-amber-400' : 'text-gray-200'} />
+                                  <Star key={star} size={12} className={star <= r.rating ? 'fill-amber-400 text-amber-400' : 'text-gray-200'} />
                                 ))}
                               </div>
                             </div>
-                            <span className="text-[9px] text-brand-muted font-mono">{r.createdAt.split('T')[0]}</span>
+                            <span className="text-xs text-brand-muted font-mono">{r.createdAt.split('T')[0]}</span>
                           </div>
                           
-                          <p className="text-brand-dark font-light leading-relaxed">{r.comment}</p>
+                          <p className="text-brand-dark font-normal leading-relaxed text-xs sm:text-sm">{r.comment}</p>
                           
                           {r.photos && r.photos.length > 0 && (
                             <div className="flex gap-1.5 overflow-x-auto no-scrollbar pt-1">
@@ -596,15 +596,15 @@ export default function VendorDashboard() {
                           {/* Owner Reply */}
                           {r.reply ? (
                             <div className="bg-emerald-50/50 border border-emerald-100 text-emerald-800 p-3 rounded-xl space-y-1.5 mt-2">
-                              <span className="font-bold text-[10px] text-emerald-700 block">✍️ तुमचे उत्तर (Your Reply):</span>
-                              <p className="font-light">{r.reply}</p>
+                              <span className="font-bold text-xs text-emerald-700 block">✍️ तुमचे उत्तर (Your Reply):</span>
+                              <p className="font-normal text-xs">{r.reply}</p>
                               <button
                                 onClick={() => {
                                   setReplies(prev => ({ ...prev, [r.id]: r.reply || '' }));
                                   const updated = { ...r, reply: '' };
                                   db.saveReview(updated);
                                 }}
-                                className="text-[10px] font-bold text-brand-purple hover:underline pt-1 block"
+                                className="text-xs font-bold text-brand-purple hover:underline pt-1 block"
                               >
                                 उत्तर बदला (Change Reply)
                               </button>
@@ -718,7 +718,7 @@ export default function VendorDashboard() {
                       placeholder="उदा. जगदंबा हार्डवेअर"
                       className="w-full bg-white border border-gray-200 rounded-xl p-3 text-brand-dark text-sm focus:outline-none focus:border-brand-purple transition-all"
                     />
-                    {formErrors.name && <span className="text-[10px] text-rose-500 font-bold">{formErrors.name}</span>}
+                    {formErrors.name && <span className="text-xs text-rose-500 font-semibold">{formErrors.name}</span>}
                   </div>
                 </div>
 
@@ -727,7 +727,7 @@ export default function VendorDashboard() {
                   
                   {/* Shop Logo upload */}
                   <div className="space-y-2">
-                    <label className="text-[10px] text-brand-dark font-bold uppercase tracking-wider block">दुकान लोगो (Shop Logo)</label>
+                    <label className="text-xs text-brand-dark font-semibold block">दुकान लोगो (Shop Logo)</label>
                     <div className="relative border border-dashed border-gray-300 rounded-xl p-3 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-slate-50 transition-colors aspect-video">
                       <input 
                         type="file" 
@@ -740,7 +740,7 @@ export default function VendorDashboard() {
                       ) : (
                         <>
                           <Camera size={18} className="text-brand-purple mb-1" />
-                          <span className="text-[9px] text-brand-muted">फोटो निवडा</span>
+                          <span className="text-xs text-brand-muted">फोटो निवडा</span>
                         </>
                       )}
                     </div>
@@ -748,7 +748,7 @@ export default function VendorDashboard() {
 
                   {/* Shop Banner upload */}
                   <div className="space-y-2">
-                    <label className="text-[10px] text-brand-dark font-bold uppercase tracking-wider block">दुकान बॅनर (Shop Banner)</label>
+                    <label className="text-xs text-brand-dark font-semibold block">दुकान बॅनर (Shop Banner)</label>
                     <div className="relative border border-dashed border-gray-300 rounded-xl p-3 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-slate-50 transition-colors aspect-video">
                       <input 
                         type="file" 
@@ -761,7 +761,7 @@ export default function VendorDashboard() {
                       ) : (
                         <>
                           <ImageIcon size={18} className="text-brand-purple mb-1" />
-                          <span className="text-[9px] text-brand-muted">बॅनर अपलोड</span>
+                          <span className="text-xs text-brand-muted">बॅनर अपलोड</span>
                         </>
                       )}
                     </div>
@@ -769,7 +769,7 @@ export default function VendorDashboard() {
 
                   {/* Multiple Shop Photos upload */}
                   <div className="space-y-2">
-                    <label className="text-[10px] text-brand-dark font-bold uppercase tracking-wider block">इतर फोटो ({photos.length} uploaded)</label>
+                    <label className="text-xs text-brand-dark font-semibold block">इतर फोटो ({photos.length} uploaded)</label>
                     <div className="relative border border-dashed border-gray-300 rounded-xl p-3 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-slate-50 transition-colors aspect-video">
                       <input 
                         type="file" 
@@ -779,7 +779,7 @@ export default function VendorDashboard() {
                         className="absolute inset-0 opacity-0 cursor-pointer"
                       />
                       <Plus size={18} className="text-brand-purple mb-1" />
-                      <span className="text-[9px] text-brand-muted">फोटो निवडा (Multiple)</span>
+                      <span className="text-xs text-brand-muted">फोटो निवडा (Multiple)</span>
                     </div>
                   </div>
 
@@ -788,7 +788,7 @@ export default function VendorDashboard() {
                 {/* Display uploaded photos gallery with delete options */}
                 {photos.length > 0 && (
                   <div className="space-y-2">
-                    <label className="text-[10px] text-brand-dark font-bold uppercase tracking-wider block">गॅलरी फोटो डिलीट करा (माऊस नेऊन डिलीट करा):</label>
+                    <label className="text-xs text-brand-dark font-semibold block">गॅलरी फोटो डिलीट करा (माऊस नेऊन डिलीट करा):</label>
                     <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                       {photos.map((img, idx) => (
                         <div key={idx} className="relative aspect-video rounded-xl overflow-hidden border border-gray-200 group">
@@ -808,7 +808,7 @@ export default function VendorDashboard() {
 
                 {/* Description */}
                 <div className="space-y-1">
-                  <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">व्यवसायाचे सविस्तर वर्णन (Description) *</label>
+                  <label className="text-xs text-brand-dark font-semibold block">व्यवसायाचे सविस्तर वर्णन (Description) *</label>
                   <textarea 
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
@@ -816,7 +816,7 @@ export default function VendorDashboard() {
                     placeholder="उदा. आमच्याकडे सर्व प्रकारचे सिमेंट, खडी आणि बांधकाम साहित्याचे घाऊक पुरवठादार आहोत..."
                     className="w-full bg-white border border-gray-200 rounded-xl p-3 text-brand-dark text-sm focus:outline-none focus:border-brand-purple transition-all"
                   />
-                  {formErrors.description && <span className="text-[10px] text-rose-500 font-bold">{formErrors.description}</span>}
+                  {formErrors.description && <span className="text-xs text-rose-500 font-semibold">{formErrors.description}</span>}
                 </div>
 
                 {/* 3. Category Specific Dynamic Inputs */}
@@ -979,7 +979,7 @@ export default function VendorDashboard() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   
                   <div className="space-y-1">
-                    <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">मोबाईल नंबर *</label>
+                    <label className="text-xs text-brand-dark font-semibold block">मोबाईल नंबर *</label>
                     <div className="relative">
                       <input 
                         type="tel"
@@ -990,11 +990,11 @@ export default function VendorDashboard() {
                       />
                       <Phone size={14} className="absolute left-3 top-3.5 text-brand-purple" />
                     </div>
-                    {formErrors.phone && <span className="text-[10px] text-rose-500 font-bold">{formErrors.phone}</span>}
+                    {formErrors.phone && <span className="text-xs text-rose-500 font-semibold">{formErrors.phone}</span>}
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">WhatsApp नंबर *</label>
+                    <label className="text-xs text-brand-dark font-semibold block">WhatsApp नंबर *</label>
                     <div className="relative">
                       <input 
                         type="tel"
@@ -1005,11 +1005,11 @@ export default function VendorDashboard() {
                       />
                       <Phone size={14} className="absolute left-3 top-3.5 text-brand-purple" />
                     </div>
-                    {formErrors.whatsapp && <span className="text-[10px] text-rose-500 font-bold">{formErrors.whatsapp}</span>}
+                    {formErrors.whatsapp && <span className="text-xs text-rose-500 font-semibold">{formErrors.whatsapp}</span>}
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">ईमेल पत्ता (पर्यायी)</label>
+                    <label className="text-xs text-brand-dark font-semibold block">ईमेल पत्ता (पर्यायी)</label>
                     <div className="relative">
                       <input 
                         type="email"
@@ -1028,7 +1028,7 @@ export default function VendorDashboard() {
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   
                   <div className="space-y-1">
-                    <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">गाव *</label>
+                    <label className="text-xs text-brand-dark font-semibold block">गाव *</label>
                     <input 
                       type="text"
                       value={village}
@@ -1036,11 +1036,11 @@ export default function VendorDashboard() {
                       placeholder="उदा. शेवगांव"
                       className="w-full bg-white border border-gray-200 rounded-xl p-3 text-brand-dark text-sm focus:outline-none focus:border-brand-purple transition-all"
                     />
-                    {formErrors.village && <span className="text-[10px] text-rose-500 font-bold">{formErrors.village}</span>}
+                    {formErrors.village && <span className="text-xs text-rose-500 font-semibold">{formErrors.village}</span>}
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">तालुका</label>
+                    <label className="text-xs text-brand-dark font-semibold block">तालुका</label>
                     <input 
                       type="text"
                       value={taluka}
@@ -1051,7 +1051,7 @@ export default function VendorDashboard() {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">जिल्हा</label>
+                    <label className="text-xs text-brand-dark font-semibold block">जिल्हा</label>
                     <input 
                       type="text"
                       value={district}
@@ -1062,7 +1062,7 @@ export default function VendorDashboard() {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">उघडण्याची / बंद वेळ</label>
+                    <label className="text-xs text-brand-dark font-semibold block">उघडण्याची / बंद वेळ</label>
                     <div className="flex gap-1.5">
                       <input 
                         type="text"
@@ -1085,7 +1085,7 @@ export default function VendorDashboard() {
 
                 {/* Full Address */}
                 <div className="space-y-1">
-                  <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">पूर्ण पत्ता (Full Address) *</label>
+                  <label className="text-xs text-brand-dark font-semibold block">पूर्ण पत्ता (Full Address) *</label>
                   <input 
                     type="text"
                     value={address}
@@ -1093,7 +1093,7 @@ export default function VendorDashboard() {
                     placeholder="उदा. क्रांती चौक, बस स्टॅन्ड जवळ, शेवगांव"
                     className="w-full bg-white border border-gray-200 rounded-xl p-3 text-brand-dark text-sm focus:outline-none focus:border-brand-purple transition-all"
                   />
-                  {formErrors.address && <span className="text-[10px] text-rose-500 font-bold">{formErrors.address}</span>}
+                  {formErrors.address && <span className="text-xs text-rose-500 font-semibold">{formErrors.address}</span>}
                 </div>
 
                 {/* Google Maps Link */}

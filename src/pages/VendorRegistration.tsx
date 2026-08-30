@@ -54,7 +54,7 @@ export default function VendorRegistration() {
             <div className="space-y-4">
               {/* Shop name */}
               <div className="space-y-1">
-                <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">दुकानाचे नाव</label>
+                <label className="text-xs text-brand-dark font-semibold block">दुकानाचे नाव</label>
                 <div className="relative">
                   <input 
                     type="text" 
@@ -67,7 +67,7 @@ export default function VendorRegistration() {
               
               {/* WhatsApp mobile number */}
               <div className="space-y-1">
-                <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">व्हॉट्सॲप क्रमांक</label>
+                <label className="text-xs text-brand-dark font-semibold block">व्हॉट्सॲप क्रमांक</label>
                 <div className="relative">
                   <input 
                     type="tel" 
@@ -80,7 +80,7 @@ export default function VendorRegistration() {
 
               {/* Location details */}
               <div className="space-y-1">
-                <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">पत्ता / परिसर</label>
+                <label className="text-xs text-brand-dark font-semibold block">पत्ता / परिसर</label>
                 <div className="relative">
                   <input 
                     type="text" 
@@ -94,7 +94,7 @@ export default function VendorRegistration() {
 
             <button 
               onClick={() => setStep(2)}
-              className="w-full bg-gradient-brand text-white font-semibold py-3.5 rounded-xl hover:shadow-[0_8px_20px_rgba(79,124,255,0.25)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-1.5"
+              className="w-full min-h-[44px] bg-gradient-brand text-white font-semibold py-3 rounded-xl hover:shadow-[0_8px_20px_rgba(79,124,255,0.25)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-1.5 text-xs sm:text-sm"
             >
               खाते सक्रिय करण्यासाठी पुढे जा
               <ArrowRight size={15} />

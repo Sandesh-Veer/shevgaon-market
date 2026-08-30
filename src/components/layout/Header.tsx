@@ -85,7 +85,7 @@ export default function Header({ onMenuToggle }: HeaderProps) {
           {/* Prominent Public Add Shop Button */}
           <Link
             to="/add-shop"
-            className="inline-flex items-center gap-1 sm:gap-1.5 bg-gradient-brand text-white font-bold text-[11px] sm:text-xs px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 shadow-md shadow-brand-blue/20 group shrink-0"
+            className="inline-flex items-center gap-1.5 bg-gradient-brand text-white font-bold text-xs px-3 sm:px-4 py-2 rounded-full hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 shadow-md shadow-brand-blue/20 group shrink-0 min-h-[36px]"
           >
             <Store size={14} className="shrink-0" />
             <span className="whitespace-nowrap">

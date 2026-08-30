@@ -247,7 +247,7 @@ export default function BusinessDetail() {
             <div className="space-y-1 min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-brand-dark leading-snug">{biz.name}</h1>
-                <span className="bg-brand-purple/5 text-brand-purple text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-brand-purple/10 shrink-0">
+                <span className="bg-brand-purple/5 text-brand-purple text-xs font-semibold px-3 py-1 rounded-full border border-brand-purple/10 shrink-0">
                   {biz.category === 'mandi' && 'शेतकरी'}
                   {biz.category === 'technician' && 'घरगुती सेवा'}
                   {biz.category === 'material' && 'बांधकाम साहित्य'}
@@ -257,7 +257,7 @@ export default function BusinessDetail() {
                   {biz.category === 'offers' && 'ऑफर / सेल'}
                 </span>
               </div>
-              <p className="text-xs text-brand-muted font-light">मालक: <b className="font-semibold text-brand-dark">{biz.ownerName}</b> | गाव: {biz.village}</p>
+              <p className="text-xs text-brand-muted font-normal">मालक: <b className="font-semibold text-brand-dark">{biz.ownerName}</b> | गाव: {biz.village}</p>
               
               {/* Average Ratings */}
               <div className="flex items-center gap-1.5 pt-1.5">
@@ -304,9 +304,9 @@ export default function BusinessDetail() {
         <div className="lg:col-span-2 space-y-8">
           
           {/* About description */}
-          <div className="glass-card p-6 border border-white/70 space-y-4">
+          <div className="glass-card p-6 border border-white/70 space-y-4 rounded-3xl">
             <h3 className="text-lg font-bold text-brand-dark border-b border-gray-100 pb-2">व्यवसायाबद्दल माहिती</h3>
-            <p className="text-sm text-brand-muted leading-relaxed font-light whitespace-pre-line">{biz.description}</p>
+            <p className="text-sm text-brand-muted leading-relaxed font-normal whitespace-pre-line">{biz.description}</p>
           </div>
 
           {/* Category-Specific Item Details */}
@@ -369,12 +369,12 @@ export default function BusinessDetail() {
 
           {/* D. Hotel / Food Details */}
           {biz.category === 'hotel' && (
-            <div className="glass-card p-6 border border-white/70 space-y-6">
+            <div className="glass-card p-6 border border-white/70 space-y-6 rounded-3xl">
               
               {/* Dish info header */}
               <div className="flex justify-between items-center border-b border-gray-100 pb-3">
                 <h3 className="text-lg font-bold text-brand-dark">हॉटेल मेनू आणि आजचे खास</h3>
-                <span className={`text-[10px] font-bold px-3 py-1 rounded-full border ${
+                <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${
                   biz.hotelType === 'Pure Veg' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
                   biz.hotelType === 'Veg' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-rose-50 text-rose-700 border-rose-200'
                 }`}>
@@ -386,8 +386,8 @@ export default function BusinessDetail() {
               {biz.todaysSpecial && (
                 <div className="bg-gradient-to-r from-rose-500/5 to-amber-500/5 border border-rose-100 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div className="space-y-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-rose-500">🔥 आजचे विशेष डिश (Today's Special)</span>
-                    <h4 className="font-extrabold text-brand-dark text-base">{biz.todaysSpecial}</h4>
+                    <span className="text-xs font-semibold text-rose-500">🔥 आजचे विशेष डिश (Today's Special)</span>
+                    <h3 className="font-extrabold text-brand-dark text-base">{biz.todaysSpecial}</h3>
                   </div>
                   <div className="font-mono font-bold text-lg text-rose-600 bg-white px-3.5 py-1.5 rounded-xl border border-rose-200/60 shadow-sm shrink-0">
                     ₹{biz.specialPrice || '१५०'}
@@ -536,7 +536,7 @@ export default function BusinessDetail() {
                       </div>
                       
                       <div className="flex items-center gap-3">
-                        <span className="text-[10px] text-brand-muted font-light">
+                        <span className="text-xs text-brand-muted font-normal">
                           {new Date(rev.createdAt).toLocaleDateString('mr-IN')}
                         </span>
                         
@@ -544,13 +544,13 @@ export default function BusinessDetail() {
                         <div className="flex gap-2">
                           <button 
                             onClick={() => handleEditReview(rev)}
-                            className="text-brand-blue font-bold hover:underline"
+                            className="text-brand-blue font-bold hover:underline text-xs"
                           >
                             सुधारा
                           </button>
                           <button 
                             onClick={() => handleDeleteReview(rev.id)}
-                            className="text-rose-500 font-bold hover:underline"
+                            className="text-rose-500 font-bold hover:underline text-xs"
                           >
                             हटवा
                           </button>
@@ -559,7 +559,7 @@ export default function BusinessDetail() {
                     </div>
 
                     {/* Review text */}
-                    <p className="text-brand-muted leading-relaxed font-light text-sm">{rev.comment}</p>
+                    <p className="text-brand-muted leading-relaxed font-normal text-sm">{rev.comment}</p>
 
                     {/* Review attachments */}
                     {rev.photos && rev.photos.length > 0 && (
@@ -574,7 +574,7 @@ export default function BusinessDetail() {
 
                     {/* Owner reply box if present */}
                     {rev.reply && (
-                      <div className="mt-3 p-3 bg-brand-purple/5 border-l-2 border-brand-purple rounded-r-xl space-y-1 text-[11px]">
+                      <div className="mt-3 p-3 bg-brand-purple/5 border-l-2 border-brand-purple rounded-r-xl space-y-1 text-xs">
                         <span className="font-bold text-brand-purple">व्यवसाय मालकाचे उत्तर:</span>
                         <p className="text-brand-dark leading-relaxed font-medium">{rev.reply}</p>
                       </div>
@@ -586,7 +586,7 @@ export default function BusinessDetail() {
             )}
 
             {/* Review Form Box */}
-            <div id="review-form" className="glass-card p-6 border border-white/70 space-y-5">
+            <div id="review-form" className="glass-card p-6 border border-white/70 space-y-5 rounded-3xl">
               <h3 className="text-base font-extrabold text-brand-dark">
                 {editingReviewId ? 'अभिप्राय दुरुस्त करा (Edit Review)' : 'नवीन अभिप्राय जोडा (Write a Review)'}
               </h3>
@@ -598,7 +598,7 @@ export default function BusinessDetail() {
                 
                 {/* 1. Star Selection */}
                 <div className="space-y-1.5">
-                  <label className="text-[10px] text-brand-dark uppercase tracking-wider block">रेटिंग निवडा (Star Rating) *</label>
+                  <label className="text-xs font-semibold text-brand-dark block">रेटिंग निवडा (Star Rating) *</label>
                   <div className="flex items-center gap-1.5">
                     {[1, 2, 3, 4, 5].map((s) => (
                       <button 
@@ -616,7 +616,7 @@ export default function BusinessDetail() {
                 {/* 2. Credentials */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-[10px] text-brand-dark uppercase tracking-wider">आपले पूर्ण नाव *</label>
+                    <label className="text-xs font-semibold text-brand-dark">आपले पूर्ण नाव *</label>
                     <input 
                       type="text" 
                       value={reviewName}
@@ -626,7 +626,7 @@ export default function BusinessDetail() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] text-brand-dark uppercase tracking-wider">ईमेल पत्ता (पडताळणीसाठी) *</label>
+                    <label className="text-xs font-semibold text-brand-dark">ईमेल पत्ता (पडताळणीसाठी) *</label>
                     <input 
                       type="email" 
                       value={reviewEmail}
@@ -639,7 +639,7 @@ export default function BusinessDetail() {
 
                 {/* 3. Comment */}
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark uppercase tracking-wider">तुमचा अभिप्राय (Comment) *</label>
+                  <label className="text-xs font-semibold text-brand-dark">तुमचा अभिप्राय (Comment) *</label>
                   <textarea 
                     value={reviewComment}
                     onChange={(e) => setReviewComment(e.target.value)}
@@ -651,7 +651,7 @@ export default function BusinessDetail() {
 
                 {/* 4. Photos uploads */}
                 <div className="space-y-2">
-                  <label className="text-[10px] text-brand-dark uppercase tracking-wider block">अभिप्राय फोटो जोडा (Optional)</label>
+                  <label className="text-xs font-semibold text-brand-dark block">अभिप्राय फोटो जोडा (Optional)</label>
                   <div className="flex flex-wrap items-center gap-3">
                     <div className="relative border border-dashed border-gray-300 w-16 h-16 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50">
                       <input 
@@ -662,7 +662,7 @@ export default function BusinessDetail() {
                         className="absolute inset-0 opacity-0 cursor-pointer"
                       />
                       <Camera size={16} className="text-brand-purple mb-0.5" />
-                      <span className="text-[8px] text-brand-muted">अपलोड</span>
+                      <span className="text-xs text-brand-muted">अपलोड</span>
                     </div>
 
                     {/* Preview upload attachments */}
@@ -691,16 +691,16 @@ export default function BusinessDetail() {
                         setReviewComment('');
                         setReviewPhotos([]);
                       }}
-                      className="px-4 py-2 border border-gray-200 rounded-xl text-brand-muted uppercase text-[10px]"
+                      className="px-4 py-2 min-h-[40px] border border-gray-200 rounded-xl text-brand-muted text-xs font-semibold hover:bg-slate-50"
                     >
                       रद्द करा
                     </button>
                   )}
                   <button 
                     type="submit"
-                    className="bg-gradient-brand text-white px-5 py-2.5 rounded-xl hover:shadow-[0_8px_20px_rgba(79,124,255,0.2)] hover:-translate-y-0.5 transition-all flex items-center gap-1 uppercase tracking-wider text-[10px]"
+                    className="bg-gradient-brand text-white px-5 py-2.5 min-h-[40px] rounded-xl hover:shadow-[0_8px_20px_rgba(79,124,255,0.2)] hover:-translate-y-0.5 transition-all flex items-center gap-1.5 text-xs font-semibold"
                   >
-                    अभिप्राय पाठवा <Send size={10} />
+                    अभिप्राय पाठवा <Send size={12} />
                   </button>
                 </div>
 
@@ -779,8 +779,8 @@ export default function BusinessDetail() {
                       </div>
                     )}
                     <div className="space-y-0.5 text-xs text-left">
-                      <h4 className="font-bold text-brand-dark line-clamp-1">{item.name}</h4>
-                      <p className="text-[10px] text-brand-muted font-light">{item.village} | {item.phone}</p>
+                      <h3 className="font-bold text-brand-dark text-xs sm:text-sm line-clamp-1">{item.name}</h3>
+                      <p className="text-xs text-brand-muted font-normal">{item.village} | {item.phone}</p>
                     </div>
                   </div>
                 ))}

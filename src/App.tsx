@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldAlert, X, Store } from 'lucide-react';
+import { ShieldAlert, X, Store, ChevronDown } from 'lucide-react';
 import Header from './components/layout/Header';
 import Home from './pages/Home';
 import WelcomeLanding from './pages/WelcomeLanding';
@@ -20,9 +20,6 @@ function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
 
-
-  // done very done
-
   const isLandingPage = location.pathname === '/' || location.pathname === '/welcome' || location.pathname === '/landing';
 
   // Responsive sidebar state (collapsible on desktop & mobile)
@@ -31,26 +28,62 @@ function AppContent() {
   });
   const [activeSection, setActiveSection] = useState('home');
 
-  // Sidebar Items
-  const sidebarItems = [
-    { id: 'home', label: '🏠 Home (मुख्य पान)', href: 'home' },
-    { id: 'shetkari', label: '👨‍🌾 शेतकरी (Farmers)', href: 'shetkari' },
-    { id: 'gharguti-seva', label: '🛠️ घरगुती सेवा (Home Services)', href: 'gharguti-seva' },
-    { id: 'hotel', label: '🍔 हॉटेल (Hotel)', href: 'hotel' },
-    { id: 'vehicle', label: '🚗 वाहन (Vahan / Vehicles)', href: 'vehicle' },
-    { id: 'water', label: '🚰 वॉटर जार (Water Jar)', href: 'water' },
-    { id: 'beauty', label: '💇‍♀️ ब्युटी पार्लर (Beauty Parlour)', href: 'beauty' },
-    { id: 'cyber', label: '💻 सायबर कॅफे (Cyber Cafe)', href: 'cyber' },
-    { id: 'mess', label: '🍲 मेस (Mess / खानावळ)', href: 'mess' },
-    { id: 'photoshop', label: '📸 फोटोशॉप (Photoshop Studio)', href: 'photoshop' },
-    { id: 'gym', label: '🏋️‍♂️ जिम (Gym & Fitness)', href: 'gym' },
-    { id: 'hospital', label: '🏥 हॉस्पिटल (Hospital)', href: 'hospital' },
-    { id: 'mobileshop', label: '📱 मोबाईल शॉप (Mobile Shop)', href: 'mobileshop' },
-    { id: 'sweethome', label: '🧁 स्वीट होम (Sweet Home)', href: 'sweethome' },
-    { id: 'offers', label: '🛍️ ऑफर्स (Offers)', href: 'offers' },
-    { id: 'reviews', label: '⭐ Reviews', href: 'reviews' },
-    { id: 'contact', label: '📞 संपर्क (Contact)', href: 'contact' }
+  // Collapsible Navigation Groups
+  const sidebarGroups = [
+    {
+      id: 'market',
+      title: '🌾 बाजार आणि शेती',
+      items: [
+        { id: 'home', label: '🏠 Home (मुख्य पान)', href: 'home' },
+        { id: 'shetkari', label: '👨‍🌾 शेतकरी (Farmers)', href: 'shetkari' },
+        { id: 'offers', label: '🛍️ ऑफर्स (Offers)', href: 'offers' },
+      ]
+    },
+    {
+      id: 'services',
+      title: '🛠️ सेवा आणि व्यवसाय',
+      items: [
+        { id: 'gharguti-seva', label: '🛠️ घरगुती सेवा (Home Services)', href: 'gharguti-seva' },
+        { id: 'hotel', label: '🍔 हॉटेल (Hotel)', href: 'hotel' },
+        { id: 'vehicle', label: '🚗 वाहन (Vehicles)', href: 'vehicle' },
+        { id: 'water', label: '🚰 वॉटर जार (Water Jar)', href: 'water' },
+        { id: 'beauty', label: '💇‍♀️ ब्युटी पार्लर (Beauty Parlour)', href: 'beauty' },
+        { id: 'cyber', label: '💻 सायबर कॅफे (Cyber Cafe)', href: 'cyber' },
+        { id: 'mess', label: '🍲 मेस (Mess / खानावळ)', href: 'mess' },
+        { id: 'photoshop', label: '📸 फोटोशॉप (Photoshop Studio)', href: 'photoshop' },
+        { id: 'gym', label: '🏋️‍♂️ जिम (Gym & Fitness)', href: 'gym' },
+        { id: 'hospital', label: '🏥 हॉस्पिटल (Hospital)', href: 'hospital' },
+        { id: 'mobileshop', label: '📱 मोबाईल शॉप (Mobile Shop)', href: 'mobileshop' },
+        { id: 'sweethome', label: '🧁 स्वीट होम (Sweet Home)', href: 'sweethome' },
+      ]
+    },
+    {
+      id: 'info',
+      title: '📞 माहिती व संपर्क',
+      items: [
+        { id: 'reviews', label: '⭐ Reviews', href: 'reviews' },
+        { id: 'contact', label: '📞 संपर्क (Contact)', href: 'contact' }
+      ]
+    }
   ];
+
+
+
+
+
+
+  // done
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
+    market: true,
+    services: true,
+    info: true,
+  });
+
+  const toggleNavGroup = (groupId: string) => {
+    setOpenGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }));
+  };
+
+  const sidebarItems = sidebarGroups.flatMap(g => g.items);
 
 
 
@@ -216,25 +249,41 @@ function AppContent() {
           </button>
         </div>
 
-        {/* Scrollable Navigation Options List (Vertical Scroll Enabled) */}
-        <div className="flex-1 overflow-y-auto max-h-[calc(100vh-140px)] py-4 pr-1 space-y-1 custom-scrollbar">
-          <p className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider mb-2 px-2">
-            श्रेणी आणि विभाग (Categories)
-          </p>
-          <nav className="space-y-1">
-            {sidebarItems.map((item) => (
+        {/* Scrollable Navigation Options List (Grouped Accordion) */}
+        <div className="flex-1 overflow-y-auto max-h-[calc(100vh-140px)] py-3 pr-1 space-y-3 custom-scrollbar">
+          {sidebarGroups.map((group) => (
+            <div key={group.id} className="space-y-1">
               <button
-                key={item.id}
-                onClick={() => handleSidebarClick(item.href)}
-                className={`w-full text-left px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-all duration-200 ${activeSection === item.href && location.pathname === '/home'
-                    ? 'bg-gradient-brand text-white shadow-sm shadow-brand-blue/20'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-brand-purple dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-slate-800/60'
-                  }`}
+                type="button"
+                onClick={() => toggleNavGroup(group.id)}
+                className="w-full flex items-center justify-between px-2 py-1.5 text-xs uppercase font-bold text-slate-500 dark:text-slate-400 tracking-wider hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
               >
-                <span>{item.label}</span>
+                <span>{group.title}</span>
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-200 ${openGroups[group.id] ? 'rotate-0' : '-rotate-90'}`}
+                />
               </button>
-            ))}
-          </nav>
+
+              {openGroups[group.id] && (
+                <nav className="space-y-0.5">
+                  {group.items.map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => handleSidebarClick(item.href)}
+                      className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-all duration-200 ${
+                        activeSection === item.href && location.pathname === '/home'
+                          ? 'bg-gradient-brand text-white shadow-sm shadow-brand-blue/20'
+                          : 'text-slate-600 dark:text-slate-300 hover:text-brand-purple dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-slate-800/60'
+                      }`}
+                    >
+                      <span>{item.label}</span>
+                    </button>
+                  ))}
+                </nav>
+              )}
+            </div>
+          ))}
         </div>
 
         {/* Footer actions inside Sidebar */}
@@ -270,7 +319,7 @@ function AppContent() {
             <ShieldAlert size={15} />
             प्रशासक पॅनेल (Admin)
           </Link>
-          <p className="text-[10px] text-slate-400 dark:text-slate-500 font-light px-2 pt-1">© {new Date().getFullYear()} Shevgaon Market</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500 font-normal px-2 pt-1">© {new Date().getFullYear()} Shevgaon Market</p>
         </div>
       </aside>
 

@@ -190,7 +190,7 @@ export default function LoginRegistration() {
                     className="w-full bg-transparent py-3.5 px-4 text-slate-800 dark:text-slate-100 font-semibold text-sm focus:outline-none placeholder-slate-400"
                   />
                 </div>
-                <p className="text-[11px] text-slate-400 font-normal">
+                <p className="text-xs text-slate-400 font-normal">
                   उदाहरण: ९८७६५४३२१० (OTP एसएमएस द्वारे येईल)
                 </p>
               </div>

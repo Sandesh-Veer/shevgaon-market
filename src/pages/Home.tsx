@@ -16,36 +16,37 @@ import {
 } from 'lucide-react';
 
 // Countdown Timer Component in Marathi
-function Countdown({ initialSeconds }: { initialSeconds: number }) {
-  const [seconds, setSeconds] = useState(initialSeconds);
+function Countdown({ initialSeconds, seconds }: { initialSeconds?: number; seconds?: number }) {
+  const startSec = seconds ?? initialSeconds ?? 7200;
+  const [timeLeft, setTimeLeft] = useState(startSec);
 
   useEffect(() => {
-    if (seconds <= 0) return;
+    if (timeLeft <= 0) return;
     const interval = setInterval(() => {
-      setSeconds(prev => prev - 1);
+      setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
     }, 1000);
     return () => clearInterval(interval);
-  }, [seconds]);
+  }, [timeLeft]);
 
-  if (seconds <= 0) {
+  if (timeLeft <= 0) {
     return <span className="text-red-500 font-bold text-sm">ऑफर संपली!</span>;
   }
 
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const secs = seconds % 60;
+  const hours = Math.floor(timeLeft / 3600);
+  const minutes = Math.floor((timeLeft % 3600) / 60);
+  const secs = timeLeft % 60;
 
   return (
-    <div className="flex gap-1 items-center justify-center">
-      <span className="bg-brand-purple/10 border border-brand-purple/20 text-brand-purple text-[10px] font-bold px-1.5 py-0.5 rounded-md">
+    <div className="flex gap-1.5 items-center justify-center">
+      <span className="bg-brand-purple/10 border border-brand-purple/20 text-brand-purple text-xs font-bold px-2 py-0.5 rounded-md">
         {hours < 10 ? '0' : ''}{hours} तास
       </span>
       <span className="text-brand-purple text-xs font-bold">:</span>
-      <span className="bg-brand-purple/10 border border-brand-purple/20 text-brand-purple text-[10px] font-bold px-1.5 py-0.5 rounded-md">
+      <span className="bg-brand-purple/10 border border-brand-purple/20 text-brand-purple text-xs font-bold px-2 py-0.5 rounded-md">
         {minutes < 10 ? '0' : ''}{minutes} मि
       </span>
       <span className="text-brand-purple text-xs font-bold">:</span>
-      <span className="bg-brand-purple/10 border border-brand-purple/20 text-brand-purple text-[10px] font-bold px-1.5 py-0.5 rounded-md">
+      <span className="bg-brand-purple/10 border border-brand-purple/20 text-brand-purple text-xs font-bold px-2 py-0.5 rounded-md">
         {secs < 10 ? '0' : ''}{secs} सेकंद
       </span>
     </div>
@@ -297,6 +298,46 @@ export const initialHotels = [
   }
 ];
 
+
+
+// ----------------------------------------------------------------------------------
+// DATA INITIALIZATION & INTERFACES
+// ----------------------------------------------------------------------------------
+
+// Offers Section initial data
+export const offersList = [
+  {
+    id: 1,
+    shopName: "महालक्ष्मी रेडीमेड कपडे",
+    category: "कपडे",
+    banner: "गणेशोत्सव स्पेशल सेल!",
+    discount: "३०",
+    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80",
+    secondsLeft: 7200, // 2 hours
+    desc: "सर्व कापडांवर फ्लॅट ३०% सवलत आणि हमखास गिफ्ट कूपन मिळवा."
+  },
+  {
+    id: 2,
+    shopName: "गजानन स्वीट होम",
+    category: "स्वीट मार्ट",
+    banner: "१ किलो पेढ्यावर पाव किलो बुंदी मोफत",
+    discount: "२५",
+    image: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=400&q=80",
+    secondsLeft: 10800, // 3 hours
+    desc: "पेढे, बर्फी आणि इतर मिठायांवर बंपर ऑफर फक्त आज रात्री पर्यंत."
+  },
+  {
+    id: 3,
+    shopName: "ओम मोबाईल गॅलरी",
+    category: "मोबाईल शॉप",
+    banner: "मोबाईल खरेदीवर ग्लासगार्ड आणि कव्हर मोफत",
+    discount: "१५",
+    image: "https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=400&q=80",
+    secondsLeft: 300, // 5 min
+    desc: "स्मार्टफोन्सवर १५% थेट सवलत आणि मोफत ॲक्सेसरीज मिळवा."
+  }
+];
+
 // Second hand vehicles listings
 export const vehicleListings = [
   {
@@ -347,39 +388,7 @@ export const localMechanics = [
   { name: "हायवे इमर्जन्सी २-व्हीलर रिपेअर", contact: "9011456456", emergency: "२४ तास आपत्कालीन सेवा", map: "https://maps.google.com" }
 ];
 
-// Offers Section initial data
-export const offersList = [
-  {
-    id: 1,
-    shopName: "महालक्ष्मी रेडीमेड कपडे",
-    category: "कपडे",
-    banner: "गणेशोत्सव स्पेशल सेल!",
-    discount: "३०",
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=400&q=80",
-    secondsLeft: 7200, // 2 hours
-    desc: "सर्व कापडांवर फ्लॅट ३०% सवलत आणि हमखास गिफ्ट कूपन मिळवा."
-  },
-  {
-    id: 2,
-    shopName: "गजानन स्वीट होम",
-    category: "स्वीट मार्ट",
-    banner: "१ किलो पेढ्यावर पाव किलो बुंदी मोफत",
-    discount: "२५",
-    image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=400&q=80",
-    secondsLeft: 10800, // 3 hours
-    desc: "पेढे, बर्फी आणि इतर मिठायांवर बंपर ऑफर फक्त आज रात्री पर्यंत."
-  },
-  {
-    id: 3,
-    shopName: "ओम मोबाईल गॅलरी",
-    category: "मोबाईल शॉप",
-    banner: "मोबाईल खरेदीवर ग्लासगार्ड आणि कव्हर मोफत",
-    discount: "१५",
-    image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80",
-    secondsLeft: 300, // 5 min
-    desc: "स्मार्टफोन्सवर १५% थेट सवलत आणि मोफत ॲक्सेसरीज मिळवा."
-  }
-];
+
 
 export default function Home() {
   const navigate = useNavigate();
@@ -636,9 +645,9 @@ export default function Home() {
                 />
 
                 {/* Floating glass panel overlay */}
-                <div className="absolute bottom-6 right-6 p-5 glass-card max-w-[260px] hidden md:block text-left z-20 border border-white/70 animate-float-slow">
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-brand-purple">ताजा भाजीपाला बाजार</span>
-                  <h4 className="text-lg font-bold text-brand-dark mt-1 mb-1"> थेट शेतकरी विक्री </h4>
+                <div className="absolute bottom-6 right-6 p-5 glass-card max-w-[280px] hidden md:block text-left z-20 border border-white/70 animate-float-slow">
+                  <span className="text-xs font-semibold text-brand-purple">ताजा भाजीपाला बाजार</span>
+                  <h3 className="text-base sm:text-lg font-bold text-brand-dark mt-1 mb-1"> थेट शेतकरी विक्री </h3>
                   <p className="text-xs text-brand-muted">ग्राहकांना थेट शेतातील ताजी पिके आणि सेंद्रिय माल खरेदी करण्याची संधी.</p>
                 </div>
               </div>
@@ -650,7 +659,7 @@ export default function Home() {
         return (
           <section id="shetkari" key={s.id} className="max-w-6xl mx-auto px-4 md:px-8 text-left scroll-mt-20">
             <div className="text-center space-y-3 mb-12">
-              <span className="text-sm font-bold uppercase tracking-widest text-brand-purple">🌾 शेतकरी विभाग</span>
+              <span className="text-xs font-bold text-brand-purple">🌾 शेतकरी विभाग</span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
               <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">{s.desc}</p>
             </div>
@@ -703,8 +712,8 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Grid cards */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-6">
+              {/* Standardized Grid cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 <AnimatePresence mode="popLayout">
                   {filteredCrops.length > 0 ? (
                     filteredCrops.map((c) => (
@@ -714,45 +723,45 @@ export default function Home() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
-                        className="glass-card border border-white/70 p-2.5 sm:p-3.5 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer"
+                        className="glass-card border border-white/70 p-3 sm:p-4 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer rounded-2xl"
                         onClick={() => navigate(`/business/mandi/${c.id}`)}
                       >
                         <div>
                           <div className="space-y-2 sm:space-y-3">
                             <div className="relative aspect-square rounded-xl overflow-hidden bg-slate-100 border border-gray-100">
                               <img src={c.logo || c.photos[0] || 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=300&q=80'} alt={c.description} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                              <span className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 bg-white/90 backdrop-blur-md px-1.5 sm:px-2.5 py-0.5 rounded-full text-[8px] sm:text-[9px] font-bold text-brand-purple border border-white/60">
+                              <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-md px-2.5 py-0.5 rounded-full text-xs font-semibold text-brand-purple border border-white/60">
                                 {c.cropCat || 'भाजीपाला'}
                               </span>
                             </div>
 
-                            <div className="px-0.5 sm:px-1 text-xs space-y-0.5 sm:space-y-1">
-                              <div className="flex justify-between items-center text-[9px] sm:text-[10px] text-brand-muted">
-                                <span className="font-semibold truncate max-w-[50%]">{c.name}</span>
-                                <span className="flex items-center gap-0.5 text-brand-muted shrink-0"><MapPin size={8} />{c.village}</span>
+                            <div className="px-1 text-xs space-y-1">
+                              <div className="flex justify-between items-center text-xs text-brand-muted">
+                                <span className="font-semibold truncate flex-1 min-w-0">{c.name}</span>
+                                <span className="flex items-center gap-0.5 text-brand-muted shrink-0 ml-2"><MapPin size={12} />{c.village}</span>
                               </div>
-                              <h4 className="font-extrabold text-brand-dark text-xs sm:text-base mt-0.5 line-clamp-1">{c.description}</h4>
-                              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-1.5 pt-1.5 border-t border-gray-100/50 gap-0.5 sm:gap-0">
-                                <span className="font-mono font-bold text-slate-800 text-xs sm:text-sm">₹{c.cropPrice} / {c.cropUnit}</span>
-                                <span className="text-brand-muted font-light text-[9px] sm:text-xs">उपलब्ध: {c.cropQty}</span>
+                              <h3 className="font-bold text-brand-dark text-sm sm:text-base mt-0.5 line-clamp-2">{c.description}</h3>
+                              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-2 pt-2 border-t border-gray-100/50 gap-1">
+                                <span className="font-mono font-bold text-slate-800 text-sm">₹{c.cropPrice} / {c.cropUnit}</span>
+                                <span className="text-brand-muted font-normal text-xs">उपलब्ध: {c.cropQty}</span>
                               </div>
                             </div>
                           </div>
                         </div>
 
-                        {/* Call / WhatsApp actions */}
-                        <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mt-2.5 sm:mt-4" onClick={(e) => e.stopPropagation()}>
+                        {/* Call / WhatsApp actions with WCAG touch target */}
+                        <div className="grid grid-cols-2 gap-2 mt-4 pt-2 border-t border-gray-100" onClick={(e) => e.stopPropagation()}>
                           <a
                             href={`tel:${c.phone}`}
-                            className="py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-white border border-gray-200 text-brand-dark font-bold text-[9px] sm:text-[10px] text-center flex items-center justify-center gap-1 hover:bg-slate-50 transition-colors"
+                            className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-dark font-semibold text-xs text-center flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors"
                           >
-                            <Phone size={10} /> कॉल
+                            <Phone size={14} /> कॉल
                           </a>
                           <a
                             href={`https://wa.me/${c.phone}?text=नमस्कार, मला तुमच्याकडील ${c.description} खरेदी करायचे आहे.`}
                             target="_blank"
                             rel="noreferrer"
-                            className="py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-emerald-500 text-white font-bold text-[9px] sm:text-[10px] text-center flex items-center justify-center gap-1 hover:bg-emerald-600 transition-colors shadow-sm shadow-emerald-500/10"
+                            className="min-h-[40px] py-2 rounded-xl bg-emerald-500 text-white font-semibold text-xs text-center flex items-center justify-center gap-1.5 hover:bg-emerald-600 transition-colors shadow-sm shadow-emerald-500/10"
                           >
                             WhatsApp
                           </a>
@@ -760,7 +769,7 @@ export default function Home() {
                       </motion.div>
                     ))
                   ) : (
-                    <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-12 text-xs text-brand-muted">
+                    <div className="col-span-full text-center py-12 text-xs text-brand-muted">
                       पिके किंवा भाजीपाला सापडला नाही.
                     </div>
                   )}
@@ -771,35 +780,35 @@ export default function Home() {
               <div className="border-t border-gray-200/50 pt-12 space-y-6">
                 <div className="space-y-1">
                   <h3 className="text-xl font-extrabold text-brand-dark">🚜 कृषी आणि शेती सेवा (Agriculture Services)</h3>
-                  <p className="text-brand-muted text-xs font-light">भाड्याने ट्रॅक्टर, खते, कृषी सेवा केंद्र आणि शेतीची अवजारे पुरवठादार.</p>
+                  <p className="text-brand-muted text-xs font-normal">भाड्याने ट्रॅक्टर, खते, कृषी सेवा केंद्र आणि शेतीची अवजारे पुरवठादार.</p>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {businesses.filter(b => b.category === 'mandi' && b.cropCat === 'कृषी सेवा').map((s) => (
                     <div
                       key={s.id}
                       onClick={() => navigate(`/business/mandi/${s.id}`)}
-                      className="glass-card p-3 sm:p-5 border border-white/70 shadow-sm flex flex-col justify-between gap-3 sm:gap-4 cursor-pointer hover:shadow-soft"
+                      className="glass-card p-4 sm:p-5 border border-white/70 shadow-sm flex flex-col justify-between gap-3 sm:gap-4 cursor-pointer hover:shadow-soft rounded-2xl"
                     >
-                      <div className="space-y-1 sm:space-y-1.5">
-                        <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-wider text-brand-purple">{s.cropQty === 'सक्रिय' ? 'कृषी सेवा' : s.cropCat}</span>
-                        <h4 className="font-bold text-brand-dark text-xs sm:text-sm line-clamp-1">{s.name}</h4>
-                        <div className="flex items-center gap-1 text-[9px] sm:text-[10px]">
-                          <div className="flex text-amber-400"><Star size={10} className="fill-amber-400" /></div>
+                      <div className="space-y-1.5">
+                        <span className="text-xs font-semibold text-brand-purple bg-brand-purple/5 px-2 py-0.5 rounded-full inline-block">{s.cropQty === 'सक्रिय' ? 'कृषी सेवा' : s.cropCat}</span>
+                        <h3 className="font-bold text-brand-dark text-sm sm:text-base line-clamp-1">{s.name}</h3>
+                        <div className="flex items-center gap-1 text-xs">
+                          <div className="flex text-amber-400"><Star size={12} className="fill-amber-400" /></div>
                           <span className="font-bold text-slate-800">{db.getAverageRating(s.id)}</span>
                           <span className="text-brand-muted hidden sm:inline">({db.getReviewsForBusiness(s.id).length} पुनरावलोकने)</span>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-1.5 sm:gap-2 pt-2 border-t border-gray-100/50" onClick={(e) => e.stopPropagation()}>
+                      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100/50" onClick={(e) => e.stopPropagation()}>
                         <a
                           href={`tel:${s.phone}`}
-                          className="py-1.5 rounded-lg border border-gray-200 text-brand-dark text-[9px] sm:text-[10px] font-bold text-center flex items-center justify-center gap-1"
+                          className="min-h-[40px] py-2 rounded-xl border border-gray-200 text-brand-dark text-xs font-semibold text-center flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors"
                         >
-                          <Phone size={9} /> कॉल
+                          <Phone size={13} /> कॉल
                         </a>
                         <button
                           onClick={() => navigate(`/business/mandi/${s.id}`)}
-                          className="py-1.5 rounded-lg bg-white border border-gray-200 text-brand-purple text-[9px] sm:text-[10px] font-bold text-center"
+                          className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-purple text-xs font-semibold text-center hover:bg-slate-50"
                         >
                           तपशील
                         </button>
@@ -816,21 +825,21 @@ export default function Home() {
         return (
           <section id="gharguti-seva" key={s.id} className="max-w-6xl mx-auto px-4 md:px-8 text-left scroll-mt-20">
             <div className="text-center space-y-3 mb-12">
-              <span className="text-sm font-bold uppercase tracking-widest text-brand-purple">🛠️ घरगुती सेवा</span>
+              <span className="text-xs font-bold text-brand-purple">🛠️ घरगुती सेवा</span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
               <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">{s.desc}</p>
             </div>
 
             <div className="space-y-6 mb-12">
-              {/* Category Filter */}
-              <div className="flex flex-wrap gap-1.5 justify-center">
+              {/* Category Filter - Left aligned */}
+              <div className="flex flex-wrap gap-2 justify-start mb-6">
                 {['All', 'गवंडी', 'प्लंबर', 'इलेक्ट्रिशियन', 'कारपेंटर'].map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setTechCatFilter(cat)}
-                    className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 border ${techCatFilter === cat
-                      ? 'bg-gradient-brand text-white border-transparent'
-                      : 'bg-white/40 border-gray-200/60 text-brand-muted hover:text-brand-dark'
+                    className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 border ${techCatFilter === cat
+                      ? 'bg-gradient-brand text-white border-transparent shadow-sm'
+                      : 'bg-white/60 border-gray-200 text-slate-700 hover:bg-white hover:text-brand-dark'
                       }`}
                   >
                     {cat === 'All' ? 'सर्व कारागीर' : cat}
@@ -839,51 +848,51 @@ export default function Home() {
               </div>
 
               {/* Technicians list */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 {filteredTechnicians.map((t) => {
                   const avgRating = db.getAverageRating(t.id);
                   const totalReviews = db.getReviewsForBusiness(t.id).length;
                   return (
                     <div
                       key={t.id}
-                      className="glass-card border border-white/70 p-2.5 sm:p-4 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer"
+                      className="glass-card border border-white/70 p-3 sm:p-4 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer rounded-2xl"
                       onClick={() => navigate(`/business/technician/${t.id}`)}
                     >
-                      <div className="space-y-2 sm:space-y-4">
-                        <div className="flex items-center gap-2 sm:gap-3">
-                          <img src={t.logo || t.photos[0] || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&h=150&q=80'} alt={t.name} className="w-9 h-9 sm:w-12 sm:h-12 rounded-full object-cover border border-gray-200 shadow-sm bg-slate-50 shrink-0" />
-                          <div className="min-w-0">
-                            <h4 className="font-extrabold text-brand-dark text-xs sm:text-sm line-clamp-1">{t.name}</h4>
-                            <span className="text-[8px] sm:text-[9px] font-bold text-brand-purple uppercase bg-brand-purple/5 px-1.5 sm:px-2 py-0.5 rounded-full inline-block">
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3">
+                          <img src={t.logo || t.photos[0] || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&h=150&q=80'} alt={t.name} className="w-11 h-11 rounded-full object-cover border border-gray-200 shadow-sm bg-slate-50 shrink-0" />
+                          <div className="min-w-0 flex-1">
+                            <h3 className="font-bold text-brand-dark text-sm sm:text-base truncate">{t.name}</h3>
+                            <span className="text-xs font-semibold text-brand-purple bg-brand-purple/5 px-2 py-0.5 rounded-full inline-block mt-0.5">
                               {t.techCat || 'कारागीर'}
                             </span>
                           </div>
                         </div>
 
-                        <div className="space-y-1 sm:space-y-2 text-[10px] sm:text-xs">
+                        <div className="space-y-1.5 text-xs">
                           <div className="flex justify-between items-center text-brand-muted">
-                            <span className="text-[9px] sm:text-xs">{t.techExp || '३+ वर्षे'}</span>
-                            <span className="flex items-center gap-0.5 text-slate-800 font-bold text-[9px] sm:text-xs">
-                              <Star size={10} className="fill-amber-400 text-amber-400" /> {avgRating} <span className="text-[8px] text-brand-muted font-normal">({totalReviews})</span>
+                            <span>{t.techExp || '३+ वर्षे अनुभव'}</span>
+                            <span className="flex items-center gap-1 text-slate-800 font-bold text-xs">
+                              <Star size={12} className="fill-amber-400 text-amber-400" /> {avgRating} <span className="text-xs text-brand-muted font-normal">({totalReviews})</span>
                             </span>
                           </div>
-                          <div className="flex justify-between items-center text-[9px] sm:text-[11px] text-brand-muted">
+                          <div className="flex justify-between items-center text-xs text-brand-muted pt-1 border-t border-gray-100">
                             <span>कामे: {t.techWorks || '५०+'}</span>
                             <span className="font-bold text-emerald-600">उपलब्ध</span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mt-3 sm:mt-5 pt-2 sm:pt-3 border-t border-gray-100/50" onClick={(e) => e.stopPropagation()}>
+                      <div className="grid grid-cols-2 gap-2 mt-4 pt-2 border-t border-gray-100" onClick={(e) => e.stopPropagation()}>
                         <a
                           href={`tel:${t.phone}`}
-                          className="py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-white border border-gray-200 text-brand-dark font-bold text-[9px] sm:text-[10px] text-center flex items-center justify-center gap-1"
+                          className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-dark font-semibold text-xs text-center flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors"
                         >
-                          <Phone size={10} /> कॉल
+                          <Phone size={13} /> कॉल
                         </a>
                         <button
                           onClick={() => navigate(`/business/technician/${t.id}`)}
-                          className="py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-emerald-500 text-white font-bold text-[9px] sm:text-[10px] text-center"
+                          className="min-h-[40px] py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-xs text-center transition-colors shadow-sm shadow-emerald-500/10"
                         >
                           तपशील
                         </button>
@@ -897,30 +906,30 @@ export default function Home() {
               <div className="border-t border-gray-200/50 pt-12 space-y-6">
                 <div className="space-y-1">
                   <h3 className="text-xl font-extrabold text-brand-dark">🧱 बांधकाम साहित्य पुरवठादार (Material Suppliers)</h3>
-                  <p className="text-brand-muted text-xs font-light">सिमेंट, वाळू, खडी, स्टील, विटा, मार्बल आणि ग्रॅनाईटचे घाऊक पुरवठादार.</p>
+                  <p className="text-brand-muted text-xs font-normal">सिमेंट, वाळू, खडी, स्टील, विटा, मार्बल आणि ग्रॅनाईटचे घाऊक पुरवठादार.</p>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {materials.map((m) => (
                     <div
                       key={m.id}
                       onClick={() => navigate(`/business/material/${m.id}`)}
-                      className="glass-card p-3 sm:p-5 border border-white/70 shadow-sm flex flex-col justify-between gap-3 sm:gap-4 cursor-pointer hover:shadow-soft"
+                      className="glass-card p-4 sm:p-5 border border-white/70 shadow-sm flex flex-col justify-between gap-3 sm:gap-4 cursor-pointer hover:shadow-soft rounded-2xl"
                     >
-                      <div className="space-y-1">
-                        <h4 className="font-bold text-brand-dark text-xs sm:text-sm line-clamp-1">{m.name}</h4>
-                        <p className="text-[10px] sm:text-xs text-brand-muted font-light leading-relaxed line-clamp-2"><b>साहित्य:</b> {m.materialItems || m.description}</p>
+                      <div className="space-y-1.5">
+                        <h3 className="font-bold text-brand-dark text-sm sm:text-base line-clamp-1">{m.name}</h3>
+                        <p className="text-xs text-brand-muted font-normal leading-relaxed line-clamp-2"><b>साहित्य:</b> {m.materialItems || m.description}</p>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-1.5 sm:gap-2 pt-2 border-t border-gray-100/50" onClick={(e) => e.stopPropagation()}>
+                      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100/50" onClick={(e) => e.stopPropagation()}>
                         <a
                           href={`tel:${m.phone}`}
-                          className="py-1.5 rounded-lg border border-gray-200 text-brand-dark text-[9px] sm:text-[10px] font-bold text-center flex items-center justify-center gap-1"
+                          className="min-h-[40px] py-2 rounded-xl border border-gray-200 text-brand-dark text-xs font-semibold text-center flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors"
                         >
-                          <Phone size={9} /> कॉल
+                          <Phone size={13} /> कॉल
                         </a>
                         <button
                           onClick={() => navigate(`/business/material/${m.id}`)}
-                          className="py-1.5 rounded-lg bg-white border border-gray-200 text-brand-purple text-[9px] sm:text-[10px] font-bold text-center"
+                          className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-purple text-xs font-semibold text-center hover:bg-slate-50"
                         >
                           तपशील
                         </button>
@@ -937,20 +946,21 @@ export default function Home() {
         return (
           <section id="hotel" key={s.id} className="max-w-6xl mx-auto px-4 md:px-8 text-left scroll-mt-20">
             <div className="text-center space-y-3 mb-12">
-              <span className="text-sm font-bold uppercase tracking-widest text-brand-purple">🍔 हॉटेल विभाग</span>
+              <span className="text-xs font-bold text-brand-purple">🍔 हॉटेल विभाग</span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
               <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">{s.desc}</p>
             </div>
 
             <div className="space-y-6 mb-12">
-              <div className="flex justify-center gap-1.5">
+              {/* Hotel Filter - Left Aligned */}
+              <div className="flex flex-wrap justify-start gap-2 mb-6">
                 {['All', 'Veg', 'Non Veg', 'Pure Veg'].map((filter) => (
                   <button
                     key={filter}
                     onClick={() => setHotelFilter(filter)}
-                    className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 border ${hotelFilter === filter
-                      ? 'bg-gradient-brand text-white border-transparent'
-                      : 'bg-white/40 border-gray-200/60 text-brand-muted hover:text-brand-dark'
+                    className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 border ${hotelFilter === filter
+                      ? 'bg-gradient-brand text-white border-transparent shadow-sm'
+                      : 'bg-white/60 border-gray-200 text-slate-700 hover:bg-white hover:text-brand-dark'
                       }`}
                   >
                     {filter === 'All' ? 'सर्व हॉटेल्स' : filter}
@@ -959,62 +969,62 @@ export default function Home() {
               </div>
 
               {/* Hotels grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 {filteredHotels.map((h) => {
                   const avgRating = db.getAverageRating(h.id);
                   const totalReviews = db.getReviewsForBusiness(h.id).length;
                   return (
                     <div
                       key={h.id}
-                      className="glass-card border border-white/70 p-2.5 sm:p-3 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer"
+                      className="glass-card border border-white/70 p-3 sm:p-4 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer rounded-2xl"
                       onClick={() => navigate(`/business/hotel/${h.id}`)}
                     >
-                      <div className="space-y-2 sm:space-y-3">
+                      <div className="space-y-3">
                         <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-slate-100 border border-gray-100">
                           <img src={h.logo || h.photos[0] || 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80'} alt={h.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                          <span className={`absolute top-1.5 left-1.5 sm:top-2 sm:left-2 px-1.5 sm:px-2.5 py-0.5 rounded-full text-[8px] sm:text-[9px] font-bold border border-white/60 ${(h.hotelType || 'Veg') === 'Pure Veg' ? 'bg-emerald-50/90 text-emerald-700' :
+                          <span className={`absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-xs font-semibold border border-white/60 ${(h.hotelType || 'Veg') === 'Pure Veg' ? 'bg-emerald-50/90 text-emerald-700' :
                             (h.hotelType || 'Veg') === 'Veg' ? 'bg-green-50/90 text-green-700' : 'bg-red-50/90 text-red-700'
                             }`}>
                             {h.hotelType || 'Veg'}
                           </span>
                         </div>
 
-                        <div className="px-0.5 sm:px-1 text-xs space-y-1 sm:space-y-1.5">
-                          <div className="flex justify-between items-center text-[9px] sm:text-xs text-brand-muted">
-                            <span className="truncate max-w-[60%]">{h.openingTime} ते {h.closingTime}</span>
-                            <span className="flex items-center gap-0.5 text-slate-800 font-bold shrink-0">
-                              <Star size={10} className="fill-amber-400 text-amber-400" /> {avgRating} <span className="text-[8px] text-brand-muted font-normal">({totalReviews})</span>
+                        <div className="px-1 text-xs space-y-1.5">
+                          <div className="flex justify-between items-center text-xs text-brand-muted">
+                            <span className="whitespace-nowrap">{h.openingTime} ते {h.closingTime}</span>
+                            <span className="flex items-center gap-1 text-slate-800 font-bold shrink-0">
+                              <Star size={12} className="fill-amber-400 text-amber-400" /> {avgRating} <span className="text-xs text-brand-muted font-normal">({totalReviews})</span>
                             </span>
                           </div>
-                          <h3 className="font-extrabold text-brand-dark text-xs sm:text-base line-clamp-1">{h.name}</h3>
-                          <p className="text-brand-muted font-light flex items-center gap-0.5 text-[9px] sm:text-xs truncate"><MapPin size={9} />{h.village}, {h.address}</p>
+                          <h3 className="font-bold text-brand-dark text-sm sm:text-base line-clamp-1">{h.name}</h3>
+                          <p className="text-brand-muted font-normal flex items-center gap-1 text-xs"><MapPin size={12} className="shrink-0" />{h.village}, {h.address}</p>
 
-                          <div className="bg-brand-purple/5 border border-brand-purple/20 p-1.5 sm:p-2.5 rounded-xl text-brand-purple">
-                            <p className="text-[9px] sm:text-[10px] font-bold flex items-center gap-1 line-clamp-1">
+                          <div className="bg-brand-purple/5 border border-brand-purple/20 p-2 rounded-xl text-brand-purple">
+                            <p className="text-xs font-semibold flex items-center gap-1 line-clamp-1">
                               🎁 {h.hotelOffer || 'विशेष ऑफर'}
                             </p>
                           </div>
 
-                          <div className="bg-amber-50/60 border border-amber-200/50 p-1.5 sm:p-2.5 rounded-xl">
-                            <p className="text-[9px] sm:text-[10px] font-light text-slate-700 line-clamp-1">
+                          <div className="bg-amber-50/60 border border-amber-200/50 p-2 rounded-xl">
+                            <p className="text-xs font-normal text-slate-700 line-clamp-1">
                               ⭐ <b>आजचे:</b> {h.todaysSpecial}
                             </p>
                           </div>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-gray-100/50" onClick={(e) => e.stopPropagation()}>
+                      <div className="grid grid-cols-2 gap-2 mt-4 pt-2 border-t border-gray-100" onClick={(e) => e.stopPropagation()}>
                         <button
                           onClick={() => navigate(`/business/hotel/${h.id}`)}
-                          className="py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-white border border-gray-200 text-brand-purple font-bold text-[9px] sm:text-[10px] text-center hover:bg-slate-50"
+                          className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-purple font-semibold text-xs text-center hover:bg-slate-50"
                         >
                           मेनू कार्ड
                         </button>
                         <a
                           href={`tel:${h.phone}`}
-                          className="py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-gradient-brand text-white font-bold text-[9px] sm:text-[10px] text-center flex items-center justify-center gap-1"
+                          className="min-h-[40px] py-2 rounded-xl bg-gradient-brand text-white font-semibold text-xs text-center flex items-center justify-center gap-1.5 shadow-sm"
                         >
-                          <Phone size={10} /> ऑर्डर
+                          <Phone size={13} /> ऑर्डर
                         </a>
                       </div>
                     </div>
@@ -1029,20 +1039,21 @@ export default function Home() {
         return (
           <section id="vehicle" key={s.id} className="max-w-6xl mx-auto px-4 md:px-8 text-left scroll-mt-20">
             <div className="text-center space-y-3 mb-12">
-              <span className="text-sm font-bold uppercase tracking-widest text-brand-purple">🚗 वाहन विभाग</span>
+              <span className="text-xs font-bold text-brand-purple">🚗 वाहन विभाग</span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
               <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">{s.desc}</p>
             </div>
 
             <div className="space-y-6 mb-12">
-              <div className="flex justify-center gap-1.5 overflow-x-auto no-scrollbar">
+              {/* Vehicle Filter - Left Aligned */}
+              <div className="flex flex-wrap justify-start gap-2 mb-6 overflow-x-auto no-scrollbar">
                 {['All', 'Bikes', 'Cars', 'Tractor'].map((filter) => (
                   <button
                     key={filter}
                     onClick={() => setVehicleCatFilter(filter)}
-                    className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 border ${vehicleCatFilter === filter
-                      ? 'bg-gradient-brand text-white border-transparent'
-                      : 'bg-white/40 border-gray-200/60 text-brand-muted hover:text-brand-dark'
+                    className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 border ${vehicleCatFilter === filter
+                      ? 'bg-gradient-brand text-white border-transparent shadow-sm'
+                      : 'bg-white/60 border-gray-200 text-slate-700 hover:bg-white hover:text-brand-dark'
                       }`}
                   >
                     {filter === 'All' ? 'सर्व वाहने' : filter === 'Bikes' ? 'बाइक्स' : filter === 'Cars' ? 'कार्स' : 'ट्रॅक्टर'}
@@ -1051,45 +1062,45 @@ export default function Home() {
               </div>
 
               {/* Vehicles Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 {filteredVehicles.map((v) => (
                   <div
                     key={v.id}
-                    className="glass-card border border-white/70 p-2.5 sm:p-3 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer"
+                    className="glass-card border border-white/70 p-3 sm:p-4 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer rounded-2xl"
                     onClick={() => navigate(`/business/vehicle/${v.id}`)}
                   >
-                    <div className="space-y-2 sm:space-y-3">
+                    <div className="space-y-3">
                       <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-100 border border-gray-100">
                         <img src={v.logo || v.photos[0] || 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf0a3?auto=format&fit=crop&w=400&q=80'} alt={v.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        <span className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 bg-white/90 backdrop-blur-md px-1.5 sm:px-2.5 py-0.5 rounded-full text-[8px] sm:text-[9px] font-bold text-brand-purple border border-white/60">
+                        <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-md px-2.5 py-0.5 rounded-full text-xs font-semibold text-brand-purple border border-white/60">
                           {v.vehicleCat || 'वाहन'}
                         </span>
                       </div>
 
-                      <div className="px-0.5 sm:px-1 text-xs space-y-0.5 sm:space-y-1">
-                        <div className="flex justify-between items-center text-[9px] sm:text-xs text-brand-muted">
+                      <div className="px-1 text-xs space-y-1">
+                        <div className="flex justify-between items-center text-xs text-brand-muted">
                           <span>वर्ष: {v.vehicleYear || '२०२०'}</span>
                           <span>{v.vehicleFuel || 'पेट्रोल'}</span>
                         </div>
-                        <h3 className="font-extrabold text-brand-dark text-xs sm:text-base line-clamp-1">{v.name}</h3>
-                        <p className="text-brand-muted font-light text-[9px] sm:text-xs truncate">{v.ownerName || 'स्थानिक'} | {v.village}</p>
-                        <p className="text-brand-muted font-light text-[9px] sm:text-xs">वापर: {v.vehicleKm || '० किमी'}</p>
-                        <div className="pt-1 sm:pt-2">
-                          <span className="font-mono font-bold text-brand-purple text-xs sm:text-base">₹{v.vehiclePrice}</span>
+                        <h3 className="font-bold text-brand-dark text-sm sm:text-base line-clamp-1">{v.name}</h3>
+                        <p className="text-brand-muted font-normal text-xs">{v.ownerName || 'स्थानिक'} | {v.village}</p>
+                        <p className="text-brand-muted font-normal text-xs">वापर: {v.vehicleKm || '० किमी'}</p>
+                        <div className="pt-1">
+                          <span className="font-mono font-bold text-brand-purple text-sm sm:text-base">₹{v.vehiclePrice}</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-gray-100/50" onClick={(e) => e.stopPropagation()}>
+                    <div className="grid grid-cols-2 gap-2 mt-4 pt-2 border-t border-gray-100" onClick={(e) => e.stopPropagation()}>
                       <a
                         href={`tel:${v.phone}`}
-                        className="py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-white border border-gray-200 text-brand-dark font-bold text-[9px] sm:text-[10px] text-center flex items-center justify-center gap-1"
+                        className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-dark font-semibold text-xs text-center flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors"
                       >
-                        <Phone size={10} /> कॉल
+                        <Phone size={13} /> कॉल
                       </a>
                       <button
                         onClick={() => navigate(`/business/vehicle/${v.id}`)}
-                        className="py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-emerald-500 text-white font-bold text-[9px] sm:text-[10px]"
+                        className="min-h-[40px] py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-xs transition-colors shadow-sm shadow-emerald-500/10"
                       >
                         तपशील
                       </button>
@@ -1102,32 +1113,32 @@ export default function Home() {
               <div className="border-t border-gray-200/50 pt-12 space-y-6">
                 <div className="space-y-1">
                   <h3 className="text-xl font-extrabold text-brand-dark">🛠️ स्थानिक गॅरेज आणि पंक्चर दुरुस्ती (Emergency Mechanic)</h3>
-                  <p className="text-brand-muted text-xs font-light">जवळचे मेकॅनिक, टायर्स पंक्चर दुरुस्ती आणि २४x७ हायवे सपोर्ट नंबर.</p>
+                  <p className="text-brand-muted text-xs font-normal">जवळचे मेकॅनिक, टायर्स पंक्चर दुरुस्ती आणि २४x७ हायवे सपोर्ट नंबर.</p>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {mechanics.map((m) => (
                     <div
                       key={m.id}
                       onClick={() => navigate(`/business/mechanics/${m.id}`)}
-                      className="glass-card p-3 sm:p-5 border border-white/70 shadow-sm flex flex-col justify-between gap-3 sm:gap-4 cursor-pointer hover:shadow-soft"
+                      className="glass-card p-4 sm:p-5 border border-white/70 shadow-sm flex flex-col justify-between gap-3 sm:gap-4 cursor-pointer hover:shadow-soft rounded-2xl"
                     >
-                      <div className="space-y-1">
-                        <h4 className="font-bold text-brand-dark text-xs sm:text-sm line-clamp-1">{m.name}</h4>
-                        <p className="text-[9px] sm:text-xs text-brand-purple font-semibold flex items-center gap-1 line-clamp-1">
+                      <div className="space-y-1.5">
+                        <h3 className="font-bold text-brand-dark text-sm sm:text-base line-clamp-1">{m.name}</h3>
+                        <p className="text-xs text-brand-purple font-semibold flex items-center gap-1">
                           🚨 {m.mechanicEmergency || '२४x७ उपलब्ध'}
                         </p>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-1.5 sm:gap-2 pt-2 border-t border-gray-100/50" onClick={(e) => e.stopPropagation()}>
+                      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100/50" onClick={(e) => e.stopPropagation()}>
                         <a
                           href={`tel:${m.phone}`}
-                          className="py-1.5 rounded-lg bg-white border border-gray-200 text-brand-dark text-[9px] sm:text-[10px] font-bold text-center flex items-center justify-center gap-1"
+                          className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-dark text-xs font-semibold text-center flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors"
                         >
-                          <Phone size={9} /> कॉल
+                          <Phone size={13} /> कॉल
                         </a>
                         <button
                           onClick={() => navigate(`/business/mechanics/${m.id}`)}
-                          className="py-1.5 rounded-lg bg-white border border-gray-200 text-brand-purple text-[9px] sm:text-[10px] font-bold text-center"
+                          className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-purple text-xs font-semibold text-center hover:bg-slate-50"
                         >
                           तपशील
                         </button>
@@ -1144,7 +1155,7 @@ export default function Home() {
         return (
           <section id="offers" key={s.id} className="max-w-6xl mx-auto px-4 md:px-8 text-left scroll-mt-20">
             <div className="text-center space-y-3 mb-12">
-              <span className="text-sm font-bold uppercase tracking-widest text-brand-purple">🛍️ ऑफर्स विभाग</span>
+              <span className="text-xs font-bold text-brand-purple">🛍️ ऑफर्स विभाग</span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
               <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">{s.desc}</p>
             </div>
@@ -1167,7 +1178,7 @@ export default function Home() {
                     <button
                       key={filter}
                       onClick={() => setOffersFilter(filter)}
-                      className={`px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-300 border ${offersFilter === filter ? 'bg-gradient-brand text-white border-transparent' : 'bg-white/40 border-gray-200/60 text-brand-muted'
+                      className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 border ${offersFilter === filter ? 'bg-gradient-brand text-white border-transparent shadow-sm' : 'bg-white/60 border-gray-200 text-slate-700'
                         }`}
                     >
                       {filter}
@@ -1176,8 +1187,8 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Offers Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-6">
+              {/* Standardized Offers Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 <AnimatePresence mode="popLayout">
                   {filteredOffers.length > 0 ? (
                     filteredOffers.map((o) => (
@@ -1187,38 +1198,38 @@ export default function Home() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
-                        className="glass-card border border-white/70 p-2.5 sm:p-3 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer"
+                        className="glass-card border border-white/70 p-3 sm:p-4 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer rounded-2xl"
                         onClick={() => navigate(`/business/offers/${o.id}`)}
                       >
-                        <div className="space-y-2 sm:space-y-3">
+                        <div className="space-y-3">
                           <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-slate-100 border border-gray-100">
-                            <img src={o.logo || o.photos[0] || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=400&q=80'} alt={o.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            <span className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 bg-rose-500 text-white font-extrabold text-[8px] sm:text-[10px] px-2 sm:px-2.5 py-0.5 rounded-full shadow-sm">
+                            <img src={o.logo || o.photos[0] || 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80'} alt={o.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <span className="absolute top-2 left-2 bg-rose-500 text-white font-bold text-xs px-2.5 py-0.5 rounded-full shadow-sm">
                               {o.offerDiscount || '१०'}% सूट
                             </span>
                           </div>
 
-                          <div className="px-0.5 sm:px-1 text-xs space-y-1 sm:space-y-1.5">
-                            <div className="flex justify-between items-center text-brand-purple font-semibold text-[9px] sm:text-xs">
-                              <span className="truncate max-w-[70%]">{o.name}</span>
-                              <span className="text-[8px] sm:text-[10px] bg-slate-100 px-1.5 py-0.5 rounded-full text-slate-600 shrink-0">ऑफर</span>
+                          <div className="px-1 text-xs space-y-1.5">
+                            <div className="flex justify-between items-center text-brand-purple font-semibold text-xs">
+                              <span className="truncate flex-1 min-w-0">{o.name}</span>
+                              <span className="text-xs bg-slate-100 px-2 py-0.5 rounded-full text-slate-600 shrink-0 ml-2">ऑफर</span>
                             </div>
-                            <h3 className="font-extrabold text-brand-dark text-xs sm:text-base line-clamp-1">{o.offerBanner || 'मोठी सूट!'}</h3>
-                            <p className="text-brand-muted font-light leading-relaxed text-[9px] sm:text-xs line-clamp-2">{o.offerDesc || o.description}</p>
+                            <h3 className="font-bold text-brand-dark text-sm sm:text-base line-clamp-1">{o.offerBanner || 'मोठी सूट!'}</h3>
+                            <p className="text-brand-muted font-normal leading-relaxed text-xs line-clamp-2">{o.offerDesc || o.description}</p>
                           </div>
                         </div>
 
-                        <div className="mt-3 sm:mt-4 pt-2 sm:pt-3 border-t border-gray-100/50 space-y-1.5 sm:space-y-2.5">
-                          <div className="flex justify-between items-center text-[9px] sm:text-[10px] text-brand-muted">
+                        <div className="mt-4 pt-2 border-t border-gray-100 space-y-2">
+                          <div className="flex justify-between items-center text-xs text-brand-muted">
                             <span>वेळ सीमित:</span>
                             <span className="font-bold text-rose-500">त्वरा करा!</span>
                           </div>
-                          <Countdown initialSeconds={7200} />
+                          <Countdown seconds={7200} />
                         </div>
                       </motion.div>
                     ))
                   ) : (
-                    <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-12 text-xs text-brand-muted">
+                    <div className="col-span-full text-center py-12 text-xs text-brand-muted">
                       ऑफर्स सापडल्या नाहीत.
                     </div>
                   )}
@@ -1230,100 +1241,101 @@ export default function Home() {
 
       case 'contact':
         return (
-          <section id="contact" key={s.id} className="scroll-mt-24 max-w-4xl mx-auto px-6 md:px-8 space-y-8">
+          <section id="contact" key={s.id} className="scroll-mt-24 max-w-5xl mx-auto px-4 md:px-8 space-y-8">
             <div className="text-center space-y-3 mb-12">
-              <span className="text-sm font-bold uppercase tracking-widest text-brand-purple">📞 संपर्क विभाग</span>
+              <span className="text-xs font-bold text-brand-purple">📞 संपर्क विभाग</span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
               <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">{s.desc}</p>
             </div>
 
-            <div className="glass-card border border-white/70 p-6 md:p-10 shadow-soft">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div className="space-y-6 text-left text-xs font-semibold text-brand-dark">
+            <div className="glass-card border border-white/70 p-6 sm:p-8 md:p-10 shadow-soft rounded-3xl">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
+                {/* Left pane: Contact details */}
+                <div className="space-y-6 text-left">
                   <div>
-                    <h3 className="text-lg font-bold text-brand-dark mb-4">आमच्याशी संपर्क साधा</h3>
-                    <p className="text-brand-muted font-light leading-relaxed mb-6">
+                    <h3 className="text-xl font-bold text-brand-dark mb-2">आमच्याशी संपर्क साधा</h3>
+                    <p className="text-brand-muted text-xs sm:text-sm font-normal leading-relaxed">
                       तुम्हाला काही अडचणी असल्यास, नवीन व्यवसाय जोडायचा असल्यास किंवा मदत हवी असल्यास खालील माहितीवर संपर्क करा.
                     </p>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-brand-purple/5 border border-brand-purple/10 flex items-center justify-center text-brand-purple">
-                        <Phone size={16} />
+                  <div className="space-y-4 pt-2">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-2xl bg-brand-purple/10 border border-brand-purple/20 flex items-center justify-center text-brand-purple shrink-0">
+                        <Phone size={18} />
                       </div>
                       <div>
-                        <span className="text-[10px] text-brand-muted block font-light">फोन नंबर</span>
-                        <a href={`tel:${settings.contactPhone}`} className="hover:underline">{settings.contactPhone}</a>
+                        <span className="text-xs text-brand-muted block font-normal">फोन नंबर</span>
+                        <a href={`tel:${settings.contactPhone}`} className="text-sm font-bold text-slate-800 hover:underline">{settings.contactPhone}</a>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-brand-purple/5 border border-brand-purple/10 flex items-center justify-center text-brand-purple">
-                        <Mail size={16} />
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-2xl bg-brand-purple/10 border border-brand-purple/20 flex items-center justify-center text-brand-purple shrink-0">
+                        <Mail size={18} />
                       </div>
                       <div>
-                        <span className="text-[10px] text-brand-muted block font-light">ईमेल पत्ता</span>
-                        <a href={`mailto:${settings.contactEmail}`} className="hover:underline">{settings.contactEmail}</a>
+                        <span className="text-xs text-brand-muted block font-normal">ईमेल पत्ता</span>
+                        <a href={`mailto:${settings.contactEmail}`} className="text-sm font-bold text-slate-800 hover:underline">{settings.contactEmail}</a>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-brand-purple/5 border border-brand-purple/10 flex items-center justify-center text-brand-purple">
-                        <MapPin size={16} />
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-2xl bg-brand-purple/10 border border-brand-purple/20 flex items-center justify-center text-brand-purple shrink-0">
+                        <MapPin size={18} />
                       </div>
                       <div>
-                        <span className="text-[10px] text-brand-muted block font-light">कार्यालय पत्ता</span>
-                        <p className="font-bold">{settings.contactAddress}</p>
+                        <span className="text-xs text-brand-muted block font-normal">कार्यालय पत्ता</span>
+                        <p className="text-sm font-bold text-slate-800">{settings.contactAddress}</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Form */}
-                <form onSubmit={handleContactSubmit} className="space-y-4 text-left font-semibold text-xs">
+                {/* Right pane: Contact form */}
+                <form onSubmit={handleContactSubmit} className="space-y-4 text-left p-4 sm:p-6 bg-slate-50/70 border border-gray-100 rounded-2xl">
                   {contactSuccess && (
-                    <div className="bg-emerald-50 text-emerald-700 p-4 border border-emerald-100 rounded-xl text-center">
+                    <div className="bg-emerald-50 text-emerald-700 p-3.5 border border-emerald-200 rounded-xl text-center text-xs font-semibold">
                       तुमचा संदेश यशस्वीरित्या पाठवला गेला आहे!
                     </div>
                   )}
 
-                  <div className="space-y-1">
-                    <label className="text-[10px] text-brand-dark uppercase tracking-wider block">नाव *</label>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-brand-dark block">नाव *</label>
                     <input
                       type="text"
                       value={contactForm.name}
                       onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                      className="w-full bg-white/70 border border-gray-200 rounded-xl p-3 focus:outline-none focus:border-brand-purple"
+                      className="w-full bg-white border border-gray-200 rounded-xl p-3 text-xs sm:text-sm focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
                     />
-                    {contactErrors.name && <span className="text-rose-500 font-bold text-[10px]">{contactErrors.name}</span>}
+                    {contactErrors.name && <span className="text-rose-500 font-semibold text-xs">{contactErrors.name}</span>}
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="text-[10px] text-brand-dark uppercase tracking-wider block">मोबाईल क्रमांक *</label>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-brand-dark block">मोबाईल क्रमांक *</label>
                     <input
                       type="tel"
                       value={contactForm.phone}
                       onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
-                      className="w-full bg-white/70 border border-gray-200 rounded-xl p-3 focus:outline-none focus:border-brand-purple"
+                      className="w-full bg-white border border-gray-200 rounded-xl p-3 text-xs sm:text-sm focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
                     />
-                    {contactErrors.phone && <span className="text-rose-500 font-bold text-[10px]">{contactErrors.phone}</span>}
+                    {contactErrors.phone && <span className="text-rose-500 font-semibold text-xs">{contactErrors.phone}</span>}
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="text-[10px] text-brand-dark uppercase tracking-wider block">तुमचा संदेश *</label>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-brand-dark block">तुमचा संदेश *</label>
                     <textarea
                       value={contactForm.msg}
                       onChange={(e) => setContactForm({ ...contactForm, msg: e.target.value })}
                       rows={3}
-                      className="w-full bg-white/70 border border-gray-200 rounded-xl p-3 focus:outline-none focus:border-brand-purple"
+                      className="w-full bg-white border border-gray-200 rounded-xl p-3 text-xs sm:text-sm focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
                     />
-                    {contactErrors.msg && <span className="text-rose-500 font-bold text-[10px]">{contactErrors.msg}</span>}
+                    {contactErrors.msg && <span className="text-rose-500 font-semibold text-xs">{contactErrors.msg}</span>}
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full bg-gradient-brand text-white py-3 rounded-xl hover:shadow-[0_8px_20px_rgba(79,124,255,0.2)] transition-all font-bold"
+                    className="w-full min-h-[44px] bg-gradient-brand text-white py-2.5 rounded-xl hover:shadow-[0_8px_20px_rgba(79,124,255,0.2)] transition-all font-bold text-sm mt-2"
                   >
                     संदेश पाठवा (Send Message)
                   </button>
@@ -1342,7 +1354,7 @@ export default function Home() {
               <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">{s.desc}</p>
             </div>
             <div className="py-12 text-center bg-white/50 border border-gray-200/50 rounded-3xl shadow-sm">
-              <p className="text-xs text-brand-muted font-light">या विभागात अद्याप व्यवसाय जोडलेले नाहीत.</p>
+              <p className="text-xs text-brand-muted font-normal">या विभागात अद्याप व्यवसाय जोडलेले नाहीत.</p>
             </div>
           </section>
         );
@@ -1358,7 +1370,7 @@ export default function Home() {
       {/* 7. CUSTOMER TESTIMONIALS / REVIEWS SECTION */}
       <section id="reviews" className="scroll-mt-24 max-w-6xl mx-auto px-4 md:px-8 text-left">
         <div className="text-center space-y-3 mb-12">
-          <span className="text-sm font-bold uppercase tracking-widest text-brand-purple">⭐ ग्राहक अभिप्राय</span>
+          <span className="text-xs font-bold text-brand-purple">⭐ ग्राहक अभिप्राय</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">ग्राहकांचे अनुभव आणि विश्वास (Testimonials)</h2>
           <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">
             आमच्या डिजिटल प्लॅटफॉर्मचा वापर करून खरेदी आणि व्यवहार करणाऱ्या नागरिकांचे अभिप्राय.
@@ -1383,13 +1395,13 @@ export default function Home() {
               stars: 5
             }
           ].map((rev, i) => (
-            <div key={i} className="glass-card border border-white/70 p-6 shadow-sm flex flex-col justify-between text-xs leading-relaxed space-y-4">
-              <p className="text-brand-muted font-light">"{rev.text}"</p>
+            <div key={i} className="glass-card border border-white/70 p-6 shadow-sm flex flex-col justify-between text-xs leading-relaxed space-y-4 rounded-2xl">
+              <p className="text-brand-muted font-normal text-xs sm:text-sm">"{rev.text}"</p>
               <div className="flex justify-between items-center pt-2 border-t border-gray-100">
-                <span className="font-bold text-brand-dark">{rev.name}</span>
+                <span className="font-bold text-brand-dark text-xs sm:text-sm">{rev.name}</span>
                 <div className="flex text-amber-400">
                   {Array.from({ length: rev.stars }).map((_, idx) => (
-                    <Star key={idx} size={10} className="fill-amber-400" />
+                    <Star key={idx} size={12} className="fill-amber-400" />
                   ))}
                 </div>
               </div>
@@ -1412,14 +1424,14 @@ export default function Home() {
                 Shevgaon.Market
               </span>
             </div>
-            <p className="text-xs text-brand-muted leading-relaxed font-light">
+            <p className="text-xs text-brand-muted leading-relaxed font-normal">
               शेवगाव मधील स्थानिक बाजारपेठ आणि कुशल कारागीर जोडणारा डिजिटल प्लॅटफॉर्म. थेट संपर्क, वेगवान व्यवहार.
             </p>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="font-bold text-brand-dark text-sm uppercase tracking-wider">महत्वाचे विभाग</h4>
+            <h3 className="font-bold text-brand-dark text-sm">महत्वाचे विभाग</h3>
             <ul className="space-y-2 text-xs">
               <li>
                 <a href="#shetkari" onClick={(e) => { e.preventDefault(); document.getElementById('shetkari')?.scrollIntoView({ behavior: 'smooth' }); }} className="text-brand-muted hover:text-brand-purple transition-colors">शेतकरी बाजार</a>
@@ -1438,7 +1450,7 @@ export default function Home() {
 
           {/* Partnership Pages */}
           <div className="space-y-4">
-            <h4 className="font-bold text-brand-dark text-sm uppercase tracking-wider">भागीदार पोर्टल</h4>
+            <h3 className="font-bold text-brand-dark text-sm">भागीदार पोर्टल</h3>
             <ul className="space-y-2 text-xs">
               <li>
                 <Link to="/vendor/register" className="text-brand-muted hover:text-brand-purple transition-colors">नोंदणी करा (Partner Registration)</Link>
@@ -1451,17 +1463,17 @@ export default function Home() {
 
           {/* Newsletter Signup */}
           <div className="space-y-4">
-            <h4 className="font-bold text-brand-dark text-sm uppercase tracking-wider">सोशल मीडिया सपोर्ट</h4>
-            <p className="text-xs text-brand-muted font-light leading-normal">
+            <h3 className="font-bold text-brand-dark text-sm">सोशल मीडिया सपोर्ट</h3>
+            <p className="text-xs text-brand-muted font-normal leading-normal">
               अडचणी असल्यास किंवा काही प्रश्न असल्यास आमच्याशी थेट व्हॉट्सॲप, फेसबुक किंवा इंस्टाग्राम द्वारे संपर्क साधा.
             </p>
             <div className="flex gap-3 pt-2">
-              <a href="https://wa.me/9881622381" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all">
-                W
+              <a href="https://wa.me/9881622381" target="_blank" rel="noreferrer" className="w-9 h-9 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all text-xs font-bold">
+                WA
               </a>
 
-              <a href="https://www.instagram.com/iloveshevgaon414502?igsh=MXUzb2htcXB1Y2Izdg==" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-pink-50 border border-pink-100 flex items-center justify-center text-pink-600 hover:bg-pink-500 hover:text-white transition-all">
-                I
+              <a href="https://www.instagram.com/iloveshevgaon414502?igsh=MXUzb2htcXB1Y2Izdg==" target="_blank" rel="noreferrer" className="w-9 h-9 rounded-full bg-pink-50 border border-pink-100 flex items-center justify-center text-pink-600 hover:bg-pink-500 hover:text-white transition-all text-xs font-bold">
+                IG
               </a>
             </div>
           </div>
@@ -1502,13 +1514,13 @@ export default function Home() {
 
               <form onSubmit={handleCropSubmit} className="space-y-4">
                 <div>
-                  <span className="text-[10px] font-bold text-brand-purple uppercase font-semibold">मंडी माल अपलोड</span>
+                  <span className="text-xs font-bold text-brand-purple">मंडी माल अपलोड</span>
                   <h3 className="text-lg font-bold text-brand-dark">🌾 नवीन पीक / माल विक्री जोडा</h3>
                 </div>
 
                 {/* Farmer Name */}
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-brand-dark">शेतकरी नाव</label>
+                  <label className="text-xs font-semibold text-brand-dark">शेतकरी नाव</label>
                   <input
                     type="text"
                     required
@@ -1522,7 +1534,7 @@ export default function Home() {
                 {/* Crop Name */}
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-brand-dark">पिकाचे नाव</label>
+                    <label className="text-xs font-semibold text-brand-dark">पिकाचे नाव</label>
                     <input
                       type="text"
                       required
@@ -1533,7 +1545,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-brand-dark">माल श्रेणी (Category)</label>
+                    <label className="text-xs font-semibold text-brand-dark">माल श्रेणी (Category)</label>
                     <select
                       value={newCropCat}
                       onChange={(e) => setNewCropCat(e.target.value)}
@@ -1549,7 +1561,7 @@ export default function Home() {
                 {/* Price and quantity */}
                 <div className="grid grid-cols-3 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-brand-dark">किंमत (₹)</label>
+                    <label className="text-xs font-semibold text-brand-dark">किंमत (₹)</label>
                     <input
                       type="number"
                       required
@@ -1560,7 +1572,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-brand-dark">एकक (Unit)</label>
+                    <label className="text-xs font-semibold text-brand-dark">एकक (Unit)</label>
                     <select
                       value={newUnit}
                       onChange={(e) => setNewUnit(e.target.value)}
@@ -1573,7 +1585,7 @@ export default function Home() {
                     </select>
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-brand-dark">प्रमाण (Qty)</label>
+                    <label className="text-xs font-semibold text-brand-dark">प्रमाण (Qty)</label>
                     <input
                       type="number"
                       required
@@ -1588,7 +1600,7 @@ export default function Home() {
                 {/* Village and phone */}
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-brand-dark">गाव</label>
+                    <label className="text-xs font-semibold text-brand-dark">गाव</label>
                     <select
                       value={newVillage}
                       onChange={(e) => setNewVillage(e.target.value)}
@@ -1601,7 +1613,7 @@ export default function Home() {
                     </select>
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-brand-dark">संपर्क क्रमांक (Mobile)</label>
+                    <label className="text-xs font-semibold text-brand-dark">संपर्क क्रमांक (Mobile)</label>
                     <input
                       type="tel"
                       required

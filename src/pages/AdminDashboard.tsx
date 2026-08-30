@@ -366,7 +366,7 @@ export default function AdminDashboard() {
 
           <form onSubmit={handleLogin} className="space-y-4 text-xs font-semibold">
             <div className="space-y-1">
-              <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">प्रशासक ईमेल आयडी *</label>
+              <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">प्रशासक ईमेल आयडी *</label>
               <input 
                 type="email"
                 required
@@ -378,7 +378,7 @@ export default function AdminDashboard() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">प्रशासक संकेतशब्द *</label>
+              <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">प्रशासक संकेतशब्द *</label>
               <input 
                 type="password"
                 required
@@ -391,7 +391,7 @@ export default function AdminDashboard() {
 
             <button 
               type="submit"
-              className="w-full bg-gradient-brand text-white py-3.5 rounded-xl hover:shadow-[0_8px_20px_rgba(79,124,255,0.25)] transition-all duration-300 font-bold"
+              className="w-full bg-gradient-brand text-white py-3.5 rounded-xl hover:shadow-[0_8px_20px_rgba(79,124,255,0.25)] transition-all duration-300 font-bold text-xs"
             >
               लॉगिन करा (Login)
             </button>
@@ -459,12 +459,12 @@ export default function AdminDashboard() {
             >
               <Icon size={14} /> {tab.label}
               {tab.id === 'businesses' && pendingApprovals > 0 && (
-                <span className="w-5 h-5 bg-rose-500 text-white rounded-full flex items-center justify-center text-[9px] font-bold">
+                <span className="w-5 h-5 bg-rose-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
                   {pendingApprovals}
                 </span>
               )}
               {tab.id === 'reports' && reports.length > 0 && (
-                <span className="w-5 h-5 bg-amber-500 text-white rounded-full flex items-center justify-center text-[9px] font-bold">
+                <span className="w-5 h-5 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
                   {reports.length}
                 </span>
               )}
@@ -500,7 +500,7 @@ export default function AdminDashboard() {
                   व्यापारी वापरकर्ता यादी डेटा एक्सपोर्ट (User List Download)
                 </h3>
                 <p className="text-xs text-brand-muted dark:text-slate-400 font-light mt-0.5">
-                  सर्व (एकूण, सक्रिय, आणि मुदत संपलेले) व्यापारी प्रोफाईल एका क्लिकवर CSV फाइल फॉरमॅटमध्ये डाउनलोड करा.
+                  सर्व (एकूण, सक्रिय, आणि मुदत संपलेले) व्यापारी प्रोफॅाईल एका क्लिकवर CSV फाइल फॉरमॅटमध्ये डाउनलोड करा.
                 </p>
               </div>
               <button 
@@ -516,7 +516,7 @@ export default function AdminDashboard() {
               <div className="glass-card p-5 border border-white/70 shadow-sm space-y-1">
                 <span className="text-xs text-brand-muted dark:text-slate-400 font-light block">एकूण व्यापारी प्रोफाईल</span>
                 <p className="text-3xl font-extrabold text-brand-dark dark:text-white">{totalProfiles}</p>
-                <span className="text-[10px] text-brand-purple font-semibold block">एकूण नोंदणीकृत विक्रेते</span>
+                <span className="text-xs text-brand-purple font-semibold block">एकूण नोंदणीकृत विक्रेते</span>
               </div>
               <div className="glass-card p-5 border border-white/70 shadow-sm space-y-1">
                 <span className="text-xs text-brand-muted dark:text-slate-400 font-light block font-semibold text-emerald-600">सक्रिय प्रोफाईल (Active)</span>
@@ -743,31 +743,31 @@ export default function AdminDashboard() {
                       )}
                       <div>
                         <div className="flex flex-wrap items-center gap-2">
-                          <h4 className="font-extrabold text-brand-dark dark:text-white text-sm">{b.name}</h4>
-                          <span className="text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono">
+                          <h3 className="font-extrabold text-brand-dark dark:text-white text-sm sm:text-base">{b.name}</h3>
+                          <span className="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono">
                             {b.category}
                           </span>
                         </div>
-                        <p className="text-[11px] text-brand-muted dark:text-slate-400 font-light mt-0.5">
+                        <p className="text-xs text-brand-muted dark:text-slate-400 font-normal mt-0.5">
                           मालक: <b>{b.ownerName || 'N/A'}</b> | गाव: {b.village} | पोस्ट मर्यादा: <b>{b.postLimit || 2} पोस्ट्स</b>
                         </p>
                         
                         {/* Badges status line */}
                         <div className="flex flex-wrap gap-1.5 mt-1.5">
                           {b.isApproved ? (
-                            <span className="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 text-[9px] font-bold">✓ मंजूर</span>
+                            <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 text-xs font-bold">✓ मंजूर</span>
                           ) : (
-                            <span className="px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 text-[9px] font-bold">⏳ प्रलंबित</span>
+                            <span className="px-2.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 text-xs font-bold">⏳ प्रलंबित</span>
                           )}
 
                           {b.subscriptionStatus === 'expired' ? (
-                            <span className="px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 text-[9px] font-bold">⚠️ सबस्क्रिप्शन मुदत संपली</span>
+                            <span className="px-2.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 text-xs font-bold">⚠️ सबस्क्रिप्शन मुदत संपली</span>
                           ) : (
-                            <span className="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800 text-[9px] font-bold">⚡ सक्रिय सबस्क्रिप्शन</span>
+                            <span className="px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800 text-xs font-bold">⚡ सक्रिय सबस्क्रिप्शन</span>
                           )}
 
                           {b.isSuspended && (
-                            <span className="px-2 py-0.5 rounded bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800 text-[9px] font-bold">🚫 खाते निलंबित</span>
+                            <span className="px-2.5 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800 text-xs font-bold">🚫 खाते निलंबित</span>
                           )}
                         </div>
                       </div>
@@ -779,38 +779,38 @@ export default function AdminDashboard() {
                       {/* 1. View Profile Button */}
                       <button 
                         onClick={() => setViewingBiz(b)}
-                        className="px-3 py-1.5 rounded-lg border border-brand-purple/20 bg-brand-purple/5 text-brand-purple dark:text-purple-300 hover:bg-brand-purple hover:text-white flex items-center gap-1 font-bold text-[11px] transition-all"
+                        className="px-3 py-1.5 min-h-[38px] rounded-xl border border-brand-purple/20 bg-brand-purple/5 text-brand-purple dark:text-purple-300 hover:bg-brand-purple hover:text-white flex items-center gap-1.5 font-bold text-xs transition-all"
                         title="संपूर्ण प्रोफाईल पहा"
                       >
-                        <Eye size={12} /> प्रोफाईल पहा
+                        <Eye size={14} /> प्रोफाईल पहा
                       </button>
 
                       {/* 2. Edit Profile Button */}
                       <button 
                         onClick={() => { setEditingBiz(b); setIsBizModalOpen(true); }}
-                        className="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-brand-dark dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-1 font-bold text-[11px]"
+                        className="px-3 py-1.5 min-h-[38px] rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-brand-dark dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-1.5 font-bold text-xs"
                       >
-                        <Edit2 size={12} /> संपादित करा
+                        <Edit2 size={14} /> संपादित करा
                       </button>
 
                       {/* 3. Suspend / Reactivate Button */}
                       <button 
                         onClick={() => handleToggleSuspend(b.id)}
-                        className={`px-3 py-1.5 rounded-lg border flex items-center gap-1 font-bold text-[11px] transition-all ${
+                        className={`px-3 py-1.5 min-h-[38px] rounded-xl border flex items-center gap-1.5 font-bold text-xs transition-all ${
                           b.isSuspended 
                             ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300' 
                             : 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 hover:bg-amber-100'
                         }`}
                       >
-                        <Ban size={12} /> {b.isSuspended ? 'सक्रिय करा' : 'निलंबित करा'}
+                        <Ban size={14} /> {b.isSuspended ? 'सक्रिय करा' : 'निलंबित करा'}
                       </button>
 
                       {/* 4. Delete Account Button */}
                       <button 
                         onClick={() => handleDeleteBiz(b.id, b.category)}
-                        className="px-3 py-1.5 rounded-lg border border-rose-200 bg-rose-50 text-rose-600 dark:bg-rose-950 dark:border-rose-800 dark:text-rose-400 hover:bg-rose-100 flex items-center gap-1 font-bold text-[11px]"
+                        className="px-3 py-1.5 min-h-[38px] rounded-xl border border-rose-200 bg-rose-50 text-rose-600 dark:bg-rose-950 dark:border-rose-800 dark:text-rose-400 hover:bg-rose-100 flex items-center gap-1.5 font-bold text-xs"
                       >
-                        <Trash2 size={12} /> हटवा
+                        <Trash2 size={14} /> हटवा
                       </button>
 
                     </div>
@@ -916,12 +916,12 @@ export default function AdminDashboard() {
                   <Search size={14} className="absolute left-2.5 top-2.5 text-slate-400" />
                 </div>
 
-                <div className="flex gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-[10px] font-bold">
+                <div className="flex gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-bold">
                   {(['ALL', 'ADD', 'UPDATE', 'DELETE'] as const).map(act => (
                     <button
                       key={act}
                       onClick={() => setActionFilter(act)}
-                      className={`px-2.5 py-1 rounded-lg transition-all ${
+                      className={`px-3 py-1.5 rounded-lg transition-all ${
                         actionFilter === act 
                           ? 'bg-white dark:bg-slate-700 text-brand-purple dark:text-white shadow-sm' 
                           : 'text-brand-muted dark:text-slate-400'
@@ -935,7 +935,7 @@ export default function AdminDashboard() {
             </div>
 
             {filteredLogs.length === 0 ? (
-              <div className="glass-card p-8 text-center text-xs text-brand-muted font-light">
+              <div className="glass-card p-8 text-center text-xs text-brand-muted font-normal">
                 कोणताही ऑडिट लॉग आढळला नाही.
               </div>
             ) : (
@@ -950,20 +950,20 @@ export default function AdminDashboard() {
                       
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <span className={`px-2.5 py-0.5 rounded-full border text-[10px] font-extrabold ${badgeColor}`}>
+                          <span className={`px-2.5 py-0.5 rounded-full border text-xs font-extrabold ${badgeColor}`}>
                             {log.action}
                           </span>
-                          <span className="font-extrabold text-brand-dark dark:text-white text-sm">{log.merchantName}</span>
-                          <span className="text-[10px] text-brand-muted dark:text-slate-400 font-mono">({log.category})</span>
+                          <span className="font-extrabold text-brand-dark dark:text-white text-sm sm:text-base">{log.merchantName}</span>
+                          <span className="text-xs text-brand-muted dark:text-slate-400 font-mono">({log.category})</span>
                         </div>
-                        <p className="text-brand-muted dark:text-slate-300 font-light leading-relaxed">
+                        <p className="text-brand-muted dark:text-slate-300 font-normal leading-relaxed">
                           <b>व्यवसाय:</b> {log.businessName} — {log.details}
                         </p>
                       </div>
 
                       <div className="text-right shrink-0">
-                        <span className="text-[10px] text-brand-muted dark:text-slate-400 font-mono flex items-center gap-1 justify-end">
-                          <Clock size={10} />
+                        <span className="text-xs text-brand-muted dark:text-slate-400 font-mono flex items-center gap-1.5 justify-end">
+                          <Clock size={12} />
                           {new Date(log.timestamp).toLocaleString('mr-IN')}
                         </span>
                       </div>
@@ -1190,16 +1190,16 @@ export default function AdminDashboard() {
                   <p className="text-xs text-brand-muted dark:text-slate-400 font-medium">मालक: {viewingBiz.ownerName || 'N/A'}</p>
                   
                   <div className="flex flex-wrap gap-2 mt-2">
-                    <span className="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono text-[10px]">
+                    <span className="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono text-xs">
                       श्रेणी: {viewingBiz.category}
                     </span>
                     {viewingBiz.isApproved ? (
-                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold">✓ मंजूर</span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 text-xs font-bold">✓ मंजूर</span>
                     ) : (
-                      <span className="px-2.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-400 text-[10px] font-bold">⏳ मंजुरी प्रलंबित</span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-400 text-xs font-bold">⏳ मंजुरी प्रलंबित</span>
                     )}
                     {viewingBiz.isSuspended && (
-                      <span className="px-2.5 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-400 text-[10px] font-bold">🚫 खाते निलंबित</span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-400 text-xs font-bold">🚫 खाते निलंबित</span>
                     )}
                   </div>
                 </div>
@@ -1209,7 +1209,7 @@ export default function AdminDashboard() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-semibold">
                 
                 <div className="glass-card p-4 border border-white/60 space-y-2">
-                  <h4 className="text-[10px] text-brand-purple uppercase tracking-wider font-extrabold">संपर्क माहिती</h4>
+                  <h4 className="text-xs text-brand-purple font-bold">संपर्क माहिती</h4>
                   <p className="flex items-center gap-2 text-brand-dark dark:text-slate-200">
                     <Phone size={14} className="text-emerald-500" /> मोबाईल: {viewingBiz.phone}
                   </p>
@@ -1226,7 +1226,7 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="glass-card p-4 border border-white/60 space-y-2">
-                  <h4 className="text-[10px] text-brand-purple uppercase tracking-wider font-extrabold">पत्ता व वेळ</h4>
+                  <h4 className="text-xs text-brand-purple font-bold">पत्ता व वेळ</h4>
                   <p className="flex items-center gap-2 text-brand-dark dark:text-slate-200">
                     <MapPin size={14} className="text-rose-500" /> {viewingBiz.address}, {viewingBiz.village}, {viewingBiz.taluka}
                   </p>
@@ -1244,7 +1244,7 @@ export default function AdminDashboard() {
 
               {/* Description */}
               <div className="space-y-1 text-xs">
-                <h4 className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider font-extrabold">व्यवसाय वर्णन</h4>
+                <h4 className="text-xs text-brand-dark dark:text-slate-300 font-bold">व्यवसाय वर्णन</h4>
                 <p className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl text-brand-muted dark:text-slate-300 leading-relaxed">
                   {viewingBiz.description}
                 </p>
@@ -1253,7 +1253,7 @@ export default function AdminDashboard() {
               {/* Photos Gallery */}
               {viewingBiz.photos && viewingBiz.photos.length > 0 && (
                 <div className="space-y-2 text-xs">
-                  <h4 className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider font-extrabold">फोटो गॅलरी</h4>
+                  <h4 className="text-xs text-brand-dark dark:text-slate-300 font-bold">फोटो गॅलरी</h4>
                   <div className="grid grid-cols-3 gap-2">
                     {viewingBiz.photos.map((p, i) => (
                       <img key={i} src={p} alt="gallery" className="w-full h-24 object-cover rounded-xl border border-gray-200" />

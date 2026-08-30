@@ -257,7 +257,7 @@ export default function MerchantProfile() {
             <div className="space-y-3 pt-2 text-xs text-slate-600 dark:text-slate-300">
               <div className="flex justify-between py-2 border-b border-gray-100 dark:border-slate-800">
                 <span className="font-semibold">User ID:</span>
-                <span className="font-mono text-[11px] text-slate-400 truncate max-w-[140px]">{user?.uid}</span>
+                <span className="font-mono text-xs text-slate-400 truncate max-w-[140px]">{user?.uid}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-gray-100 dark:border-slate-800">
                 <span className="font-semibold">Role:</span>

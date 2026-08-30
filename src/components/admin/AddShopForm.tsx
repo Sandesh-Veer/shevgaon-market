@@ -275,7 +275,7 @@ export default function AddShopForm() {
               <p className="text-xs text-slate-600 dark:text-slate-300 font-semibold">
                 प्रतिमा अपलोड करण्यासाठी येथे क्लिक करा (Click to choose image)
               </p>
-              <p className="text-[10px] text-slate-400">
+              <p className="text-xs text-slate-400 font-normal">
                 ImgBB द्वारे ऑटोमॅटिक अपलोड होईल (PNG, JPG max 10MB)
               </p>
               <input
