@@ -103,7 +103,7 @@ function AppContent() {
     setOpenGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }));
   };
 
-  const sidebarItems = sidebarGroups.flatMap(g => g.items).filter(i => !!i.href);��र्क (Contact)', href: 'contact' }
+  const sidebarItems = sidebarGroups.flatMap(g => g.items).filter(i => !!i.href);��र्क (Contact)', href: 'contact' }
       ]
     }
   ];
@@ -290,6 +290,9 @@ function AppContent() {
           </button>
         </div>
 
+
+
+{/* done */}
         {/* Scrollable Navigation Options List (Grouped Accordion) */}
         <div className="flex-1 overflow-y-auto max-h-[calc(100vh-140px)] py-3 pr-1 space-y-3 custom-scrollbar">
           {sidebarGroups.map((group) => (
