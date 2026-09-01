@@ -28,41 +28,82 @@ function AppContent() {
   });
   const [activeSection, setActiveSection] = useState('home');
 
-  // Collapsible Navigation Groups
-  const sidebarGroups = [
+  // 4 Logical Collapsible Navigation Groups
+  interface SidebarItem {
+    id: string;
+    label: string;
+    href?: string;
+    link?: string;
+    icon?: string;
+  }
+
+  interface SidebarGroup {
+    id: string;
+    title: string;
+    items: SidebarItem[];
+  }
+
+  const sidebarGroups: SidebarGroup[] = [
     {
       id: 'market',
       title: '🌾 बाजार आणि शेती',
       items: [
         { id: 'home', label: '🏠 Home (मुख्य पान)', href: 'home' },
-        { id: 'shetkari', label: '👨‍🌾 शेतकरी (Farmers)', href: 'shetkari' },
-        { id: 'offers', label: '🛍️ ऑफर्स (Offers)', href: 'offers' },
+        { id: 'shetkari', label: '👨‍🌾 शेतकरी व भाजीपाला (Farmers)', href: 'shetkari' },
+        { id: 'offers', label: '🛍️ ऑफर्स आणि सेल (Offers)', href: 'offers' },
       ]
     },
     {
       id: 'services',
-      title: '🛠️ सेवा आणि व्यवसाय',
+      title: '🛠️ स्थानिक सेवा आणि दुकाने',
       items: [
         { id: 'gharguti-seva', label: '🛠️ घरगुती सेवा (Home Services)', href: 'gharguti-seva' },
-        { id: 'hotel', label: '🍔 हॉटेल (Hotel)', href: 'hotel' },
-        { id: 'vehicle', label: '🚗 वाहन (Vehicles)', href: 'vehicle' },
-        { id: 'water', label: '🚰 वॉटर जार (Water Jar)', href: 'water' },
+        { id: 'hotel', label: '🍔 हॉटेल्स आणि फूड (Hotels)', href: 'hotel' },
+        { id: 'vehicle', label: '🚗 वाहने आणि गॅरेज (Vehicles)', href: 'vehicle' },
+        { id: 'water', label: '🚰 वॉटर जार सेवा (Water Jar)', href: 'water' },
         { id: 'beauty', label: '💇‍♀️ ब्युटी पार्लर (Beauty Parlour)', href: 'beauty' },
         { id: 'cyber', label: '💻 सायबर कॅफे (Cyber Cafe)', href: 'cyber' },
-        { id: 'mess', label: '🍲 मेस (Mess / खानावळ)', href: 'mess' },
-        { id: 'photoshop', label: '📸 फोटोशॉप (Photoshop Studio)', href: 'photoshop' },
-        { id: 'gym', label: '🏋️‍♂️ जिम (Gym & Fitness)', href: 'gym' },
-        { id: 'hospital', label: '🏥 हॉस्पिटल (Hospital)', href: 'hospital' },
+        { id: 'mess', label: '🍲 मेस व खानावळ (Mess)', href: 'mess' },
+        { id: 'photoshop', label: '📸 फोटो स्टुडिओ (Photoshop Studio)', href: 'photoshop' },
+        { id: 'gym', label: '🏋️‍♂️ जिम व फिटनेस (Gym & Fitness)', href: 'gym' },
+        { id: 'hospital', label: '🏥 हॉस्पिटल व आरोग्य (Hospital)', href: 'hospital' },
         { id: 'mobileshop', label: '📱 मोबाईल शॉप (Mobile Shop)', href: 'mobileshop' },
-        { id: 'sweethome', label: '🧁 स्वीट होम (Sweet Home)', href: 'sweethome' },
+        { id: 'sweethome', label: '🧁 स्वीट होम व बेकरी (Sweet Home)', href: 'sweethome' },
       ]
     },
     {
-      id: 'info',
-      title: '📞 माहिती व संपर्क',
+      id: 'admin',
+      title: '⚙️ प्रशासक आणि भागीदार',
       items: [
-        { id: 'reviews', label: '⭐ Reviews', href: 'reviews' },
-        { id: 'contact', label: '📞 संपर्क (Contact)', href: 'contact' }
+        { id: 'add-shop', label: '🏪 दुकान नोंदणी करा (Add Shop)', link: '/add-shop' },
+        { id: 'vendor-register', label: '📝 भागीदार नोंदणी (Partner Register)', link: '/vendor/register' },
+        { id: 'vendor-dashboard', label: '💼 भागीदार डॅशबोर्ड (Vendor Dashboard)', link: '/vendor/dashboard' },
+        { id: 'admin-panel', label: '🛡️ प्रशासक पॅनेल (Admin Panel)', link: '/admin' },
+        { id: 'welcome-page', label: '✨ वेल्कम स्क्रीन (Welcome Page)', link: '/welcome' },
+      ]
+    },
+    {
+      id: 'support',
+      title: '📞 माहिती व सहाय्य',
+      items: [
+        { id: 'reviews', label: '⭐ ग्राहक अभिप्राय (Reviews)', href: 'reviews' },
+        { id: 'contact', label: '📞 संपर्क व मदत (Contact & Help)', href: 'contact' }
+      ]
+    }
+  ];
+
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
+    market: true,
+    services: true,
+    admin: true,
+    support: true,
+  });
+
+  const toggleNavGroup = (groupId: string) => {
+    setOpenGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }));
+  };
+
+  const sidebarItems = sidebarGroups.flatMap(g => g.items).filter(i => !!i.href);��र्क (Contact)', href: 'contact' }
       ]
     }
   ];

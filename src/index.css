@@ -66,6 +66,26 @@
   .shadow-soft {
     @apply shadow-[0_20px_50px_rgba(79,124,255,0.06)];
   }
+
+  /* Strict Design System Button Classes */
+  .btn-base {
+    @apply inline-flex items-center justify-center font-semibold transition-all duration-200 select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-primary {
+    @apply btn-base bg-gradient-brand text-white shadow-sm hover:shadow-md hover:shadow-brand-blue/20 hover:brightness-105;
+  }
+  .btn-secondary {
+    @apply btn-base border-2 border-slate-200 dark:border-slate-700 bg-white/90 dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-xs;
+  }
+  .btn-ghost {
+    @apply btn-base bg-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800/80;
+  }
+  .btn-call {
+    @apply btn-base bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold shadow-sm shadow-emerald-600/25;
+  }
+  .btn-details {
+    @apply btn-base border-2 border-brand-purple/40 hover:border-brand-purple bg-brand-purple/5 hover:bg-brand-purple/10 text-brand-purple dark:text-purple-300 dark:border-purple-500/40 dark:hover:border-purple-400 shadow-xs;
+  }
 }
 
 /* Dark Mode Theme Custom Overrides */
