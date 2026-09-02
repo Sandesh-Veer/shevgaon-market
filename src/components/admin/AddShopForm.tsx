@@ -176,7 +176,7 @@ export default function AddShopForm() {
         {/* Row 1: Shop Name & Owner Name */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
               <Store size={13} className="text-brand-purple" />
               दुकानाचे नाव (Shop Name) *
             </label>
@@ -191,7 +191,7 @@ export default function AddShopForm() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
               <User size={13} className="text-brand-purple" />
               मालकाचे नाव (Owner Name) *
             </label>
@@ -209,7 +209,7 @@ export default function AddShopForm() {
         {/* Row 2: Category Dropdown & Mobile Number */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
               <Tag size={13} className="text-brand-purple" />
               श्रेणी (Category) *
             </label>
@@ -227,7 +227,7 @@ export default function AddShopForm() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
               <Phone size={13} className="text-brand-purple" />
               मोबाईल नंबर (Mobile Number) *
             </label>
@@ -245,7 +245,7 @@ export default function AddShopForm() {
 
         {/* Row 3: Shop Address */}
         <div className="space-y-1.5">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+          <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
             <MapPin size={13} className="text-brand-purple" />
             दुकानाचा पत्ता (Shop Address) *
           </label>
@@ -261,7 +261,7 @@ export default function AddShopForm() {
 
         {/* Row 4: Image File Upload Input with Preview */}
         <div className="space-y-1.5">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+          <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
             <ImageIcon size={13} className="text-brand-purple" />
             दुकानाची फोटो (Shop Image File) *
           </label>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Phone, MapPin, Star, MessageSquare } from 'lucide-react';
+import { Phone, MapPin, Star } from 'lucide-react';
 import Button from './Button';
 
 export interface CardMetaItem {
@@ -37,7 +37,6 @@ export interface UniversalCardProps {
 }
 
 export const UniversalCard: React.FC<UniversalCardProps> = ({
-  id,
   title,
   subtitle,
   categoryBadge,

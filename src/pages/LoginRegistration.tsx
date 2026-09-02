@@ -156,9 +156,9 @@ export default function LoginRegistration() {
             <ShieldCheck size={28} />
           </div>
           <div>
-            <h2 className="text-2xl font-extrabold text-slate-800 dark:text-slate-100">
+            <h1 className="text-2xl font-extrabold text-slate-800 dark:text-slate-100">
               सुरक्षित मोबाईल लॉगिन
-            </h2>
+            </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">
               Phone OTP Verified Login & Role Routing
             </p>
@@ -170,7 +170,7 @@ export default function LoginRegistration() {
           {!isOtpSent ? (
             <form onSubmit={handleSendOtp} className="space-y-5">
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                   <Phone size={14} className="text-brand-purple" />
                   मोबाईल नंबर (10-Digit Mobile)
                 </label>
@@ -214,7 +214,7 @@ export default function LoginRegistration() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                   <Lock size={14} className="text-brand-purple" />
                   OTP प्रविष्ट करा (6-Digit OTP)
                 </label>

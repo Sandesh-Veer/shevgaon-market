@@ -161,7 +161,7 @@ export default function MerchantProfile() {
 
             <form onSubmit={handleSaveProfile} className="mt-6 space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
                   दुकानाचे नाव (Shop Name) *
                 </label>
                 <input
@@ -175,7 +175,7 @@ export default function MerchantProfile() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
                   श्रेणी (Category)
                 </label>
                 <select
@@ -196,7 +196,7 @@ export default function MerchantProfile() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                   <MapPin size={13} className="text-brand-purple" />
                   पत्ता (Location Address)
                 </label>
@@ -210,7 +210,7 @@ export default function MerchantProfile() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                   <Clock size={13} className="text-brand-purple" />
                   वेळ (Opening Hours)
                 </label>
@@ -240,7 +240,7 @@ export default function MerchantProfile() {
           
           {/* Security & Role Badge Card */}
           <div className="glass-card border border-gray-200/80 dark:border-slate-800 p-6 rounded-3xl space-y-4">
-            <h3 className="text-xs uppercase font-extrabold tracking-wider text-slate-400">
+            <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400">
               खाते सुरक्षा व भूमिका (Account Security)
             </h3>
 
@@ -274,7 +274,7 @@ export default function MerchantProfile() {
 
           {/* Quick Actions Card */}
           <div className="glass-card border border-gray-200/80 dark:border-slate-800 p-6 rounded-3xl space-y-4">
-            <h3 className="text-xs uppercase font-extrabold tracking-wider text-slate-400">
+            <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400">
               त्वरित कृती (Quick Actions)
             </h3>
             

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Phone, MapPin, Clock, Star, Share2, Heart, AlertTriangle, Send, Camera, X, MessageSquare, ArrowLeft, Image as ImageIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { db, Business, Review } from '../services/db';
+import Button from '../components/ui/Button';
 
 export default function BusinessDetail() {
   const { category, id } = useParams<{ category: string; id: string }>();
@@ -279,20 +280,23 @@ export default function BusinessDetail() {
 
           {/* Quick contact actions */}
           <div className="flex flex-wrap gap-2.5 shrink-0 w-full sm:w-auto pt-2 md:pt-0 border-t md:border-t-0 border-gray-100 dark:border-slate-800">
-            <a 
+            <Button
+              variant="call"
+              size="md"
+              icon={Phone}
               href={`tel:${biz.phone}`}
-              className="flex-1 sm:flex-initial py-2.5 sm:py-3 px-4 sm:px-5 rounded-xl border border-gray-200 text-brand-dark font-bold text-xs hover:bg-slate-50 transition-all flex items-center justify-center gap-1.5 shadow-sm bg-white"
             >
-              <Phone size={14} /> कॉल करा
-            </a>
-            <a 
-              href={`https://wa.me/${biz.whatsapp}?text=नमस्कार, मला तुमच्या व्यवसायाबद्दल माहिती हवी आहे.`}
+              कॉल करा
+            </Button>
+            <Button
+              variant="whatsapp"
+              size="md"
+              href={`https://wa.me/${biz.whatsapp || biz.phone}?text=${encodeURIComponent('नमस्कार, मला तुमच्या व्यवसायाबद्दल माहिती हवी आहे.')}`}
               target="_blank"
               rel="noreferrer"
-              className="flex-1 sm:flex-initial py-2.5 sm:py-3 px-4 sm:px-5 rounded-xl bg-emerald-500 text-white font-bold text-xs hover:bg-emerald-600 transition-all flex items-center justify-center gap-1.5 shadow-sm shadow-emerald-500/10"
             >
               WhatsApp
-            </a>
+            </Button>
           </div>
         </div>
       </div>
@@ -305,7 +309,7 @@ export default function BusinessDetail() {
           
           {/* About description */}
           <div className="glass-card p-6 border border-white/70 space-y-4 rounded-3xl">
-            <h3 className="text-lg font-bold text-brand-dark border-b border-gray-100 pb-2">व्यवसायाबद्दल माहिती</h3>
+            <h2 className="text-lg font-bold text-brand-dark border-b border-gray-100 pb-2">व्यवसायाबद्दल माहिती</h2>
             <p className="text-sm text-brand-muted leading-relaxed font-normal whitespace-pre-line">{biz.description}</p>
           </div>
 
@@ -314,7 +318,7 @@ export default function BusinessDetail() {
           {/* A. Crops / Mandi fields */}
           {biz.category === 'mandi' && (
             <div className="p-6 bg-emerald-50/20 border border-emerald-100/50 rounded-3xl space-y-4">
-              <h3 className="text-lg font-bold text-emerald-900 border-b border-emerald-100 pb-2">शेतमाल माहिती (Produce Specs)</h3>
+              <h2 className="text-lg font-bold text-emerald-900 border-b border-emerald-100 pb-2">शेतमाल माहिती (Produce Specs)</h2>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
                 <div className="space-y-1">
                   <span className="text-emerald-700 font-medium">शेती वर्गीकरण</span>
@@ -339,7 +343,7 @@ export default function BusinessDetail() {
           {/* B. Technicians */}
           {biz.category === 'technician' && (
             <div className="p-6 bg-brand-purple/5 border border-brand-purple/10 rounded-3xl space-y-4">
-              <h3 className="text-lg font-bold text-brand-purple border-b border-brand-purple/10 pb-2">कारागीर तपशील (Service Details)</h3>
+              <h2 className="text-lg font-bold text-brand-purple border-b border-brand-purple/10 pb-2">कारागीर तपशील (Service Details)</h2>
               <div className="grid grid-cols-3 gap-4 text-xs text-center">
                 <div className="bg-white/60 p-3 rounded-xl border border-brand-purple/10 shadow-sm">
                   <span className="text-brand-muted">काम वर्गीकरण</span>
@@ -360,7 +364,7 @@ export default function BusinessDetail() {
           {/* C. Material */}
           {biz.category === 'material' && (
             <div className="p-6 bg-amber-50/20 border border-amber-100/50 rounded-3xl space-y-4">
-              <h3 className="text-lg font-bold text-amber-900 border-b border-amber-100 pb-2">बांधकाम साहित्य (Items Available)</h3>
+              <h2 className="text-lg font-bold text-amber-900 border-b border-amber-100 pb-2">बांधकाम साहित्य (Items Available)</h2>
               <p className="text-sm font-semibold text-slate-800 bg-white/80 p-4 border border-amber-200/50 rounded-2xl shadow-inner">
                 <b>उपलब्ध साहित्याची यादी:</b> {biz.materialItems || biz.description}
               </p>
@@ -373,7 +377,7 @@ export default function BusinessDetail() {
               
               {/* Dish info header */}
               <div className="flex justify-between items-center border-b border-gray-100 pb-3">
-                <h3 className="text-lg font-bold text-brand-dark">हॉटेल मेनू आणि आजचे खास</h3>
+                <h2 className="text-lg font-bold text-brand-dark">हॉटेल मेनू आणि आजचे खास</h2>
                 <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${
                   biz.hotelType === 'Pure Veg' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
                   biz.hotelType === 'Veg' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-rose-50 text-rose-700 border-rose-200'
@@ -398,7 +402,7 @@ export default function BusinessDetail() {
               {/* Menu items list table */}
               {biz.menu && biz.menu.length > 0 && (
                 <div className="space-y-3">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-brand-muted">डिजिटल मेनू कार्ड</h4>
+                  <h3 className="font-bold text-xs text-brand-muted">डिजिटल मेनू कार्ड</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     {biz.menu.map((item, idx) => (
                       <div key={idx} className="flex justify-between items-center bg-slate-50/50 border border-gray-100 rounded-xl p-3 text-xs font-semibold">
@@ -415,7 +419,7 @@ export default function BusinessDetail() {
           {/* E. Vehicles */}
           {biz.category === 'vehicle' && (
             <div className="glass-card p-6 border border-white/70 space-y-4">
-              <h3 className="text-lg font-bold text-brand-dark border-b border-gray-100 pb-2">वाहन तपशील (Specifications)</h3>
+              <h2 className="text-lg font-bold text-brand-dark border-b border-gray-100 pb-2">वाहन तपशील (Specifications)</h2>
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5 text-center text-xs">
                 <div className="bg-slate-50 border border-gray-100 rounded-xl p-3 shadow-inner">
                   <span className="text-brand-muted">मॉडल वर्ष</span>
@@ -444,7 +448,7 @@ export default function BusinessDetail() {
           {/* F. Mechanics */}
           {biz.category === 'mechanics' && (
             <div className="p-6 bg-sky-50/20 border border-sky-100/50 rounded-3xl space-y-4">
-              <h3 className="text-lg font-bold text-sky-900 border-b border-sky-100 pb-2">मेकॅनिक आणि गॅरेज सेवा</h3>
+              <h2 className="text-lg font-bold text-sky-900 border-b border-sky-100 pb-2">मेकॅनिक आणि गॅरेज सेवा</h2>
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs">
                 <div>
                   <span className="text-sky-700 font-medium">वाहन दुरुस्ती प्रकार:</span>
@@ -460,7 +464,7 @@ export default function BusinessDetail() {
           {/* G. Offers */}
           {biz.category === 'offers' && (
             <div className="p-6 bg-fuchsia-50/25 border border-fuchsia-100/50 rounded-3xl space-y-4">
-              <h3 className="text-lg font-bold text-fuchsia-900 border-b border-fuchsia-100 pb-2">सवलती आणि धमाका ऑफर्स</h3>
+              <h2 className="text-lg font-bold text-fuchsia-900 border-b border-fuchsia-100 pb-2">सवलती आणि धमाका ऑफर्स</h2>
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="space-y-1">
                   <span className="text-fuchsia-700 text-xs font-medium">{biz.offerBanner || 'स्पेशल सेल'}</span>
@@ -476,7 +480,7 @@ export default function BusinessDetail() {
           {/* Shop Photos Image Slider / Gallery */}
           {biz.photos && biz.photos.length > 0 && (
             <div className="glass-card p-6 border border-white/70 space-y-4">
-              <h3 className="text-lg font-bold text-brand-dark border-b border-gray-100 pb-2">गॅलरी फोटो (Shop Gallery)</h3>
+              <h2 className="text-lg font-bold text-brand-dark border-b border-gray-100 pb-2">गॅलरी फोटो (Shop Gallery)</h2>
               
               {/* Main Active Photo */}
               <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-50 border border-gray-100 shadow-inner relative flex items-center justify-center">
@@ -505,7 +509,7 @@ export default function BusinessDetail() {
             
             {/* Reviews Head */}
             <div className="flex justify-between items-center border-b border-gray-200/60 pb-3">
-              <h3 className="text-lg font-bold text-brand-dark">ग्राहक पुनरावलोकने ({reviews.length})</h3>
+              <h2 className="text-lg font-bold text-brand-dark">ग्राहक पुनरावलोकने ({reviews.length})</h2>
               <a href="#review-form" className="text-brand-purple text-xs font-bold hover:underline">पुनरावलोकन जोडा</a>
             </div>
 
@@ -716,7 +720,7 @@ export default function BusinessDetail() {
           
           {/* Address & Maps Details */}
           <div className="glass-card p-6 border border-white/70 space-y-4">
-            <h3 className="text-lg font-bold text-brand-dark border-b border-gray-100 pb-2">लोकेशन & पत्ता</h3>
+            <h2 className="text-lg font-bold text-brand-dark border-b border-gray-100 pb-2">लोकेशन & पत्ता</h2>
             <div className="space-y-3.5 text-xs text-brand-muted font-light leading-relaxed">
               <span className="flex items-start gap-2">
                 <MapPin size={16} className="text-brand-purple shrink-0 mt-0.5" />
@@ -740,7 +744,7 @@ export default function BusinessDetail() {
 
           {/* Working Hours */}
           <div className="glass-card p-6 border border-white/70 space-y-4">
-            <h3 className="text-lg font-bold text-brand-dark border-b border-gray-100 pb-2">कामाची वेळ (Hours)</h3>
+            <h2 className="text-lg font-bold text-brand-dark border-b border-gray-100 pb-2">कामाची वेळ (Hours)</h2>
             <div className="flex justify-between items-center text-xs font-semibold text-brand-muted">
               <span className="flex items-center gap-1.5 font-light">
                 <Clock size={16} className="text-brand-purple" />
@@ -763,7 +767,7 @@ export default function BusinessDetail() {
           {/* Related Listings Grid */}
           {related.length > 0 && (
             <div className="space-y-4">
-              <h3 className="text-lg font-bold text-brand-dark border-b border-gray-200/60 pb-2">समान इतर व्यवसाय</h3>
+              <h2 className="text-lg font-bold text-brand-dark border-b border-gray-200/60 pb-2">समान इतर व्यवसाय</h2>
               <div className="space-y-4">
                 {related.map((item) => (
                   <div 
@@ -814,7 +818,7 @@ export default function BusinessDetail() {
                 ✕
               </button>
 
-              <h3 className="text-lg font-extrabold text-brand-dark mb-2">तक्रार प्रविष्ट करा (Report)</h3>
+              <h2 className="text-lg font-extrabold text-brand-dark mb-2">तक्रार प्रविष्ट करा (Report)</h2>
               <p className="text-xs text-brand-muted font-light mb-4">तुम्हाला या व्यवसायाबद्दल चुकीची माहिती किंवा खोटे व्यवहार आढळले असल्यास कृपया खाली कारण प्रविष्ट करा.</p>
 
               {reportSuccess && <span className="text-xs text-emerald-500 font-bold block mb-4">तक्रार यशस्वीरित्या नोंदवली!</span>}

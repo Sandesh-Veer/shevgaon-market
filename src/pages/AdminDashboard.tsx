@@ -358,7 +358,7 @@ export default function AdminDashboard() {
             <div className="w-14 h-14 bg-rose-50 border border-rose-100 dark:bg-rose-900/30 dark:border-rose-800 rounded-full flex items-center justify-center text-rose-500 mx-auto shadow-inner">
               <ShieldAlert size={26} />
             </div>
-            <h2 className="text-2xl font-extrabold text-brand-dark dark:text-white">प्रशासक लॉगिन (Admin)</h2>
+            <h1 className="text-2xl font-extrabold text-brand-dark dark:text-white">प्रशासक लॉगिन (Admin)</h1>
             <p className="text-xs text-brand-muted dark:text-slate-400 font-light max-w-[240px] mx-auto">वेबसाइट व्यवस्थापन करण्यासाठी सुरक्षितपणे ईमेल आणि पासवर्ड टाका.</p>
           </div>
 
@@ -411,7 +411,7 @@ export default function AdminDashboard() {
             <ShieldAlert size={26} />
           </div>
           <div>
-            <h2 className="text-2xl font-extrabold text-brand-dark dark:text-white">प्रशासक नियंत्रण केंद्र (Admin Portal)</h2>
+            <h1 className="text-2xl font-extrabold text-brand-dark dark:text-white">प्रशासक नियंत्रण केंद्र (Admin Portal)</h1>
             <p className="text-xs text-brand-muted dark:text-slate-400 font-light mt-0.5">व्यापारी प्रोफाइल, पोस्ट मर्यादा प्लॅन्स, ऑडिट लॉग्स व सांख्यिकी.</p>
           </div>
         </div>
@@ -426,7 +426,7 @@ export default function AdminDashboard() {
           </button>
           <button 
             onClick={handleLogout}
-            className="py-2.5 px-4 bg-white hover:bg-rose-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 text-rose-600 dark:text-rose-400 rounded-xl transition-all font-bold text-xs uppercase tracking-wider shadow-sm"
+            className="py-2.5 px-4 bg-white hover:bg-rose-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 text-rose-600 dark:text-rose-400 rounded-xl transition-all font-bold text-xs shadow-sm"
           >
             बाहेर पडा
           </button>
@@ -521,17 +521,17 @@ export default function AdminDashboard() {
               <div className="glass-card p-5 border border-white/70 shadow-sm space-y-1">
                 <span className="text-xs text-brand-muted dark:text-slate-400 font-light block font-semibold text-emerald-600">सक्रिय प्रोफाईल (Active)</span>
                 <p className="text-3xl font-extrabold text-emerald-600">{activeProfiles}</p>
-                <span className="text-[10px] text-emerald-600 font-semibold block">सक्रिय व मंजूर खाती</span>
+                <span className="text-xs text-emerald-600 font-semibold block">सक्रिय व मंजूर खाती</span>
               </div>
               <div className="glass-card p-5 border border-white/70 shadow-sm space-y-1">
                 <span className="text-xs text-brand-muted dark:text-slate-400 font-light block font-semibold text-amber-600">मुदत संपलेले सबस्क्रिप्शन</span>
                 <p className="text-3xl font-extrabold text-amber-600">{expiredSubscriptions}</p>
-                <span className="text-[10px] text-amber-600 font-semibold block">नूतनीकरण आवश्यक</span>
+                <span className="text-xs text-amber-600 font-semibold block">नूतनीकरण आवश्यक</span>
               </div>
               <div className="glass-card p-5 border border-white/70 shadow-sm space-y-1">
                 <span className="text-xs text-brand-muted dark:text-slate-400 font-light block font-semibold text-rose-500">मंजुरी प्रलंबित / निलंबित</span>
                 <p className="text-3xl font-extrabold text-rose-500">{pendingApprovals + suspendedProfiles}</p>
-                <span className="text-[10px] text-rose-500 font-semibold block">प्रलंबित: {pendingApprovals} | निलंबित: {suspendedProfiles}</span>
+                <span className="text-xs text-rose-500 font-semibold block">प्रलंबित: {pendingApprovals} | निलंबित: {suspendedProfiles}</span>
               </div>
             </div>
 
@@ -640,7 +640,7 @@ export default function AdminDashboard() {
                     const pct = totalProfiles > 0 ? (count / totalProfiles) * 100 : 0;
                     return (
                       <div key={c.cat} className="space-y-1">
-                        <div className="flex justify-between text-[11px]">
+                        <div className="flex justify-between text-xs">
                           <span className="text-brand-dark dark:text-slate-300 font-medium">{c.name}</span>
                           <span className="text-brand-muted font-bold">{count} नोंदणी ({Math.round(pct)}%)</span>
                         </div>
@@ -666,7 +666,7 @@ export default function AdminDashboard() {
                     <div key={b.id} className="flex flex-col sm:flex-row justify-between sm:items-center p-4 bg-slate-50/50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-700 rounded-xl gap-4 text-xs">
                       <div>
                         <h4 className="font-extrabold text-brand-dark dark:text-white">{b.name} ({b.ownerName})</h4>
-                        <p className="text-[10px] text-brand-muted dark:text-slate-400 font-light">{b.category} | {b.village} | {b.phone}</p>
+                        <p className="text-xs text-brand-muted dark:text-slate-400 font-light">{b.category} | {b.village} | {b.phone}</p>
                       </div>
                       <div className="flex gap-2">
                         <button 
@@ -701,7 +701,7 @@ export default function AdminDashboard() {
               </div>
 
               {/* Status Filter Buttons */}
-              <div className="flex flex-wrap gap-1.5 bg-slate-100 dark:bg-slate-800/60 p-1.5 rounded-xl text-[11px] font-bold">
+              <div className="flex flex-wrap gap-1.5 bg-slate-100 dark:bg-slate-800/60 p-1.5 rounded-xl text-xs font-bold">
                 {[
                   { id: 'all', label: `सर्व (${businesses.length})` },
                   { id: 'active', label: `सक्रिय (${activeProfiles})` },
@@ -1056,7 +1056,7 @@ export default function AdminDashboard() {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">मुख्य शीर्षक (Website Title)</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">मुख्य शीर्षक (Website Title)</label>
                   <input 
                     type="text"
                     value={settings.title}
@@ -1065,7 +1065,7 @@ export default function AdminDashboard() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">मुख्य बॅनर प्रतिमा URL (Homepage Banner URL)</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">मुख्य बॅनर प्रतिमा URL (Homepage Banner URL)</label>
                   <input 
                     type="text"
                     value={settings.bannerUrl}
@@ -1077,7 +1077,7 @@ export default function AdminDashboard() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">वेबसाइटचे वर्णन (Description Text)</label>
+                <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">वेबसाइटचे वर्णन (Description Text)</label>
                 <textarea 
                   value={settings.description}
                   onChange={(e) => setSettings({ ...settings, description: e.target.value })}
@@ -1088,7 +1088,7 @@ export default function AdminDashboard() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-gray-100 dark:border-slate-800 pt-4">
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">संपर्क ईमेल</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">संपर्क ईमेल</label>
                   <input 
                     type="email"
                     value={settings.contactEmail}
@@ -1097,7 +1097,7 @@ export default function AdminDashboard() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">संपर्क मोबाईल क्रमांक</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">संपर्क मोबाईल क्रमांक</label>
                   <input 
                     type="text"
                     value={settings.contactPhone}
@@ -1106,7 +1106,7 @@ export default function AdminDashboard() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">संपर्क पत्ता (Footer Address)</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">संपर्क पत्ता (Footer Address)</label>
                   <input 
                     type="text"
                     value={settings.contactAddress}
@@ -1118,7 +1118,7 @@ export default function AdminDashboard() {
 
               <button 
                 type="submit"
-                className="bg-gradient-brand text-white py-3 px-6 rounded-xl hover:shadow-lg transition-all duration-300 font-bold uppercase tracking-wider"
+                className="bg-gradient-brand text-white py-3 px-6 rounded-xl hover:shadow-lg transition-all duration-300 font-bold text-xs"
               >
                 बदल जतन करा (Save Settings)
               </button>
@@ -1139,7 +1139,7 @@ export default function AdminDashboard() {
                     <div>
                       <h4 className="font-extrabold text-rose-600">तक्रारदार विषय: {rep.businessName} (ID: {rep.businessId})</h4>
                       <p className="text-brand-muted dark:text-slate-300 leading-relaxed font-light mt-1"><b>कारण:</b> {rep.reason}</p>
-                      <span className="text-[9px] text-brand-muted dark:text-slate-400 block mt-1">{new Date(rep.createdAt).toLocaleString('mr-IN')}</span>
+                      <span className="text-xs text-brand-muted dark:text-slate-400 block mt-1">{new Date(rep.createdAt).toLocaleString('mr-IN')}</span>
                     </div>
 
                     <div className="flex gap-2 shrink-0">
@@ -1305,7 +1305,7 @@ export default function AdminDashboard() {
               <form onSubmit={handleSaveBizEdit} className="space-y-4 text-xs font-semibold">
                 
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">व्यवसायाचे नाव</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">व्यवसायाचे नाव</label>
                   <input 
                     type="text"
                     value={editingBiz.name}
@@ -1315,7 +1315,7 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">मालकाचे नाव</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">मालकाचे नाव</label>
                   <input 
                     type="text"
                     value={editingBiz.ownerName}
@@ -1326,7 +1326,7 @@ export default function AdminDashboard() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">श्रेणी (Category)</label>
+                    <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">श्रेणी (Category)</label>
                     <select
                       value={editingBiz.category}
                       onChange={(e) => setEditingBiz({ ...editingBiz, category: e.target.value as any })}
@@ -1352,7 +1352,7 @@ export default function AdminDashboard() {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">पोस्ट मर्यादा (Post Limit)</label>
+                    <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">पोस्ट मर्यादा (Post Limit)</label>
                     <input 
                       type="number"
                       value={editingBiz.postLimit || 2}
@@ -1363,7 +1363,7 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">वर्णन</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">वर्णन</label>
                   <textarea 
                     value={editingBiz.description}
                     onChange={(e) => setEditingBiz({ ...editingBiz, description: e.target.value })}
@@ -1374,7 +1374,7 @@ export default function AdminDashboard() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">मोबाईल क्रमांक</label>
+                    <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">मोबाईल क्रमांक</label>
                     <input 
                       type="tel"
                       value={editingBiz.phone}
@@ -1383,7 +1383,7 @@ export default function AdminDashboard() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">गाव</label>
+                    <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">गाव</label>
                     <input 
                       type="text"
                       value={editingBiz.village}
@@ -1394,7 +1394,7 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">पत्ता</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">पत्ता</label>
                   <input 
                     type="text"
                     value={editingBiz.address}
@@ -1405,7 +1405,7 @@ export default function AdminDashboard() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">सबस्क्रिप्शन स्थिती</label>
+                    <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">सबस्क्रिप्शन स्थिती</label>
                     <select
                       value={editingBiz.subscriptionStatus || 'active'}
                       onChange={(e) => setEditingBiz({ ...editingBiz, subscriptionStatus: e.target.value as any })}
@@ -1417,7 +1417,7 @@ export default function AdminDashboard() {
                     </select>
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">खाते स्थिती (Account Status)</label>
+                    <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">खाते स्थिती (Account Status)</label>
                     <select
                       value={editingBiz.isSuspended ? 'suspended' : 'active'}
                       onChange={(e) => setEditingBiz({ ...editingBiz, isSuspended: e.target.value === 'suspended' })}
@@ -1431,7 +1431,7 @@ export default function AdminDashboard() {
 
                 <button 
                   type="submit"
-                  className="w-full bg-rose-500 hover:bg-rose-600 text-white py-3.5 rounded-xl font-bold uppercase tracking-wider"
+                  className="w-full bg-rose-500 hover:bg-rose-600 text-white py-3.5 rounded-xl font-bold text-xs"
                 >
                   बदल जतन करा (Save Changes)
                 </button>
@@ -1463,7 +1463,7 @@ export default function AdminDashboard() {
               <form onSubmit={handleSavePlan} className="space-y-4 text-xs font-semibold">
                 
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">प्लॅनचे नाव *</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">प्लॅनचे नाव *</label>
                   <input 
                     type="text" 
                     required
@@ -1476,7 +1476,7 @@ export default function AdminDashboard() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">किंमत (₹) *</label>
+                    <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">किंमत (₹) *</label>
                     <input 
                       type="number" 
                       required
@@ -1488,7 +1488,7 @@ export default function AdminDashboard() {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">अचूक पोस्ट मर्यादा (Post Limit) *</label>
+                    <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">अचूक पोस्ट मर्यादा (Post Limit) *</label>
                     <input 
                       type="number" 
                       required
@@ -1501,7 +1501,7 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">कालावधी (दिवस / Days) *</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">कालावधी (दिवस / Days) *</label>
                   <input 
                     type="number" 
                     required
@@ -1513,7 +1513,7 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">वर्णन (Description)</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">वर्णन (Description)</label>
                   <textarea 
                     value={editingPlan.description}
                     onChange={(e) => setEditingPlan({ ...editingPlan, description: e.target.value })}
@@ -1525,7 +1525,7 @@ export default function AdminDashboard() {
 
                 <button 
                   type="submit"
-                  className="w-full bg-gradient-brand text-white py-3 rounded-xl font-bold uppercase tracking-wider"
+                  className="w-full bg-gradient-brand text-white py-3 rounded-xl font-bold text-xs"
                 >
                   प्लॅन जतन करा (Save Plan)
                 </button>
@@ -1556,11 +1556,11 @@ export default function AdminDashboard() {
 
               <form onSubmit={handleSaveReviewEdit} className="space-y-4 text-xs font-semibold">
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">रेटिंग (Stars)</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">रेटिंग (Stars)</label>
                   <select 
                     value={editingReview.rating}
                     onChange={(e) => setEditingReview({ ...editingReview, rating: parseInt(e.target.value) })}
-                    className="w-full p-2 bg-white border border-gray-200 rounded-lg text-brand-dark"
+                    className="w-full p-2 bg-white border border-gray-200 rounded-lg text-brand-dark text-xs"
                   >
                     <option value="5">५ स्टार</option>
                     <option value="4">४ स्टार</option>
@@ -1571,7 +1571,7 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">अभिप्राय टिप्पणी</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">अभिप्राय टिप्पणी</label>
                   <textarea 
                     value={editingReview.comment}
                     onChange={(e) => setEditingReview({ ...editingReview, comment: e.target.value })}
@@ -1582,7 +1582,7 @@ export default function AdminDashboard() {
 
                 <button 
                   type="submit"
-                  className="w-full bg-rose-500 hover:bg-rose-600 text-white py-2.5 rounded-xl font-bold uppercase"
+                  className="w-full bg-rose-500 hover:bg-rose-600 text-white py-2.5 rounded-xl font-bold text-xs"
                 >
                   बदल जतन करा
                 </button>
@@ -1614,7 +1614,7 @@ export default function AdminDashboard() {
               <form onSubmit={handleAddSection} className="space-y-4 text-xs font-semibold">
                 
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">विभाग ID (Section ID) *</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">विभाग ID (Section ID) *</label>
                   <input 
                     type="text" 
                     required
@@ -1626,7 +1626,7 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">विभाग शीर्षक (Title) *</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">विभाग शीर्षक (Title) *</label>
                   <input 
                     type="text" 
                     required
@@ -1638,7 +1638,7 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] text-brand-dark dark:text-slate-300 uppercase tracking-wider block">विभाग वर्णन (Description)</label>
+                  <label className="text-xs text-brand-dark dark:text-slate-300 font-semibold block">विभाग वर्णन (Description)</label>
                   <input 
                     type="text" 
                     value={newSectionDesc}
@@ -1650,7 +1650,7 @@ export default function AdminDashboard() {
 
                 <button 
                   type="submit"
-                  className="w-full bg-rose-500 hover:bg-rose-600 text-white py-2.5 rounded-xl font-bold uppercase"
+                  className="w-full bg-rose-500 hover:bg-rose-600 text-white py-2.5 rounded-xl font-bold text-xs"
                 >
                   विभाग तयार करा (Create)
                 </button>
@@ -1692,14 +1692,14 @@ function SectionConfigCard({ sec, idx, total, onToggle, onMove, onSave, onDelete
           <span className="w-6 h-6 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold text-slate-800 dark:text-slate-200 shrink-0">
             {sec.order}
           </span>
-          <span className="font-mono text-[9px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded uppercase tracking-wider shrink-0">
+          <span className="font-mono text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded shrink-0">
             ID: {sec.id}
           </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="space-y-1">
-            <label className="text-[9px] text-brand-muted dark:text-slate-400 block uppercase tracking-wider">शीर्षक (Title)</label>
+            <label className="text-xs text-brand-muted dark:text-slate-400 block">शीर्षक (Title)</label>
             <input 
               type="text" 
               value={title}
@@ -1708,7 +1708,7 @@ function SectionConfigCard({ sec, idx, total, onToggle, onMove, onSave, onDelete
             />
           </div>
           <div className="space-y-1">
-            <label className="text-[9px] text-brand-muted dark:text-slate-400 block uppercase tracking-wider">वर्णन (Description)</label>
+            <label className="text-xs text-brand-muted dark:text-slate-400 block">वर्णन (Description)</label>
             <input 
               type="text" 
               value={desc}
@@ -1723,7 +1723,7 @@ function SectionConfigCard({ sec, idx, total, onToggle, onMove, onSave, onDelete
         
         <button 
           onClick={() => onToggle(sec.id, !sec.visible)}
-          className={`p-2 rounded-xl border flex items-center gap-1.5 font-bold text-[10px] ${
+          className={`p-2 rounded-xl border flex items-center gap-1.5 font-bold text-xs ${
             sec.visible 
               ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300' 
               : 'bg-slate-50 text-slate-500 border-slate-200 dark:bg-slate-800 dark:text-slate-400'
@@ -1760,7 +1760,7 @@ function SectionConfigCard({ sec, idx, total, onToggle, onMove, onSave, onDelete
         <div className="flex gap-2">
           <button 
             onClick={() => onSave(sec.id, title, desc)}
-            className="py-2 px-3.5 bg-rose-500 hover:bg-rose-600 text-white rounded-xl font-bold text-[10px] shadow-sm uppercase"
+            className="py-2 px-3.5 bg-rose-500 hover:bg-rose-600 text-white rounded-xl font-bold text-xs shadow-sm"
           >
             जतन करा
           </button>

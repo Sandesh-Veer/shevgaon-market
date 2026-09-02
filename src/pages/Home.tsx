@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { db, Business, Section, WebsiteSettings } from '../services/db';
+import UniversalCard from '../components/ui/UniversalCard';
 import {
   Sparkles,
   ArrowRight,
@@ -332,7 +333,7 @@ export const offersList = [
     category: "मोबाईल शॉप",
     banner: "मोबाईल खरेदीवर ग्लासगार्ड आणि कव्हर मोफत",
     discount: "१५",
-    image: "https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80",
     secondsLeft: 300, // 5 min
     desc: "स्मार्टफोन्सवर १५% थेट सवलत आणि मोफत ॲक्सेसरीज मिळवा."
   }
@@ -713,60 +714,29 @@ export default function Home() {
               </div>
 
               {/* Standardized Grid cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <AnimatePresence mode="popLayout">
                   {filteredCrops.length > 0 ? (
                     filteredCrops.map((c) => (
-                      <motion.div
+                      <UniversalCard
                         key={c.id}
-                        layout
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        className="glass-card border border-white/70 p-3 sm:p-4 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer rounded-2xl"
-                        onClick={() => navigate(`/business/mandi/${c.id}`)}
-                      >
-                        <div>
-                          <div className="space-y-2 sm:space-y-3">
-                            <div className="relative aspect-square rounded-xl overflow-hidden bg-slate-100 border border-gray-100">
-                              <img src={c.logo || c.photos[0] || 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=300&q=80'} alt={c.description} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                              <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-md px-2.5 py-0.5 rounded-full text-xs font-semibold text-brand-purple border border-white/60">
-                                {c.cropCat || 'भाजीपाला'}
-                              </span>
-                            </div>
-
-                            <div className="px-1 text-xs space-y-1">
-                              <div className="flex justify-between items-center text-xs text-brand-muted">
-                                <span className="font-semibold truncate flex-1 min-w-0">{c.name}</span>
-                                <span className="flex items-center gap-0.5 text-brand-muted shrink-0 ml-2"><MapPin size={12} />{c.village}</span>
-                              </div>
-                              <h3 className="font-bold text-brand-dark text-sm sm:text-base mt-0.5 line-clamp-2">{c.description}</h3>
-                              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-2 pt-2 border-t border-gray-100/50 gap-1">
-                                <span className="font-mono font-bold text-slate-800 text-sm">₹{c.cropPrice} / {c.cropUnit}</span>
-                                <span className="text-brand-muted font-normal text-xs">उपलब्ध: {c.cropQty}</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Call / WhatsApp actions with WCAG touch target */}
-                        <div className="grid grid-cols-2 gap-2 mt-4 pt-2 border-t border-gray-100" onClick={(e) => e.stopPropagation()}>
-                          <a
-                            href={`tel:${c.phone}`}
-                            className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-dark font-semibold text-xs text-center flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors"
-                          >
-                            <Phone size={14} /> कॉल
-                          </a>
-                          <a
-                            href={`https://wa.me/${c.phone}?text=नमस्कार, मला तुमच्याकडील ${c.description} खरेदी करायचे आहे.`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="min-h-[40px] py-2 rounded-xl bg-emerald-500 text-white font-semibold text-xs text-center flex items-center justify-center gap-1.5 hover:bg-emerald-600 transition-colors shadow-sm shadow-emerald-500/10"
-                          >
-                            WhatsApp
-                          </a>
-                        </div>
-                      </motion.div>
+                        id={c.id}
+                        title={c.description}
+                        subtitle={c.name}
+                        location={c.village}
+                        categoryBadge={c.cropCat || 'भाजीपाला'}
+                        image={c.logo || c.photos[0] || 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=400&q=80'}
+                        phone={c.phone}
+                        whatsapp={c.phone}
+                        whatsappMessage={`नमस्कार, मला तुमच्याकडील ${c.description} खरेदी करायचे आहे.`}
+                        showWhatsappInsteadOfDetails={true}
+                        metaItems={[
+                          { label: 'दर', value: `₹${c.cropPrice} / ${c.cropUnit}`, highlight: true },
+                          { label: 'उपलब्ध', value: c.cropQty || 'उपलब्ध' }
+                        ]}
+                        detailsPath={`/business/mandi/${c.id}`}
+                        onCardClick={() => navigate(`/business/mandi/${c.id}`)}
+                      />
                     ))
                   ) : (
                     <div className="col-span-full text-center py-12 text-xs text-brand-muted">
@@ -784,36 +754,23 @@ export default function Home() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {businesses.filter(b => b.category === 'mandi' && b.cropCat === 'कृषी सेवा').map((s) => (
-                    <div
+                    <UniversalCard
                       key={s.id}
-                      onClick={() => navigate(`/business/mandi/${s.id}`)}
-                      className="glass-card p-4 sm:p-5 border border-white/70 shadow-sm flex flex-col justify-between gap-3 sm:gap-4 cursor-pointer hover:shadow-soft rounded-2xl"
-                    >
-                      <div className="space-y-1.5">
-                        <span className="text-xs font-semibold text-brand-purple bg-brand-purple/5 px-2 py-0.5 rounded-full inline-block">{s.cropQty === 'सक्रिय' ? 'कृषी सेवा' : s.cropCat}</span>
-                        <h3 className="font-bold text-brand-dark text-sm sm:text-base line-clamp-1">{s.name}</h3>
-                        <div className="flex items-center gap-1 text-xs">
-                          <div className="flex text-amber-400"><Star size={12} className="fill-amber-400" /></div>
-                          <span className="font-bold text-slate-800">{db.getAverageRating(s.id)}</span>
-                          <span className="text-brand-muted hidden sm:inline">({db.getReviewsForBusiness(s.id).length} पुनरावलोकने)</span>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100/50" onClick={(e) => e.stopPropagation()}>
-                        <a
-                          href={`tel:${s.phone}`}
-                          className="min-h-[40px] py-2 rounded-xl border border-gray-200 text-brand-dark text-xs font-semibold text-center flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors"
-                        >
-                          <Phone size={13} /> कॉल
-                        </a>
-                        <button
-                          onClick={() => navigate(`/business/mandi/${s.id}`)}
-                          className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-purple text-xs font-semibold text-center hover:bg-slate-50"
-                        >
-                          तपशील
-                        </button>
-                      </div>
-                    </div>
+                      id={s.id}
+                      title={s.name}
+                      location={s.village || 'शेवगांव'}
+                      categoryBadge={s.cropQty === 'सक्रिय' ? 'कृषी सेवा' : s.cropCat || 'कृषी सेवा'}
+                      categoryBadgeColor="bg-emerald-50/95 dark:bg-emerald-950/90 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
+                      image={s.logo || s.photos[0] || 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80'}
+                      rating={db.getAverageRating(s.id) || undefined}
+                      reviewsCount={db.getReviewsForBusiness(s.id).length}
+                      phone={s.phone}
+                      metaItems={[
+                        { label: 'प्रकार', value: s.description ? (s.description.length > 35 ? s.description.slice(0, 35) + '...' : s.description) : 'ट्रॅक्टर व अवजारे भाड्याने' }
+                      ]}
+                      detailsPath={`/business/mandi/${s.id}`}
+                      onCardClick={() => navigate(`/business/mandi/${s.id}`)}
+                    />
                   ))}
                 </div>
               </div>
@@ -848,58 +805,28 @@ export default function Home() {
               </div>
 
               {/* Technicians list */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-                {filteredTechnicians.map((t) => {
-                  const avgRating = db.getAverageRating(t.id);
-                  const totalReviews = db.getReviewsForBusiness(t.id).length;
-                  return (
-                    <div
-                      key={t.id}
-                      className="glass-card border border-white/70 p-3 sm:p-4 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer rounded-2xl"
-                      onClick={() => navigate(`/business/technician/${t.id}`)}
-                    >
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3">
-                          <img src={t.logo || t.photos[0] || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&h=150&q=80'} alt={t.name} className="w-11 h-11 rounded-full object-cover border border-gray-200 shadow-sm bg-slate-50 shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <h3 className="font-bold text-brand-dark text-sm sm:text-base truncate">{t.name}</h3>
-                            <span className="text-xs font-semibold text-brand-purple bg-brand-purple/5 px-2 py-0.5 rounded-full inline-block mt-0.5">
-                              {t.techCat || 'कारागीर'}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="space-y-1.5 text-xs">
-                          <div className="flex justify-between items-center text-brand-muted">
-                            <span>{t.techExp || '३+ वर्षे अनुभव'}</span>
-                            <span className="flex items-center gap-1 text-slate-800 font-bold text-xs">
-                              <Star size={12} className="fill-amber-400 text-amber-400" /> {avgRating} <span className="text-xs text-brand-muted font-normal">({totalReviews})</span>
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center text-xs text-brand-muted pt-1 border-t border-gray-100">
-                            <span>कामे: {t.techWorks || '५०+'}</span>
-                            <span className="font-bold text-emerald-600">उपलब्ध</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2 mt-4 pt-2 border-t border-gray-100" onClick={(e) => e.stopPropagation()}>
-                        <a
-                          href={`tel:${t.phone}`}
-                          className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-dark font-semibold text-xs text-center flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors"
-                        >
-                          <Phone size={13} /> कॉल
-                        </a>
-                        <button
-                          onClick={() => navigate(`/business/technician/${t.id}`)}
-                          className="min-h-[40px] py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-xs text-center transition-colors shadow-sm shadow-emerald-500/10"
-                        >
-                          तपशील
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {filteredTechnicians.map((t) => (
+                  <UniversalCard
+                    key={t.id}
+                    id={t.id}
+                    title={t.name}
+                    subtitle={t.techCat || 'कारागीर'}
+                    location={t.village || 'शेवगांव'}
+                    categoryBadge={t.techCat || 'कारागीर'}
+                    categoryBadgeColor="bg-purple-50/95 dark:bg-purple-950/90 text-brand-purple dark:text-purple-300 border border-purple-200 dark:border-purple-800"
+                    image={t.photos[0] || t.logo || 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=400&q=80'}
+                    rating={db.getAverageRating(t.id) || undefined}
+                    reviewsCount={db.getReviewsForBusiness(t.id).length}
+                    phone={t.phone}
+                    metaItems={[
+                      { label: 'अनुभव', value: t.techExp || '३+ वर्षे अनुभव' },
+                      { label: 'कामे', value: `${t.techWorks || '५०+'}+ पूर्ण` }
+                    ]}
+                    detailsPath={`/business/technician/${t.id}`}
+                    onCardClick={() => navigate(`/business/technician/${t.id}`)}
+                  />
+                ))}
               </div>
 
               {/* Material Suppliers */}
@@ -910,31 +837,21 @@ export default function Home() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {materials.map((m) => (
-                    <div
+                    <UniversalCard
                       key={m.id}
-                      onClick={() => navigate(`/business/material/${m.id}`)}
-                      className="glass-card p-4 sm:p-5 border border-white/70 shadow-sm flex flex-col justify-between gap-3 sm:gap-4 cursor-pointer hover:shadow-soft rounded-2xl"
-                    >
-                      <div className="space-y-1.5">
-                        <h3 className="font-bold text-brand-dark text-sm sm:text-base line-clamp-1">{m.name}</h3>
-                        <p className="text-xs text-brand-muted font-normal leading-relaxed line-clamp-2"><b>साहित्य:</b> {m.materialItems || m.description}</p>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100/50" onClick={(e) => e.stopPropagation()}>
-                        <a
-                          href={`tel:${m.phone}`}
-                          className="min-h-[40px] py-2 rounded-xl border border-gray-200 text-brand-dark text-xs font-semibold text-center flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors"
-                        >
-                          <Phone size={13} /> कॉल
-                        </a>
-                        <button
-                          onClick={() => navigate(`/business/material/${m.id}`)}
-                          className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-purple text-xs font-semibold text-center hover:bg-slate-50"
-                        >
-                          तपशील
-                        </button>
-                      </div>
-                    </div>
+                      id={m.id}
+                      title={m.name}
+                      location={m.village || 'शेवगांव'}
+                      categoryBadge="बांधकाम साहित्य"
+                      categoryBadgeColor="bg-amber-50/95 dark:bg-amber-950/90 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800"
+                      image={m.logo || m.photos[0] || 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=400&q=80'}
+                      phone={m.phone}
+                      metaItems={[
+                        { label: 'साहित्य', value: (m.materialItems || m.description || 'सिमेंट, वाळू, विटा').slice(0, 35) }
+                      ]}
+                      detailsPath={`/business/material/${m.id}`}
+                      onCardClick={() => navigate(`/business/material/${m.id}`)}
+                    />
                   ))}
                 </div>
               </div>
@@ -969,65 +886,50 @@ export default function Home() {
               </div>
 
               {/* Hotels grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {filteredHotels.map((h) => {
                   const avgRating = db.getAverageRating(h.id);
                   const totalReviews = db.getReviewsForBusiness(h.id).length;
                   return (
-                    <div
+                    <UniversalCard
                       key={h.id}
-                      className="glass-card border border-white/70 p-3 sm:p-4 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer rounded-2xl"
-                      onClick={() => navigate(`/business/hotel/${h.id}`)}
-                    >
-                      <div className="space-y-3">
-                        <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-slate-100 border border-gray-100">
-                          <img src={h.logo || h.photos[0] || 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80'} alt={h.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                          <span className={`absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-xs font-semibold border border-white/60 ${(h.hotelType || 'Veg') === 'Pure Veg' ? 'bg-emerald-50/90 text-emerald-700' :
-                            (h.hotelType || 'Veg') === 'Veg' ? 'bg-green-50/90 text-green-700' : 'bg-red-50/90 text-red-700'
-                            }`}>
-                            {h.hotelType || 'Veg'}
-                          </span>
-                        </div>
-
-                        <div className="px-1 text-xs space-y-1.5">
-                          <div className="flex justify-between items-center text-xs text-brand-muted">
-                            <span className="whitespace-nowrap">{h.openingTime} ते {h.closingTime}</span>
-                            <span className="flex items-center gap-1 text-slate-800 font-bold shrink-0">
-                              <Star size={12} className="fill-amber-400 text-amber-400" /> {avgRating} <span className="text-xs text-brand-muted font-normal">({totalReviews})</span>
-                            </span>
+                      id={h.id}
+                      title={h.name}
+                      location={`${h.village || 'शेवगांव'}, ${h.address || ''}`}
+                      categoryBadge={h.hotelType || 'Veg'}
+                      categoryBadgeColor={(h.hotelType || 'Veg') === 'Pure Veg' ? 'bg-emerald-50/90 text-emerald-700' : (h.hotelType || 'Veg') === 'Veg' ? 'bg-green-50/90 text-green-700' : 'bg-red-50/90 text-red-700'}
+                      image={h.logo || h.photos[0] || 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80'}
+                      rating={avgRating || undefined}
+                      reviewsCount={totalReviews}
+                      phone={h.phone}
+                      callLabel="ऑर्डर"
+                      detailsLabel="मेनू कार्ड"
+                      metaItems={[
+                        { label: 'वेळ', value: `${h.openingTime} ते ${h.closingTime}` }
+                      ]}
+                      extraContent={
+                        (h.hotelOffer || h.todaysSpecial) ? (
+                          <div className="space-y-1.5 pt-1">
+                            {h.hotelOffer && (
+                              <div className="bg-brand-purple/5 border border-brand-purple/20 p-1.5 rounded-xl text-brand-purple">
+                                <p className="text-xs font-semibold flex items-center gap-1 line-clamp-1">
+                                  🎁 {h.hotelOffer}
+                                </p>
+                              </div>
+                            )}
+                            {h.todaysSpecial && (
+                              <div className="bg-amber-50/60 border border-amber-200/50 p-1.5 rounded-xl">
+                                <p className="text-xs font-normal text-slate-700 line-clamp-1">
+                                  ⭐ <b>आजचे:</b> {h.todaysSpecial}
+                                </p>
+                              </div>
+                            )}
                           </div>
-                          <h3 className="font-bold text-brand-dark text-sm sm:text-base line-clamp-1">{h.name}</h3>
-                          <p className="text-brand-muted font-normal flex items-center gap-1 text-xs"><MapPin size={12} className="shrink-0" />{h.village}, {h.address}</p>
-
-                          <div className="bg-brand-purple/5 border border-brand-purple/20 p-2 rounded-xl text-brand-purple">
-                            <p className="text-xs font-semibold flex items-center gap-1 line-clamp-1">
-                              🎁 {h.hotelOffer || 'विशेष ऑफर'}
-                            </p>
-                          </div>
-
-                          <div className="bg-amber-50/60 border border-amber-200/50 p-2 rounded-xl">
-                            <p className="text-xs font-normal text-slate-700 line-clamp-1">
-                              ⭐ <b>आजचे:</b> {h.todaysSpecial}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2 mt-4 pt-2 border-t border-gray-100" onClick={(e) => e.stopPropagation()}>
-                        <button
-                          onClick={() => navigate(`/business/hotel/${h.id}`)}
-                          className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-purple font-semibold text-xs text-center hover:bg-slate-50"
-                        >
-                          मेनू कार्ड
-                        </button>
-                        <a
-                          href={`tel:${h.phone}`}
-                          className="min-h-[40px] py-2 rounded-xl bg-gradient-brand text-white font-semibold text-xs text-center flex items-center justify-center gap-1.5 shadow-sm"
-                        >
-                          <Phone size={13} /> ऑर्डर
-                        </a>
-                      </div>
-                    </div>
+                        ) : null
+                      }
+                      detailsPath={`/business/hotel/${h.id}`}
+                      onCardClick={() => navigate(`/business/hotel/${h.id}`)}
+                    />
                   );
                 })}
               </div>
@@ -1062,50 +964,24 @@ export default function Home() {
               </div>
 
               {/* Vehicles Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {filteredVehicles.map((v) => (
-                  <div
+                  <UniversalCard
                     key={v.id}
-                    className="glass-card border border-white/70 p-3 sm:p-4 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer rounded-2xl"
-                    onClick={() => navigate(`/business/vehicle/${v.id}`)}
-                  >
-                    <div className="space-y-3">
-                      <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-100 border border-gray-100">
-                        <img src={v.logo || v.photos[0] || 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf0a3?auto=format&fit=crop&w=400&q=80'} alt={v.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-md px-2.5 py-0.5 rounded-full text-xs font-semibold text-brand-purple border border-white/60">
-                          {v.vehicleCat || 'वाहन'}
-                        </span>
-                      </div>
-
-                      <div className="px-1 text-xs space-y-1">
-                        <div className="flex justify-between items-center text-xs text-brand-muted">
-                          <span>वर्ष: {v.vehicleYear || '२०२०'}</span>
-                          <span>{v.vehicleFuel || 'पेट्रोल'}</span>
-                        </div>
-                        <h3 className="font-bold text-brand-dark text-sm sm:text-base line-clamp-1">{v.name}</h3>
-                        <p className="text-brand-muted font-normal text-xs">{v.ownerName || 'स्थानिक'} | {v.village}</p>
-                        <p className="text-brand-muted font-normal text-xs">वापर: {v.vehicleKm || '० किमी'}</p>
-                        <div className="pt-1">
-                          <span className="font-mono font-bold text-brand-purple text-sm sm:text-base">₹{v.vehiclePrice}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2 mt-4 pt-2 border-t border-gray-100" onClick={(e) => e.stopPropagation()}>
-                      <a
-                        href={`tel:${v.phone}`}
-                        className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-dark font-semibold text-xs text-center flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors"
-                      >
-                        <Phone size={13} /> कॉल
-                      </a>
-                      <button
-                        onClick={() => navigate(`/business/vehicle/${v.id}`)}
-                        className="min-h-[40px] py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-xs transition-colors shadow-sm shadow-emerald-500/10"
-                      >
-                        तपशील
-                      </button>
-                    </div>
-                  </div>
+                    id={v.id}
+                    title={v.name}
+                    subtitle={v.ownerName || 'स्थानिक'}
+                    location={v.village || 'शेवगांव'}
+                    categoryBadge={v.vehicleCat || 'वाहन'}
+                    image={v.logo || v.photos[0] || 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf0a3?auto=format&fit=crop&w=400&q=80'}
+                    phone={v.phone}
+                    metaItems={[
+                      { label: 'किंमत', value: `₹${v.vehiclePrice}`, highlight: true },
+                      { label: 'वर्ष / इंधन', value: `${v.vehicleYear || '२०२०'} • ${v.vehicleFuel || 'पेट्रोल'}` }
+                    ]}
+                    detailsPath={`/business/vehicle/${v.id}`}
+                    onCardClick={() => navigate(`/business/vehicle/${v.id}`)}
+                  />
                 ))}
               </div>
 
@@ -1117,33 +993,23 @@ export default function Home() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {mechanics.map((m) => (
-                    <div
+                    <UniversalCard
                       key={m.id}
-                      onClick={() => navigate(`/business/mechanics/${m.id}`)}
-                      className="glass-card p-4 sm:p-5 border border-white/70 shadow-sm flex flex-col justify-between gap-3 sm:gap-4 cursor-pointer hover:shadow-soft rounded-2xl"
-                    >
-                      <div className="space-y-1.5">
-                        <h3 className="font-bold text-brand-dark text-sm sm:text-base line-clamp-1">{m.name}</h3>
-                        <p className="text-xs text-brand-purple font-semibold flex items-center gap-1">
-                          🚨 {m.mechanicEmergency || '२४x७ उपलब्ध'}
-                        </p>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100/50" onClick={(e) => e.stopPropagation()}>
-                        <a
-                          href={`tel:${m.phone}`}
-                          className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-dark text-xs font-semibold text-center flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors"
-                        >
-                          <Phone size={13} /> कॉल
-                        </a>
-                        <button
-                          onClick={() => navigate(`/business/mechanics/${m.id}`)}
-                          className="min-h-[40px] py-2 rounded-xl bg-white border border-gray-200 text-brand-purple text-xs font-semibold text-center hover:bg-slate-50"
-                        >
-                          तपशील
-                        </button>
-                      </div>
-                    </div>
+                      id={m.id}
+                      title={m.name}
+                      location={m.village || 'शेवगांव'}
+                      categoryBadge="मेकॅनिक"
+                      categoryBadgeColor="bg-slate-100 text-slate-800"
+                      statusBadge={m.mechanicEmergency || '२४x७ उपलब्ध'}
+                      statusBadgeColor="bg-rose-500 text-white"
+                      image={m.logo || m.photos[0] || 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=400&q=80'}
+                      phone={m.phone}
+                      metaItems={[
+                        { label: 'सेवा', value: m.description ? (m.description.length > 35 ? m.description.slice(0, 35) + '...' : m.description) : 'पंक्चर व गॅरेज' }
+                      ]}
+                      detailsPath={`/business/mechanics/${m.id}`}
+                      onCardClick={() => navigate(`/business/mechanics/${m.id}`)}
+                    />
                   ))}
                 </div>
               </div>
@@ -1188,45 +1054,35 @@ export default function Home() {
               </div>
 
               {/* Standardized Offers Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <AnimatePresence mode="popLayout">
                   {filteredOffers.length > 0 ? (
                     filteredOffers.map((o) => (
-                      <motion.div
+                      <UniversalCard
                         key={o.id}
-                        layout
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        className="glass-card border border-white/70 p-3 sm:p-4 shadow-sm flex flex-col justify-between group hover:shadow-soft cursor-pointer rounded-2xl"
-                        onClick={() => navigate(`/business/offers/${o.id}`)}
-                      >
-                        <div className="space-y-3">
-                          <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-slate-100 border border-gray-100">
-                            <img src={o.logo || o.photos[0] || 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80'} alt={o.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            <span className="absolute top-2 left-2 bg-rose-500 text-white font-bold text-xs px-2.5 py-0.5 rounded-full shadow-sm">
-                              {o.offerDiscount || '१०'}% सूट
-                            </span>
-                          </div>
-
-                          <div className="px-1 text-xs space-y-1.5">
-                            <div className="flex justify-between items-center text-brand-purple font-semibold text-xs">
-                              <span className="truncate flex-1 min-w-0">{o.name}</span>
-                              <span className="text-xs bg-slate-100 px-2 py-0.5 rounded-full text-slate-600 shrink-0 ml-2">ऑफर</span>
+                        id={o.id}
+                        title={o.offerBanner || 'मोठी सूट!'}
+                        subtitle={o.name}
+                        categoryBadge="ऑफर"
+                        statusBadge={`${o.offerDiscount || '१०'}% सूट`}
+                        statusBadgeColor="bg-rose-500 text-white font-bold"
+                        image={o.logo || o.photos[0] || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80'}
+                        phone={o.phone}
+                        metaItems={[
+                          { label: 'माहिती', value: (o.offerDesc || o.description || '').slice(0, 40) }
+                        ]}
+                        extraContent={
+                          <div className="pt-2 border-t border-gray-100/80 space-y-1.5">
+                            <div className="flex justify-between items-center text-xs text-brand-muted">
+                              <span>वेळ सीमित:</span>
+                              <span className="font-bold text-rose-500">त्वरा करा!</span>
                             </div>
-                            <h3 className="font-bold text-brand-dark text-sm sm:text-base line-clamp-1">{o.offerBanner || 'मोठी सूट!'}</h3>
-                            <p className="text-brand-muted font-normal leading-relaxed text-xs line-clamp-2">{o.offerDesc || o.description}</p>
+                            <Countdown seconds={7200} />
                           </div>
-                        </div>
-
-                        <div className="mt-4 pt-2 border-t border-gray-100 space-y-2">
-                          <div className="flex justify-between items-center text-xs text-brand-muted">
-                            <span>वेळ सीमित:</span>
-                            <span className="font-bold text-rose-500">त्वरा करा!</span>
-                          </div>
-                          <Countdown seconds={7200} />
-                        </div>
-                      </motion.div>
+                        }
+                        detailsPath={`/business/offers/${o.id}`}
+                        onCardClick={() => navigate(`/business/offers/${o.id}`)}
+                      />
                     ))
                   ) : (
                     <div className="col-span-full text-center py-12 text-xs text-brand-muted">

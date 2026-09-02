@@ -433,14 +433,14 @@ export default function VendorDashboard() {
             <Settings size={24} className="text-brand-purple" />
           </div>
           <div>
-            <h2 className="text-2xl font-extrabold text-brand-dark">भागीदार डॅशबोर्ड</h2>
+            <h1 className="text-2xl font-extrabold text-brand-dark">भागीदार डॅशबोर्ड</h1>
             <p className="text-xs text-brand-muted font-light mt-0.5">तुमचे व्यवसाय व्यवस्थापित करा आणि नवीन जाहिराती प्रसिद्ध करा.</p>
           </div>
         </div>
 
         <button 
           onClick={openAddModal}
-          className="bg-gradient-brand text-white font-semibold py-3 px-5 rounded-xl hover:shadow-[0_8px_20px_rgba(79,124,255,0.25)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 self-start sm:self-auto text-xs uppercase tracking-wider"
+          className="bg-gradient-brand text-white font-semibold py-3 px-5 rounded-xl hover:shadow-[0_8px_20px_rgba(79,124,255,0.25)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 self-start sm:self-auto text-xs font-bold"
         >
           <Plus size={16} /> नवीन व्यवसाय जोडा
         </button>
@@ -448,7 +448,7 @@ export default function VendorDashboard() {
 
       {/* Title */}
       <div className="space-y-1 border-b border-gray-200/60 pb-3">
-        <h3 className="text-lg font-bold text-brand-dark">माझे नोंदणीकृत व्यवसाय</h3>
+        <h2 className="text-lg font-bold text-brand-dark">माझे नोंदणीकृत व्यवसाय</h2>
         <p className="text-xs text-brand-muted font-light">खाली तुमचे चालू असलेले दुकान किंवा सेवा दिसत आहेत. तुम्ही ते कधीही बदलू किंवा हटवू शकता.</p>
       </div>
 
@@ -500,7 +500,7 @@ export default function VendorDashboard() {
                     </div>
                   )}
                   <div className="space-y-1">
-                    <h4 className="font-extrabold text-brand-dark text-base">{biz.name}</h4>
+                    <h3 className="font-extrabold text-brand-dark text-base">{biz.name}</h3>
                     <p className="text-xs text-brand-muted font-light line-clamp-2 leading-relaxed">{biz.description}</p>
                   </div>
                 </div>
@@ -630,7 +630,7 @@ export default function VendorDashboard() {
                               />
                               <button
                                 type="submit"
-                                className="px-3.5 py-1.5 bg-gradient-brand text-white rounded-xl font-semibold text-[10px] hover:shadow-md transition-all uppercase tracking-wider"
+                                className="px-3.5 py-1.5 bg-gradient-brand text-white rounded-xl font-semibold text-xs hover:shadow-md transition-all"
                               >
                                 उत्तर पाठवा (Submit Reply)
                               </button>
@@ -673,9 +673,9 @@ export default function VendorDashboard() {
               </button>
 
               <div className="mb-6 space-y-1">
-                <h3 className="text-xl font-extrabold text-brand-dark">
+                <h2 className="text-xl font-extrabold text-brand-dark">
                   {editingId ? 'व्यवसाय संपादन करा (Edit)' : 'नवीन व्यवसाय जोडा (Add Business)'}
-                </h3>
+                </h2>
                 <p className="text-xs text-brand-muted font-light">खालील फॉर्म काळजीपूर्वक भरा. सर्व माहिती तात्काळ ग्राहकांसाठी प्रसिद्ध केली जाईल.</p>
               </div>
 
@@ -684,7 +684,7 @@ export default function VendorDashboard() {
                 {/* 1. Category and Shop details */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">व्यवसायाची श्रेणी (Category) *</label>
+                    <label className="text-xs text-brand-dark font-bold">व्यवसायाची श्रेणी (Category) *</label>
                     <select 
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
@@ -710,7 +710,7 @@ export default function VendorDashboard() {
                   </div>
                   
                   <div className="space-y-1">
-                    <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">व्यवसाय / दुकानाचे नाव *</label>
+                    <label className="text-xs text-brand-dark font-bold">व्यवसाय / दुकानाचे नाव *</label>
                     <input 
                       type="text"
                       value={name}
@@ -1098,7 +1098,7 @@ export default function VendorDashboard() {
 
                 {/* Google Maps Link */}
                 <div className="space-y-1">
-                  <label className="text-xs text-brand-dark font-bold uppercase tracking-wider">गुगल मॅप्स लोकेशन लिंक (Pin Location)</label>
+                  <label className="text-xs text-brand-dark font-bold">गुगल मॅप्स लोकेशन लिंक (Pin Location)</label>
                   <div className="relative">
                     <input 
                       type="text"
@@ -1116,13 +1116,13 @@ export default function VendorDashboard() {
                   <button 
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-5 py-3 border border-gray-200 rounded-xl text-brand-muted hover:bg-slate-50 transition-all font-semibold text-xs uppercase"
+                    className="px-5 py-3 border border-gray-200 rounded-xl text-brand-muted hover:bg-slate-50 transition-all font-semibold text-xs"
                   >
                     रद्द करा
                   </button>
                   <button 
                     type="submit"
-                    className="px-6 py-3 bg-gradient-brand text-white rounded-xl hover:shadow-[0_8px_20px_rgba(79,124,255,0.25)] transition-all font-semibold text-xs uppercase"
+                    className="px-6 py-3 bg-gradient-brand text-white rounded-xl hover:shadow-[0_8px_20px_rgba(79,124,255,0.25)] transition-all font-semibold text-xs"
                   >
                     व्यवसाय जतन करा (Save)
                   </button>

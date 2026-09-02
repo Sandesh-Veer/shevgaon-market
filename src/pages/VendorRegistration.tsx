@@ -17,7 +17,7 @@ export default function VendorRegistration() {
     <div className="max-w-md mx-auto space-y-8 pt-6 pb-16 px-4 text-left">
       {/* Page Title */}
       <div className="text-center space-y-2">
-        <span className="text-xs font-bold uppercase tracking-widest text-brand-purple">भागीदार नोंदणी</span>
+        <span className="text-xs font-bold text-brand-purple">भागीदार नोंदणी</span>
         <h1 className="text-3xl font-extrabold text-brand-dark">आमच्या नेटवर्कमध्ये सामील व्हा</h1>
         <p className="text-sm text-brand-muted max-w-xs mx-auto font-light">
           तुमची डिजिटल प्रोफाईल तयार करा आणि काही मिनिटांतच ग्राहकांपर्यंत पोहोचा.

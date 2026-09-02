@@ -103,43 +103,7 @@ function AppContent() {
     setOpenGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }));
   };
 
-  const sidebarItems = sidebarGroups.flatMap(g => g.items).filter(i => !!i.href);��र्क (Contact)', href: 'contact' }
-      ]
-    }
-  ];
-
-
-
-
-
-
-  // done
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
-    market: true,
-    services: true,
-    info: true,
-  });
-
-  const toggleNavGroup = (groupId: string) => {
-    setOpenGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }));
-  };
-
-  const sidebarItems = sidebarGroups.flatMap(g => g.items);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // done
+  const sidebarItems = sidebarGroups.flatMap(g => g.items).filter(i => !!i.href);
 
   // Scroll to section helper
   const handleSidebarClick = (href: string) => {
@@ -178,6 +142,7 @@ function AppContent() {
       const scrollPosition = window.scrollY + 200;
 
       for (const item of sidebarItems) {
+        if (!item.href) continue;
         const el = document.getElementById(item.href);
         if (el) {
           const top = el.offsetTop;
@@ -300,13 +265,18 @@ function AppContent() {
               <button
                 type="button"
                 onClick={() => toggleNavGroup(group.id)}
-                className="w-full flex items-center justify-between px-2 py-1.5 text-xs uppercase font-bold text-slate-500 dark:text-slate-400 tracking-wider hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
+                className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors"
               >
                 <span>{group.title}</span>
-                <ChevronDown
-                  size={14}
-                  className={`transition-transform duration-200 ${openGroups[group.id] ? 'rotate-0' : '-rotate-90'}`}
-                />
+                <span className="flex items-center gap-1.5">
+                  <span className="text-xs font-semibold px-1.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400">
+                    {group.items.length}
+                  </span>
+                  <ChevronDown
+                    size={14}
+                    className={`transition-transform duration-200 ${openGroups[group.id] ? 'rotate-0' : '-rotate-90'}`}
+                  />
+                </span>
               </button>
 
               {openGroups[group.id] && (
@@ -314,9 +284,17 @@ function AppContent() {
                   {group.items.map((item) => (
                     <button
                       key={item.id}
-                      onClick={() => handleSidebarClick(item.href)}
+                      onClick={() => {
+                        if (item.link) {
+                          navigate(item.link);
+                          if (window.innerWidth < 1024) setIsSidebarOpen(false);
+                        } else if (item.href) {
+                          handleSidebarClick(item.href);
+                        }
+                      }}
                       className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-all duration-200 ${
-                        activeSection === item.href && location.pathname === '/home'
+                        (item.href && activeSection === item.href && location.pathname === '/home') ||
+                        (item.link && location.pathname === item.link)
                           ? 'bg-gradient-brand text-white shadow-sm shadow-brand-blue/20'
                           : 'text-slate-600 dark:text-slate-300 hover:text-brand-purple dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-slate-800/60'
                       }`}
