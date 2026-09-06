@@ -21,6 +21,13 @@ export interface UserProfile {
   updatedAt?: any;
 }
 
+export interface MerchantSession {
+  phoneNumber: string;
+  shopName: string;
+  ownerName?: string;
+  loginAt: string;
+}
+
 interface AuthContextType {
   user: User | null;
   userProfile: UserProfile | null;
@@ -31,6 +38,11 @@ interface AuthContextType {
   sendOtp: (phoneNumber: string) => Promise<boolean>;
   verifyOtp: (otpCode: string) => Promise<{ success: boolean; role: UserRole; error?: string }>;
   logout: () => Promise<void>;
+  // Dedicated Shopkeeper (Merchant) Auth
+  merchantSession: MerchantSession | null;
+  isMerchantLoggedIn: boolean;
+  loginMerchant: (phoneNumber: string, shopName?: string, pin?: string) => Promise<{ success: boolean; error?: string }>;
+  logoutMerchant: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -42,6 +54,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState<boolean>(true);
   const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
   const [recaptchaVerifier, setRecaptchaVerifier] = useState<RecaptchaVerifierType | null>(null);
+
+  // Dedicated Merchant Auth State (persisted in localStorage)
+  const [merchantSession, setMerchantSession] = useState<MerchantSession | null>(() => {
+    try {
+      const saved = localStorage.getItem('shevgaon_merchant_session');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const isMerchantLoggedIn = Boolean(
+    merchantSession || (user && (role === 'merchant' || role === 'admin'))
+  );
 
   const adminPhoneNumber = import.meta.env.VITE_ADMIN_PHONE_NUMBER || '+919876543210';
 
@@ -179,12 +205,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const loginMerchant = async (
+    phoneNumber: string,
+    shopName: string = '',
+    pin?: string
+  ): Promise<{ success: boolean; error?: string }> => {
+    const cleanPhone = phoneNumber.replace(/\D/g, '');
+    if (cleanPhone.length !== 10) {
+      return { success: false, error: 'कृपया १० अंकी वैध मोबाईल नंबर प्रविष्ट करा.' };
+    }
+
+    if (pin && pin.length < 4) {
+      return { success: false, error: 'कृपया किमान ४-अंकी सुरक्षा पासवर्ड / पिन प्रविष्ट करा.' };
+    }
+
+    const newSession: MerchantSession = {
+      phoneNumber: cleanPhone,
+      shopName: shopName.trim() || 'माझे दुकान (My Shop)',
+      loginAt: new Date().toISOString()
+    };
+
+    localStorage.setItem('shevgaon_merchant_session', JSON.stringify(newSession));
+    setMerchantSession(newSession);
+    return { success: true };
+  };
+
+  const logoutMerchant = () => {
+    localStorage.removeItem('shevgaon_merchant_session');
+    setMerchantSession(null);
+  };
+
   const logout = async () => {
     await signOut(auth);
     setUser(null);
     setUserProfile(null);
     setRole(null);
     setConfirmationResult(null);
+    logoutMerchant();
   };
 
   return (
@@ -198,7 +255,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setupRecaptcha,
         sendOtp,
         verifyOtp,
-        logout
+        logout,
+        merchantSession,
+        isMerchantLoggedIn,
+        loginMerchant,
+        logoutMerchant
       }}
     >
       {children}

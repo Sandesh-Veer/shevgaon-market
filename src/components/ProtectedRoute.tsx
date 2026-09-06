@@ -6,10 +6,17 @@ import { ShieldAlert, Loader2 } from 'lucide-react';
 interface ProtectedRouteProps {
   children: React.ReactNode;
   allowedRoles?: UserRole[];
+  redirectTo?: string;
+  requireMerchant?: boolean;
 }
 
-export default function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
-  const { user, role, loading } = useAuth();
+export default function ProtectedRoute({
+  children,
+  allowedRoles,
+  redirectTo,
+  requireMerchant = false,
+}: ProtectedRouteProps) {
+  const { user, role, loading, isMerchantLoggedIn } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -23,14 +30,41 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
     );
   }
 
-  // Not logged in
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  // Determine if this is a shopkeeper / merchant route
+  const isMerchantRoute =
+    requireMerchant ||
+    location.pathname.startsWith('/merchant-') ||
+    location.pathname.startsWith('/vendor/') ||
+    location.pathname === '/add-shop' ||
+    redirectTo === '/merchant-login';
+
+  // 1. Merchant Route Protection: Check if authenticated as a shopkeeper
+  if (isMerchantRoute) {
+    if (!isMerchantLoggedIn && !user) {
+      return (
+        <Navigate
+          to={redirectTo || '/merchant-login'}
+          state={{ from: location }}
+          replace
+        />
+      );
+    }
+    return <>{children}</>;
   }
 
-  // Role restriction check
+  // 2. Generic User Protection
+  if (!user && !isMerchantLoggedIn) {
+    return (
+      <Navigate
+        to={redirectTo || '/login'}
+        state={{ from: location }}
+        replace
+      />
+    );
+  }
+
+  // 3. Role restriction check
   if (allowedRoles && role && !allowedRoles.includes(role)) {
-    // If merchant trying to access admin dashboard, strictly redirect to merchant-profile
     if (role === 'merchant' && location.pathname.startsWith('/admin')) {
       return (
         <div className="max-w-md mx-auto my-12 p-8 glass-card border border-rose-200 dark:border-rose-950 text-center space-y-6">
@@ -42,10 +76,10 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
               प्रवेश नाकारला (Access Restricted)
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              तुम्हाला प्रशासक (Admin) पॅनेलमध्ये प्रवेश करण्याची परवानगी नाही. तुम्हाला तुमच्या विक्रेता प्रोफाईलवर पुनर्निर्देशित केले जात आहे.
+              तुम्हाला प्रशासक (Admin) पॅनेलमध्ये प्रवेश करण्याची परवानगी नाही.
             </p>
           </div>
-          <Navigate to="/merchant-profile" replace />
+          <Navigate to="/merchant-dashboard" replace />
         </div>
       );
     }

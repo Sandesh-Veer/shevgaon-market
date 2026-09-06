@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldAlert, X, Store, ChevronDown } from 'lucide-react';
-import Header from './components/layout/Header';
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import MainLayout from './components/layout/MainLayout';
 import Home from './pages/Home';
 import WelcomeLanding from './pages/WelcomeLanding';
 import LoginRegistration from './pages/LoginRegistration';
+import MerchantLogin from './pages/MerchantLogin';
 import VendorDashboard from './pages/VendorDashboard';
 import VendorRegistration from './pages/VendorRegistration';
 import BusinessDetail from './pages/BusinessDetail';
@@ -18,120 +17,11 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 function AppContent() {
   const location = useLocation();
-  const navigate = useNavigate();
 
-  const isLandingPage = location.pathname === '/' || location.pathname === '/welcome' || location.pathname === '/landing';
-
-  // Responsive sidebar state (collapsible on desktop & mobile)
-  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
-    return window.innerWidth >= 1024;
-  });
-  const [activeSection, setActiveSection] = useState('home');
-
-  // 4 Logical Collapsible Navigation Groups
-  interface SidebarItem {
-    id: string;
-    label: string;
-    href?: string;
-    link?: string;
-    icon?: string;
-  }
-
-  interface SidebarGroup {
-    id: string;
-    title: string;
-    items: SidebarItem[];
-  }
-
-  const sidebarGroups: SidebarGroup[] = [
-    {
-      id: 'market',
-      title: '🌾 बाजार आणि शेती',
-      items: [
-        { id: 'home', label: '🏠 Home (मुख्य पान)', href: 'home' },
-        { id: 'shetkari', label: '👨‍🌾 शेतकरी व भाजीपाला (Farmers)', href: 'shetkari' },
-        { id: 'offers', label: '🛍️ ऑफर्स आणि सेल (Offers)', href: 'offers' },
-      ]
-    },
-    {
-      id: 'services',
-      title: '🛠️ स्थानिक सेवा आणि दुकाने',
-      items: [
-        { id: 'gharguti-seva', label: '🛠️ घरगुती सेवा (Home Services)', href: 'gharguti-seva' },
-        { id: 'hotel', label: '🍔 हॉटेल्स आणि फूड (Hotels)', href: 'hotel' },
-        { id: 'vehicle', label: '🚗 वाहने आणि गॅरेज (Vehicles)', href: 'vehicle' },
-        { id: 'water', label: '🚰 वॉटर जार सेवा (Water Jar)', href: 'water' },
-        { id: 'beauty', label: '💇‍♀️ ब्युटी पार्लर (Beauty Parlour)', href: 'beauty' },
-        { id: 'cyber', label: '💻 सायबर कॅफे (Cyber Cafe)', href: 'cyber' },
-        { id: 'mess', label: '🍲 मेस व खानावळ (Mess)', href: 'mess' },
-        { id: 'photoshop', label: '📸 फोटो स्टुडिओ (Photoshop Studio)', href: 'photoshop' },
-        { id: 'gym', label: '🏋️‍♂️ जिम व फिटनेस (Gym & Fitness)', href: 'gym' },
-        { id: 'hospital', label: '🏥 हॉस्पिटल व आरोग्य (Hospital)', href: 'hospital' },
-        { id: 'mobileshop', label: '📱 मोबाईल शॉप (Mobile Shop)', href: 'mobileshop' },
-        { id: 'sweethome', label: '🧁 स्वीट होम व बेकरी (Sweet Home)', href: 'sweethome' },
-      ]
-    },
-    {
-      id: 'admin',
-      title: '⚙️ प्रशासक आणि भागीदार',
-      items: [
-        { id: 'add-shop', label: '🏪 दुकान नोंदणी करा (Add Shop)', link: '/add-shop' },
-        { id: 'vendor-register', label: '📝 भागीदार नोंदणी (Partner Register)', link: '/vendor/register' },
-        { id: 'vendor-dashboard', label: '💼 भागीदार डॅशबोर्ड (Vendor Dashboard)', link: '/vendor/dashboard' },
-        { id: 'admin-panel', label: '🛡️ प्रशासक पॅनेल (Admin Panel)', link: '/admin' },
-        { id: 'welcome-page', label: '✨ वेल्कम स्क्रीन (Welcome Page)', link: '/welcome' },
-      ]
-    },
-    {
-      id: 'support',
-      title: '📞 माहिती व सहाय्य',
-      items: [
-        { id: 'reviews', label: '⭐ ग्राहक अभिप्राय (Reviews)', href: 'reviews' },
-        { id: 'contact', label: '📞 संपर्क व मदत (Contact & Help)', href: 'contact' }
-      ]
-    }
-  ];
-
-
-
-
-
-  // done
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
-    market: true,
-    services: true,
-    admin: true,
-    support: true,
-  });
-
-  const toggleNavGroup = (groupId: string) => {
-    setOpenGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }));
-  };
-
-  const sidebarItems = sidebarGroups.flatMap(g => g.items).filter(i => !!i.href);
-
-  // Scroll to section helper
-  const handleSidebarClick = (href: string) => {
-    if (window.innerWidth < 1024) {
-      setIsSidebarOpen(false);
-    }
-    setActiveSection(href);
-
-    if (location.pathname !== '/home') {
-      navigate('/home');
-      setTimeout(() => {
-        const element = document.getElementById(href);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 300);
-    } else {
-      const element = document.getElementById(href);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
+  const isLandingPage =
+    location.pathname === '/' ||
+    location.pathname === '/welcome' ||
+    location.pathname === '/landing';
 
   // Initialize theme from localStorage on initial load
   useEffect(() => {
@@ -139,48 +29,6 @@ function AppContent() {
       document.documentElement.classList.add('dark');
     }
   }, []);
-
-  // Listen to window scroll to update active scrollspy section
-  useEffect(() => {
-    const handleScroll = () => {
-      if (location.pathname !== '/home') return;
-      const scrollPosition = window.scrollY + 200;
-
-      for (const item of sidebarItems) {
-        if (!item.href) continue;
-        const el = document.getElementById(item.href);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(item.href);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [location.pathname]);
-
-  // Window resize handler to sync sidebar on breakpoint shifts
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setIsSidebarOpen(true);
-      } else {
-        setIsSidebarOpen(false);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(prev => !prev);
-  };
 
   // Dedicated Fullscreen Landing Page rendering
   if (isLandingPage) {
@@ -197,223 +45,61 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans relative overflow-x-hidden selection:bg-brand-purple/20 selection:text-brand-purple flex">
+    <MainLayout>
       {/* Global Offline Network Status Overlay */}
       <OfflineFallback />
 
-      {/* Animated Background Blobs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <motion.div
-          animate={{
-            x: [0, 40, -20, 0],
-            y: [0, -60, 40, 0],
-            scale: [1, 1.2, 0.9, 1],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-gradient-to-br from-brand-blue/15 to-transparent blur-[120px]"
+      {/* Pages Content */}
+      <Routes>
+        {/* Public & Customer Routes */}
+        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<LoginRegistration />} />
+        <Route path="/business/:category/:id" element={<BusinessDetail />} />
+        <Route path="/vendor/register" element={<VendorRegistration />} />
+
+        {/* 1. Dedicated Shopkeeper (Merchant) Login */}
+        <Route path="/merchant-login" element={<MerchantLogin />} />
+
+        {/* 2. Protected Merchant Dashboard & Shop Management */}
+        <Route
+          path="/merchant-dashboard"
+          element={
+            <ProtectedRoute redirectTo="/merchant-login">
+              <VendorDashboard />
+            </ProtectedRoute>
+          }
         />
-        <motion.div
-          animate={{
-            x: [0, -30, 50, 0],
-            y: [0, 50, -40, 0],
-            scale: [1, 0.9, 1.1, 1],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute top-[20%] right-[-10%] w-[45vw] h-[45vw] rounded-full bg-gradient-to-bl from-brand-purple/15 to-transparent blur-[120px]"
+        <Route
+          path="/vendor/dashboard"
+          element={
+            <ProtectedRoute redirectTo="/merchant-login">
+              <VendorDashboard />
+            </ProtectedRoute>
+          }
         />
-      </div>
+        <Route
+          path="/merchant-profile"
+          element={
+            <ProtectedRoute redirectTo="/merchant-login">
+              <MerchantProfile />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* A. DESKTOP & MOBILE RESPONSIVE SIDEBAR */}
-      <aside
-        className={`fixed left-0 top-0 h-screen w-64 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-r border-gray-200/50 dark:border-slate-800 z-50 flex flex-col justify-between transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } shadow-2xl lg:shadow-none p-5 text-left`}
-      >
-        {/* Sidebar Header with Brand & Close Button */}
-        <div className="flex justify-between items-center pb-4 border-b border-gray-200/50 dark:border-slate-800 shrink-0">
-          <Link
-            to="/home"
-            onClick={() => handleSidebarClick('home')}
-            className="flex items-center gap-2 group shrink-0"
-          >
-            <span className="w-8.5 h-8.5 rounded-lg bg-gradient-brand flex items-center justify-center text-white font-bold text-base shadow-sm group-hover:scale-105 transition-transform duration-300">
-              S
-            </span>
-            <span className="text-base font-display font-bold tracking-tight text-brand-dark dark:text-white">
-              Shevgaon<span className="text-brand-blue">.</span>Market
-            </span>
-          </Link>
+        {/* 3. Shopkeeper Add Shop (Protected Behind Merchant Login) */}
+        <Route
+          path="/add-shop"
+          element={
+            <ProtectedRoute redirectTo="/merchant-login">
+              <AddShopPage />
+            </ProtectedRoute>
+          }
+        />
 
-          <button
-            onClick={toggleSidebar}
-            className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-            title="नेव्हिगेशन बंद करा"
-          >
-            <X size={16} />
-          </button>
-        </div>
-
-
-
-{/* done */}
-        {/* Scrollable Navigation Options List (Grouped Accordion) */}
-        <div className="flex-1 overflow-y-auto max-h-[calc(100vh-140px)] py-3 pr-1 space-y-3 custom-scrollbar">
-          {sidebarGroups.map((group) => (
-            <div key={group.id} className="space-y-1">
-              <button
-                type="button"
-                onClick={() => toggleNavGroup(group.id)}
-                className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors"
-              >
-                <span>{group.title}</span>
-                <span className="flex items-center gap-1.5">
-                  <span className="text-xs font-semibold px-1.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400">
-                    {group.items.length}
-                  </span>
-                  <ChevronDown
-                    size={14}
-                    className={`transition-transform duration-200 ${openGroups[group.id] ? 'rotate-0' : '-rotate-90'}`}
-                  />
-                </span>
-              </button>
-
-              {openGroups[group.id] && (
-                <nav className="space-y-0.5">
-                  {group.items.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => {
-                        if (item.link) {
-                          navigate(item.link);
-                          if (window.innerWidth < 1024) setIsSidebarOpen(false);
-                        } else if (item.href) {
-                          handleSidebarClick(item.href);
-                        }
-                      }}
-                      className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-all duration-200 ${
-                        (item.href && activeSection === item.href && location.pathname === '/home') ||
-                        (item.link && location.pathname === item.link)
-                          ? 'bg-gradient-brand text-white shadow-sm shadow-brand-blue/20'
-                          : 'text-slate-600 dark:text-slate-300 hover:text-brand-purple dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-slate-800/60'
-                      }`}
-                    >
-                      <span>{item.label}</span>
-                    </button>
-                  ))}
-                </nav>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Footer actions inside Sidebar */}
-        <div className="space-y-2 pt-4 border-t border-gray-200/50 dark:border-slate-800 shrink-0">
-          <Link
-            to="/welcome"
-            onClick={() => {
-              if (window.innerWidth < 1024) setIsSidebarOpen(false);
-            }}
-            className="w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 text-amber-600 dark:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 transition-colors"
-          >
-            ✨ वेल्कम स्क्रीन (Welcome Page)
-          </Link>
-
-          <Link
-            to="/add-shop"
-            onClick={() => {
-              if (window.innerWidth < 1024) setIsSidebarOpen(false);
-            }}
-            className="w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 text-brand-purple dark:text-purple-300 bg-brand-purple/10 hover:bg-brand-purple/20 transition-colors"
-          >
-            <Store size={15} />
-            दुकान नोंदणी करा (Add Shop)
-          </Link>
-
-          <Link
-            to="/admin"
-            onClick={() => {
-              if (window.innerWidth < 1024) setIsSidebarOpen(false);
-            }}
-            className="w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 text-rose-600 dark:text-rose-400 bg-rose-50/60 dark:bg-rose-950/30 hover:bg-rose-100 dark:hover:bg-rose-900/50 transition-colors"
-          >
-            <ShieldAlert size={15} />
-            प्रशासक पॅनेल (Admin)
-          </Link>
-          <p className="text-xs text-slate-400 dark:text-slate-500 font-normal px-2 pt-1">© {new Date().getFullYear()} Shevgaon Market</p>
-        </div>
-      </aside>
-
-      {/* Backdrop overlay for mobile drawer */}
-      <AnimatePresence>
-        {isSidebarOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={toggleSidebar}
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 lg:hidden"
-          />
-        )}
-      </AnimatePresence>
-
-      {/* MAIN RIGHT CONTAINER */}
-      <div
-        className={`relative z-10 flex flex-col min-h-screen flex-grow transition-all duration-300 ease-in-out overflow-x-hidden w-full ${isSidebarOpen ? 'lg:pl-64' : 'lg:pl-0'
-          }`}
-      >
-        {/* Sticky Header with Hamburger trigger */}
-        <Header onMenuToggle={toggleSidebar} />
-
-        {/* Pages Content */}
-        <main className="flex-grow w-full max-w-7xl mx-auto px-4 md:px-8 py-6 overflow-x-hidden">
-          <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route path="/login" element={<LoginRegistration />} />
-
-            {/* Protected Merchant Routes */}
-            <Route
-              path="/merchant-profile"
-              element={
-                <ProtectedRoute allowedRoles={['merchant', 'admin']}>
-                  <MerchantProfile />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/vendor/dashboard"
-              element={
-                <ProtectedRoute allowedRoles={['merchant', 'admin']}>
-                  <VendorDashboard />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route path="/vendor/register" element={<VendorRegistration />} />
-            <Route path="/add-shop" element={<AddShopPage />} />
-            <Route path="/business/:category/:id" element={<BusinessDetail />} />
-
-            {/* Strict Protected Admin Route */}
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </main>
-
-      </div>
-
-    </div>
+        {/* 4. Admin Panel Route (Handles its own secure login session) */}
+        <Route path="/admin" element={<AdminDashboard />} />
+      </Routes>
+    </MainLayout>
   );
 }
 
