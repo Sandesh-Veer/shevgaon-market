@@ -79,11 +79,11 @@ export const UniversalCard: React.FC<UniversalCardProps> = ({
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.2 }}
       onClick={onCardClick}
-      className={`glass-card border border-white/80 dark:border-slate-800/80 p-3.5 sm:p-4 shadow-sm flex flex-col justify-between group hover:shadow-soft hover:-translate-y-1 transition-all duration-300 cursor-pointer rounded-2xl bg-white/70 dark:bg-slate-900/60 backdrop-blur-md ${className}`}
+      className={`glass-card border border-white/80 dark:border-slate-800/80 p-2 sm:p-4 shadow-sm flex flex-col justify-between group hover:shadow-soft hover:-translate-y-1 transition-all duration-300 cursor-pointer rounded-xl sm:rounded-2xl bg-white/70 dark:bg-slate-900/60 backdrop-blur-md overflow-hidden ${className}`}
     >
-      <div className="space-y-3">
-        {/* Unified Aspect Ratio Image Container (16/10) */}
-        <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-gray-100/80 dark:border-slate-700/60 shadow-inner">
+      <div className="space-y-2 sm:space-y-3">
+        {/* Compact Responsive Image Container (h-24 on mobile, h-32 on desktop) */}
+        <div className="relative h-24 sm:h-32 w-full rounded-lg sm:rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-gray-100/80 dark:border-slate-700/60 shadow-inner">
           <img
             src={image}
             alt={title}
@@ -94,7 +94,7 @@ export const UniversalCard: React.FC<UniversalCardProps> = ({
           {/* Floating Category Badge */}
           {categoryBadge && (
             <span
-              className={`absolute top-2 left-2 backdrop-blur-md px-2.5 py-0.5 rounded-full text-xs font-bold shadow-xs tracking-tight ${categoryBadgeColor}`}
+              className={`absolute top-1.5 left-1.5 sm:top-2 sm:left-2 backdrop-blur-md px-1.5 sm:px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-bold shadow-xs tracking-tight truncate max-w-[85px] sm:max-w-none ${categoryBadgeColor}`}
             >
               {categoryBadge}
             </span>
@@ -103,7 +103,7 @@ export const UniversalCard: React.FC<UniversalCardProps> = ({
           {/* Floating Status / Discount Badge */}
           {statusBadge && (
             <span
-              className={`absolute top-2 right-2 px-2.5 py-0.5 rounded-full text-xs font-bold shadow-sm ${statusBadgeColor}`}
+              className={`absolute top-1.5 right-1.5 sm:top-2 sm:right-2 px-1.5 sm:px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-bold shadow-sm truncate max-w-[85px] sm:max-w-none ${statusBadgeColor}`}
             >
               {statusBadge}
             </span>
@@ -111,16 +111,16 @@ export const UniversalCard: React.FC<UniversalCardProps> = ({
         </div>
 
         {/* Card Body Information */}
-        <div className="px-0.5 space-y-1.5 text-left">
+        <div className="px-0.5 space-y-1 sm:space-y-1.5 text-left">
           {/* Top meta row: Subtitle / Location / Rating */}
-          <div className="flex justify-between items-center text-xs text-brand-muted dark:text-slate-400 gap-2">
+          <div className="flex justify-between items-center text-[10px] sm:text-xs text-brand-muted dark:text-slate-400 gap-1">
             {subtitle ? (
-              <span className="font-semibold text-slate-700 dark:text-slate-300 truncate max-w-[140px]">
+              <span className="font-semibold text-slate-700 dark:text-slate-300 truncate max-w-[70px] sm:max-w-[140px]">
                 {subtitle}
               </span>
             ) : location ? (
               <span className="flex items-center gap-0.5 text-brand-muted dark:text-slate-400 truncate">
-                <MapPin size={12} className="shrink-0 text-brand-purple" />
+                <MapPin size={11} className="shrink-0 text-brand-purple" />
                 {location}
               </span>
             ) : (
@@ -129,43 +129,43 @@ export const UniversalCard: React.FC<UniversalCardProps> = ({
 
             {/* Rating / Location on right */}
             {typeof rating === 'number' && rating > 0 ? (
-              <div className="flex items-center gap-1 shrink-0 font-bold text-slate-800 dark:text-slate-200 text-xs">
-                <Star size={12} className="fill-amber-400 text-amber-400" />
+              <div className="flex items-center gap-0.5 sm:gap-1 shrink-0 font-bold text-slate-800 dark:text-slate-200 text-[10px] sm:text-xs">
+                <Star size={11} className="fill-amber-400 text-amber-400" />
                 <span>{rating.toFixed(1)}</span>
                 {typeof reviewsCount === 'number' && (
-                  <span className="text-brand-muted dark:text-slate-400 font-normal">
+                  <span className="text-brand-muted dark:text-slate-400 font-normal text-[9px] sm:text-[11px]">
                     ({reviewsCount})
                   </span>
                 )}
               </div>
             ) : location && subtitle ? (
-              <span className="flex items-center gap-0.5 text-brand-muted dark:text-slate-400 shrink-0 text-xs">
-                <MapPin size={11} className="shrink-0 text-slate-400" />
+              <span className="flex items-center gap-0.5 text-brand-muted dark:text-slate-400 shrink-0 text-[10px] sm:text-xs">
+                <MapPin size={10} className="shrink-0 text-slate-400" />
                 {location}
               </span>
             ) : null}
           </div>
 
           {/* Card Title */}
-          <h3 className="font-bold text-brand-dark dark:text-white text-sm sm:text-base line-clamp-1 group-hover:text-brand-purple transition-colors">
+          <h3 className="font-bold text-brand-dark dark:text-white text-xs sm:text-sm md:text-base line-clamp-1 group-hover:text-brand-purple transition-colors leading-tight">
             {title}
           </h3>
 
           {/* Dynamic Meta Key-Value Rows */}
           {metaItems.length > 0 && (
-            <div className="flex flex-wrap items-center justify-between gap-1.5 pt-1.5 border-t border-gray-100/80 dark:border-slate-800/80 text-xs">
+            <div className="flex flex-wrap items-center justify-between gap-1 pt-1 sm:pt-1.5 border-t border-gray-100/80 dark:border-slate-800/80 text-[10px] sm:text-xs">
               {metaItems.map((item, idx) => (
                 <div
                   key={idx}
-                  className={`flex items-center gap-1 ${
+                  className={`flex items-center gap-0.5 sm:gap-1 ${
                     item.highlight
-                      ? 'font-bold text-slate-900 dark:text-white text-xs sm:text-sm font-mono'
-                      : 'text-brand-muted dark:text-slate-400 text-xs font-normal'
+                      ? 'font-bold text-slate-900 dark:text-white text-[10px] sm:text-xs md:text-sm font-mono'
+                      : 'text-brand-muted dark:text-slate-400 text-[10px] sm:text-xs font-normal'
                   }`}
                 >
                   {item.icon}
                   {item.label && <span className="font-medium text-slate-500 dark:text-slate-400">{item.label}:</span>}
-                  <span>{item.value}</span>
+                  <span className="truncate max-w-[80px] sm:max-w-none">{item.value}</span>
                 </div>
               ))}
             </div>
@@ -178,17 +178,18 @@ export const UniversalCard: React.FC<UniversalCardProps> = ({
 
       {/* Standardized Action Footer */}
       <div
-        className="grid grid-cols-2 gap-2 mt-3.5 pt-2.5 border-t border-gray-100/80 dark:border-slate-800/80"
+        className="grid grid-cols-2 gap-1.5 sm:gap-2 mt-2 sm:mt-3.5 pt-1.5 sm:pt-2.5 border-t border-gray-100/80 dark:border-slate-800/80"
         onClick={(e) => e.stopPropagation()}
       >
         {/* 1. Primary Action: Globally Consistent Solid Green Call Button */}
         {phone ? (
           <Button
             variant="call"
-            size="md"
+            size="sm"
             icon={Phone}
             href={`tel:${phone}`}
             onClick={handlePrimaryClick}
+            className="!text-[11px] sm:!text-xs !py-1 sm:!py-1.5 !px-1.5 sm:!px-3 !min-h-[30px] sm:!min-h-[36px] rounded-lg"
             fullWidth
           >
             {callLabel}
@@ -196,9 +197,10 @@ export const UniversalCard: React.FC<UniversalCardProps> = ({
         ) : (
           <Button
             variant="call"
-            size="md"
+            size="sm"
             icon={Phone}
             onClick={handlePrimaryClick}
+            className="!text-[11px] sm:!text-xs !py-1 sm:!py-1.5 !px-1.5 sm:!px-3 !min-h-[30px] sm:!min-h-[36px] rounded-lg"
             fullWidth
           >
             {callLabel}
@@ -209,13 +211,14 @@ export const UniversalCard: React.FC<UniversalCardProps> = ({
         {showWhatsappInsteadOfDetails && (whatsapp || phone) ? (
           <Button
             variant="whatsapp"
-            size="md"
+            size="sm"
             href={`https://wa.me/${whatsapp || phone}?text=${encodeURIComponent(
               whatsappMessage || `नमस्कार, मला तुमच्या ${title} बद्दल माहिती हवी आहे.`
             )}`}
             target="_blank"
             rel="noreferrer"
             onClick={handleSecondaryClick}
+            className="!text-[11px] sm:!text-xs !py-1 sm:!py-1.5 !px-1.5 sm:!px-3 !min-h-[30px] sm:!min-h-[36px] rounded-lg"
             fullWidth
           >
             WhatsApp
@@ -223,9 +226,10 @@ export const UniversalCard: React.FC<UniversalCardProps> = ({
         ) : detailsPath ? (
           <Button
             variant="details"
-            size="md"
+            size="sm"
             href={detailsPath}
             onClick={handleSecondaryClick}
+            className="!text-[11px] sm:!text-xs !py-1 sm:!py-1.5 !px-1.5 sm:!px-3 !min-h-[30px] sm:!min-h-[36px] rounded-lg"
             fullWidth
           >
             {detailsLabel}
@@ -233,8 +237,9 @@ export const UniversalCard: React.FC<UniversalCardProps> = ({
         ) : (
           <Button
             variant="details"
-            size="md"
+            size="sm"
             onClick={handleSecondaryClick}
+            className="!text-[11px] sm:!text-xs !py-1 sm:!py-1.5 !px-1.5 sm:!px-3 !min-h-[30px] sm:!min-h-[36px] rounded-lg"
             fullWidth
           >
             {detailsLabel}

@@ -7,9 +7,11 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
   }
   body {
-    @apply bg-white text-brand-muted font-sans antialiased overflow-x-hidden;
+    @apply bg-white text-brand-muted font-sans antialiased overflow-x-hidden w-full;
     background-image: 
       radial-gradient(at 0% 0%, #EEF6FF 0px, transparent 50%),
       radial-gradient(at 50% 0%, #F3FFF7 0px, transparent 50%),

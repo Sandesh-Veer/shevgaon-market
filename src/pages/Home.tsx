@@ -560,16 +560,16 @@ export default function Home() {
     switch (s.id) {
       case 'hero':
         return (
-          <section id="home" key={s.id} className="relative pt-12 flex flex-col items-center text-center">
+          <section id="home" key={s.id} className="relative pt-6 sm:pt-12 flex flex-col items-center text-center w-full overflow-x-hidden">
             {/* Glow Badge */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 glass-badge mb-6"
+              className="inline-flex items-center gap-2 glass-badge mb-4 sm:mb-6 max-w-[95%] text-center"
             >
-              <Sparkles size={13} className="text-brand-purple animate-pulse" />
-              <span>✨ शेवगावचा स्वतःचा प्रीमियम डिजिटल प्लॅटफॉर्म</span>
+              <Sparkles size={13} className="text-brand-purple animate-pulse shrink-0" />
+              <span className="truncate">✨ शेवगावचा स्वतःचा प्रीमियम डिजिटल प्लॅटफॉर्म</span>
             </motion.div>
 
             {/* Large Headline */}
@@ -577,7 +577,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
-              className="text-3xl sm:text-5xl lg:text-7xl font-extrabold max-w-4xl tracking-tight leading-[1.15] mb-4 sm:mb-6 text-brand-dark text-center px-2"
+              className="text-2xl sm:text-5xl lg:text-7xl font-extrabold w-full max-w-4xl tracking-tight leading-[1.2] sm:leading-[1.15] mb-3 sm:mb-6 text-brand-dark text-center px-2 break-words"
             >
               {settings.title !== 'Shevgaon Market' ? settings.title : <>सर्व स्थानिक सेवा आणि व्यवहार <br className="hidden sm:inline" /> <span className="text-gradient">आता एकाच ठिकाणी</span></>}
             </motion.h1>
@@ -587,7 +587,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-sm sm:text-base md:text-lg text-brand-muted max-w-2xl font-light mb-8 sm:mb-10 px-4 leading-relaxed text-center"
+              className="text-xs sm:text-base md:text-lg text-brand-muted w-full max-w-2xl font-light mb-6 sm:mb-10 px-3 sm:px-4 leading-relaxed text-center"
             >
               {settings.description}
             </motion.p>
@@ -597,18 +597,15 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full justify-center px-4 sm:px-6 max-w-lg mb-12 sm:mb-16 z-10 mx-auto"
+              className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 w-full justify-center px-2 sm:px-6 max-w-lg mb-8 sm:mb-16 z-10 mx-auto"
             >
-
-
-              {/* done */}
               <a
                 href="#offers"
                 onClick={(e) => {
                   e.preventDefault();
                   document.getElementById('offers')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }}
-                className="w-full sm:w-auto bg-gradient-brand text-white font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl hover:shadow-[0_12px_24px_rgba(79,124,255,0.3)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 group text-sm sm:text-base"
+                className="w-full sm:w-auto bg-gradient-brand text-white font-semibold px-5 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl hover:shadow-[0_12px_24px_rgba(79,124,255,0.3)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 group text-sm sm:text-base"
               >
                 नवीन ऑफर्स पहा
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -616,7 +613,7 @@ export default function Home() {
 
               <Link
                 to="/add-shop"
-                className="w-full sm:w-auto bg-white/70 dark:bg-slate-900/70 border border-brand-purple/30 backdrop-blur-md text-brand-purple dark:text-purple-300 font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl hover:bg-brand-purple hover:text-white hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 text-center shadow-sm text-sm sm:text-base"
+                className="w-full sm:w-auto bg-white/70 dark:bg-slate-900/70 border border-brand-purple/30 backdrop-blur-md text-brand-purple dark:text-purple-300 font-bold px-5 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl hover:bg-brand-purple hover:text-white hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 text-center shadow-sm text-sm sm:text-base"
               >
                 <Store size={18} />
                 <span>दुकान नोंदणी करा</span>
@@ -628,14 +625,14 @@ export default function Home() {
               initial={{ opacity: 0, y: 50, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 1, delay: 0.4 }}
-              className="w-full max-w-5xl rounded-3xl overflow-hidden glass-card p-2 md:p-3 relative shadow-soft border border-white/80"
+              className="w-full max-w-5xl rounded-2xl sm:rounded-3xl overflow-hidden glass-card p-1.5 sm:p-2 md:p-3 relative shadow-soft border border-white/80"
             >
-              <div className="rounded-2xl overflow-hidden border border-gray-100 shadow-inner bg-slate-50 relative aspect-[16/9]">
+              <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-gray-100 shadow-inner bg-slate-50 relative aspect-[16/9] w-full">
                 {/* Header control buttons */}
-                <div className="absolute top-4 left-4 flex gap-1.5 z-20">
-                  <span className="w-3 h-3 rounded-full bg-[#FF5F56]" />
-                  <span className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
-                  <span className="w-3 h-3 rounded-full bg-[#27C93F]" />
+                <div className="absolute top-2.5 left-2.5 sm:top-4 sm:left-4 flex gap-1.5 z-20">
+                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#FF5F56]" />
+                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#FFBD2E]" />
+                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#27C93F]" />
                 </div>
 
                 {/* Ambient image background */}
@@ -658,11 +655,11 @@ export default function Home() {
 
       case 'shetkari':
         return (
-          <section id="shetkari" key={s.id} className="max-w-6xl mx-auto px-4 md:px-8 text-left scroll-mt-20">
-            <div className="text-center space-y-3 mb-12">
+          <section id="shetkari" key={s.id} className="max-w-6xl mx-auto px-3 sm:px-6 md:px-8 text-left scroll-mt-20 w-full overflow-x-hidden">
+            <div className="text-center space-y-3 mb-8 sm:mb-12">
               <span className="text-xs font-bold text-brand-purple">🌾 शेतकरी विभाग</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
-              <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">{s.desc}</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
+              <p className="text-brand-muted max-w-xl mx-auto font-light text-xs sm:text-sm text-center">{s.desc}</p>
             </div>
 
             {/* Mandi Content Grid */}
@@ -713,8 +710,8 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Standardized Grid cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {/* Standardized Grid cards: 2 per row on mobile */}
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 <AnimatePresence mode="popLayout">
                   {filteredCrops.length > 0 ? (
                     filteredCrops.map((c) => (
@@ -746,13 +743,13 @@ export default function Home() {
                 </AnimatePresence>
               </div>
 
-              {/* Agri Services grid */}
-              <div className="border-t border-gray-200/50 pt-12 space-y-6">
+              {/* Agri Services grid: 2 per row on mobile */}
+              <div className="border-t border-gray-200/50 pt-8 sm:pt-12 space-y-6">
                 <div className="space-y-1">
-                  <h3 className="text-xl font-extrabold text-brand-dark">🚜 कृषी आणि शेती सेवा (Agriculture Services)</h3>
+                  <h3 className="text-lg sm:text-xl font-extrabold text-brand-dark">🚜 कृषी आणि शेती सेवा (Agriculture Services)</h3>
                   <p className="text-brand-muted text-xs font-normal">भाड्याने ट्रॅक्टर, खते, कृषी सेवा केंद्र आणि शेतीची अवजारे पुरवठादार.</p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                   {businesses.filter(b => b.category === 'mandi' && b.cropCat === 'कृषी सेवा').map((s) => (
                     <UniversalCard
                       key={s.id}
@@ -780,14 +777,14 @@ export default function Home() {
 
       case 'gharguti-seva':
         return (
-          <section id="gharguti-seva" key={s.id} className="max-w-6xl mx-auto px-4 md:px-8 text-left scroll-mt-20">
-            <div className="text-center space-y-3 mb-12">
+          <section id="gharguti-seva" key={s.id} className="max-w-6xl mx-auto px-3 sm:px-6 md:px-8 text-left scroll-mt-20 w-full overflow-x-hidden">
+            <div className="text-center space-y-3 mb-8 sm:mb-12">
               <span className="text-xs font-bold text-brand-purple">🛠️ घरगुती सेवा</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
-              <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">{s.desc}</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
+              <p className="text-brand-muted max-w-xl mx-auto font-light text-xs sm:text-sm text-center">{s.desc}</p>
             </div>
 
-            <div className="space-y-6 mb-12">
+            <div className="space-y-6 mb-8 sm:mb-12">
               {/* Category Filter - Left aligned */}
               <div className="flex flex-wrap gap-2 justify-start mb-6">
                 {['All', 'गवंडी', 'प्लंबर', 'इलेक्ट्रिशियन', 'कारपेंटर'].map((cat) => (
@@ -804,8 +801,8 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Technicians list */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {/* Technicians list: 2 per row on mobile */}
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {filteredTechnicians.map((t) => (
                   <UniversalCard
                     key={t.id}
@@ -830,12 +827,12 @@ export default function Home() {
               </div>
 
               {/* Material Suppliers */}
-              <div className="border-t border-gray-200/50 pt-12 space-y-6">
+              <div className="border-t border-gray-200/50 pt-8 sm:pt-12 space-y-6">
                 <div className="space-y-1">
-                  <h3 className="text-xl font-extrabold text-brand-dark">🧱 बांधकाम साहित्य पुरवठादार (Material Suppliers)</h3>
+                  <h3 className="text-lg sm:text-xl font-extrabold text-brand-dark">🧱 बांधकाम साहित्य पुरवठादार (Material Suppliers)</h3>
                   <p className="text-brand-muted text-xs font-normal">सिमेंट, वाळू, खडी, स्टील, विटा, मार्बल आणि ग्रॅनाईटचे घाऊक पुरवठादार.</p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                   {materials.map((m) => (
                     <UniversalCard
                       key={m.id}
@@ -861,14 +858,14 @@ export default function Home() {
 
       case 'hotel':
         return (
-          <section id="hotel" key={s.id} className="max-w-6xl mx-auto px-4 md:px-8 text-left scroll-mt-20">
-            <div className="text-center space-y-3 mb-12">
+          <section id="hotel" key={s.id} className="max-w-6xl mx-auto px-3 sm:px-6 md:px-8 text-left scroll-mt-20 w-full overflow-x-hidden">
+            <div className="text-center space-y-3 mb-8 sm:mb-12">
               <span className="text-xs font-bold text-brand-purple">🍔 हॉटेल विभाग</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
-              <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">{s.desc}</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
+              <p className="text-brand-muted max-w-xl mx-auto font-light text-xs sm:text-sm text-center">{s.desc}</p>
             </div>
 
-            <div className="space-y-6 mb-12">
+            <div className="space-y-6 mb-8 sm:mb-12">
               {/* Hotel Filter - Left Aligned */}
               <div className="flex flex-wrap justify-start gap-2 mb-6">
                 {['All', 'Veg', 'Non Veg', 'Pure Veg'].map((filter) => (
@@ -885,8 +882,8 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Hotels grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {/* Hotels grid: 2 per row on mobile */}
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {filteredHotels.map((h) => {
                   const avgRating = db.getAverageRating(h.id);
                   const totalReviews = db.getReviewsForBusiness(h.id).length;
@@ -913,7 +910,7 @@ export default function Home() {
                             {h.hotelOffer && (
                               <div className="bg-brand-purple/5 border border-brand-purple/20 p-1.5 rounded-xl text-brand-purple">
                                 <p className="text-xs font-semibold flex items-center gap-1 line-clamp-1">
-                                  🎁 {h.hotelOffer}
+                                   {h.hotelOffer}
                                 </p>
                               </div>
                             )}
@@ -939,14 +936,14 @@ export default function Home() {
 
       case 'vehicle':
         return (
-          <section id="vehicle" key={s.id} className="max-w-6xl mx-auto px-4 md:px-8 text-left scroll-mt-20">
-            <div className="text-center space-y-3 mb-12">
+          <section id="vehicle" key={s.id} className="max-w-6xl mx-auto px-3 sm:px-6 md:px-8 text-left scroll-mt-20 w-full overflow-x-hidden">
+            <div className="text-center space-y-3 mb-8 sm:mb-12">
               <span className="text-xs font-bold text-brand-purple">🚗 वाहन विभाग</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
-              <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">{s.desc}</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
+              <p className="text-brand-muted max-w-xl mx-auto font-light text-xs sm:text-sm text-center">{s.desc}</p>
             </div>
 
-            <div className="space-y-6 mb-12">
+            <div className="space-y-6 mb-8 sm:mb-12">
               {/* Vehicle Filter - Left Aligned */}
               <div className="flex flex-wrap justify-start gap-2 mb-6 overflow-x-auto no-scrollbar">
                 {['All', 'Bikes', 'Cars', 'Tractor'].map((filter) => (
@@ -963,8 +960,8 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Vehicles Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {/* Vehicles Grid: 2 per row on mobile */}
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {filteredVehicles.map((v) => (
                   <UniversalCard
                     key={v.id}
@@ -986,12 +983,12 @@ export default function Home() {
               </div>
 
               {/* Garages list */}
-              <div className="border-t border-gray-200/50 pt-12 space-y-6">
+              <div className="border-t border-gray-200/50 pt-8 sm:pt-12 space-y-6">
                 <div className="space-y-1">
-                  <h3 className="text-xl font-extrabold text-brand-dark">🛠️ स्थानिक गॅरेज आणि पंक्चर दुरुस्ती (Emergency Mechanic)</h3>
+                  <h3 className="text-lg sm:text-xl font-extrabold text-brand-dark">🛠️ स्थानिक गॅरेज आणि पंक्चर दुरुस्ती (Emergency Mechanic)</h3>
                   <p className="text-brand-muted text-xs font-normal">जवळचे मेकॅनिक, टायर्स पंक्चर दुरुस्ती आणि २४x७ हायवे सपोर्ट नंबर.</p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                   {mechanics.map((m) => (
                     <UniversalCard
                       key={m.id}
@@ -1019,11 +1016,11 @@ export default function Home() {
 
       case 'offers':
         return (
-          <section id="offers" key={s.id} className="max-w-6xl mx-auto px-4 md:px-8 text-left scroll-mt-20">
-            <div className="text-center space-y-3 mb-12">
+          <section id="offers" key={s.id} className="max-w-6xl mx-auto px-3 sm:px-6 md:px-8 text-left scroll-mt-20 w-full overflow-x-hidden">
+            <div className="text-center space-y-3 mb-8 sm:mb-12">
               <span className="text-xs font-bold text-brand-purple">🛍️ ऑफर्स विभाग</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
-              <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">{s.desc}</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
+              <p className="text-brand-muted max-w-xl mx-auto font-light text-xs sm:text-sm text-center">{s.desc}</p>
             </div>
 
             <div className="space-y-6">
@@ -1053,8 +1050,8 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Standardized Offers Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {/* Standardized Offers Grid: 2 per row on mobile */}
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 <AnimatePresence mode="popLayout">
                   {filteredOffers.length > 0 ? (
                     filteredOffers.map((o) => (
@@ -1097,19 +1094,19 @@ export default function Home() {
 
       case 'contact':
         return (
-          <section id="contact" key={s.id} className="scroll-mt-24 max-w-5xl mx-auto px-4 md:px-8 space-y-8">
-            <div className="text-center space-y-3 mb-12">
+          <section id="contact" key={s.id} className="scroll-mt-24 max-w-5xl mx-auto px-3 sm:px-6 md:px-8 space-y-6 sm:space-y-8 w-full overflow-x-hidden">
+            <div className="text-center space-y-3 mb-8 sm:mb-12">
               <span className="text-xs font-bold text-brand-purple">📞 संपर्क विभाग</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
-              <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">{s.desc}</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
+              <p className="text-brand-muted max-w-xl mx-auto font-light text-xs sm:text-sm text-center">{s.desc}</p>
             </div>
 
-            <div className="glass-card border border-white/70 p-6 sm:p-8 md:p-10 shadow-soft rounded-3xl">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
+            <div className="glass-card border border-white/70 p-4 sm:p-8 md:p-10 shadow-soft rounded-2xl sm:rounded-3xl">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-start">
                 {/* Left pane: Contact details */}
                 <div className="space-y-6 text-left">
                   <div>
-                    <h3 className="text-xl font-bold text-brand-dark mb-2">आमच्याशी संपर्क साधा</h3>
+                    <h3 className="text-lg sm:text-xl font-bold text-brand-dark mb-2">आमच्याशी संपर्क साधा</h3>
                     <p className="text-brand-muted text-xs sm:text-sm font-normal leading-relaxed">
                       तुम्हाला काही अडचणी असल्यास, नवीन व्यवसाय जोडायचा असल्यास किंवा मदत हवी असल्यास खालील माहितीवर संपर्क करा.
                     </p>
@@ -1149,7 +1146,7 @@ export default function Home() {
                 </div>
 
                 {/* Right pane: Contact form */}
-                <form onSubmit={handleContactSubmit} className="space-y-4 text-left p-4 sm:p-6 bg-slate-50/70 border border-gray-100 rounded-2xl">
+                <form onSubmit={handleContactSubmit} className="space-y-4 text-left p-3.5 sm:p-6 bg-slate-50/70 border border-gray-100 rounded-2xl">
                   {contactSuccess && (
                     <div className="bg-emerald-50 text-emerald-700 p-3.5 border border-emerald-200 rounded-xl text-center text-xs font-semibold">
                       तुमचा संदेश यशस्वीरित्या पाठवला गेला आहे!
@@ -1201,39 +1198,62 @@ export default function Home() {
           </section>
         );
 
-      default:
-        // Render custom created empty sections if admin added them dynamically
+      default: {
+        const catBusinesses = businesses.filter(b => b.category === s.id);
         return (
-          <section id={s.id} key={s.id} className="scroll-mt-24 max-w-6xl mx-auto px-4 md:px-8 text-left space-y-6">
-            <div className="text-center space-y-3 mb-12">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
-              <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">{s.desc}</p>
+          <section id={s.id} key={s.id} className="scroll-mt-24 max-w-6xl mx-auto px-3 sm:px-6 md:px-8 text-left space-y-6 w-full overflow-x-hidden">
+            <div className="text-center space-y-3 mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
+              <p className="text-brand-muted max-w-xl mx-auto font-light text-xs sm:text-sm text-center">{s.desc}</p>
             </div>
-            <div className="py-12 text-center bg-white/50 border border-gray-200/50 rounded-3xl shadow-sm">
-              <p className="text-xs text-brand-muted font-normal">या विभागात अद्याप व्यवसाय जोडलेले नाहीत.</p>
-            </div>
+            {catBusinesses.length > 0 ? (
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                {catBusinesses.map((b) => (
+                  <UniversalCard
+                    key={b.id}
+                    id={b.id}
+                    title={b.name}
+                    subtitle={b.ownerName}
+                    location={b.village || 'शेवगांव'}
+                    categoryBadge={s.title.split(' ')[1] || s.title}
+                    image={b.logo || b.photos[0] || 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=400&q=80'}
+                    rating={db.getAverageRating(b.id) || undefined}
+                    reviewsCount={db.getReviewsForBusiness(b.id).length}
+                    phone={b.phone}
+                    whatsapp={b.whatsapp || b.phone}
+                    detailsPath={`/business/${b.category}/${b.id}`}
+                    onCardClick={() => navigate(`/business/${b.category}/${b.id}`)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="py-12 text-center bg-white/50 border border-gray-200/50 rounded-3xl shadow-sm">
+                <p className="text-xs text-brand-muted font-normal">या विभागात अद्याप व्यवसाय जोडलेले नाहीत.</p>
+              </div>
+            )}
           </section>
         );
+      }
     }
   };
 
   return (
-    <div className="space-y-24 md:space-y-36 pb-16">
+    <div className="space-y-12 sm:space-y-20 md:space-y-28 pb-16 w-full overflow-x-hidden">
 
       {/* Loop dynamically ordered sections */}
       {sections.filter(s => s.visible).map(s => renderSectionContent(s))}
 
       {/* 7. CUSTOMER TESTIMONIALS / REVIEWS SECTION */}
-      <section id="reviews" className="scroll-mt-24 max-w-6xl mx-auto px-4 md:px-8 text-left">
-        <div className="text-center space-y-3 mb-12">
+      <section id="reviews" className="scroll-mt-24 max-w-6xl mx-auto px-3 sm:px-6 md:px-8 text-left w-full overflow-x-hidden">
+        <div className="text-center space-y-3 mb-8 sm:mb-12">
           <span className="text-xs font-bold text-brand-purple">⭐ ग्राहक अभिप्राय</span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark text-center">ग्राहकांचे अनुभव आणि विश्वास (Testimonials)</h2>
-          <p className="text-brand-muted max-w-xl mx-auto font-light text-sm text-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-dark text-center">ग्राहकांचे अनुभव आणि विश्वास (Testimonials)</h2>
+          <p className="text-brand-muted max-w-xl mx-auto font-light text-xs sm:text-sm text-center">
             आमच्या डिजिटल प्लॅटफॉर्मचा वापर करून खरेदी आणि व्यवहार करणाऱ्या नागरिकांचे अभिप्राय.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {[
             {
               name: "संजय गायकवाड (ग्राहक)",
@@ -1251,7 +1271,7 @@ export default function Home() {
               stars: 5
             }
           ].map((rev, i) => (
-            <div key={i} className="glass-card border border-white/70 p-6 shadow-sm flex flex-col justify-between text-xs leading-relaxed space-y-4 rounded-2xl">
+            <div key={i} className="glass-card border border-white/70 p-4 sm:p-6 shadow-sm flex flex-col justify-between text-xs leading-relaxed space-y-4 rounded-2xl">
               <p className="text-brand-muted font-normal text-xs sm:text-sm">"{rev.text}"</p>
               <div className="flex justify-between items-center pt-2 border-t border-gray-100">
                 <span className="font-bold text-brand-dark text-xs sm:text-sm">{rev.name}</span>
@@ -1267,8 +1287,8 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200/50 pt-16 pb-8 text-left">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-6xl mx-auto px-4 md:px-8 mb-12">
+      <footer className="border-t border-gray-200/50 pt-10 sm:pt-16 pb-8 text-left w-full overflow-x-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-10 max-w-6xl mx-auto px-3 sm:px-6 md:px-8 mb-8 sm:mb-12">
 
           {/* Brand Column */}
           <div className="space-y-4">

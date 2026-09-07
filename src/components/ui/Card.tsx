@@ -41,9 +41,9 @@ export const Card: React.FC<CardProps> = ({
 }) => {
   const paddingClasses = {
     none: 'p-0',
-    sm: 'p-3 sm:p-4',
-    md: 'p-4 sm:p-5',
-    lg: 'p-5 sm:p-6',
+    sm: 'p-2 sm:p-3',
+    md: 'p-2 sm:p-4 md:p-5',
+    lg: 'p-3.5 sm:p-5 md:p-6',
   }[padding];
 
   const roundedClasses = {

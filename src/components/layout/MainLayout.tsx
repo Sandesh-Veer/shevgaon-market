@@ -113,10 +113,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans relative overflow-x-hidden flex antialiased">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans relative overflow-x-hidden flex antialiased w-full max-w-full">
       {/* 1. Ambient Background Glow for depth */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-gradient-to-b from-blue-100/40 via-purple-100/20 to-transparent dark:from-blue-950/20 dark:via-purple-950/10 blur-3xl" />
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[350px] bg-gradient-to-b from-blue-100/40 via-purple-100/20 to-transparent dark:from-blue-950/20 dark:via-purple-950/10 blur-3xl" />
       </div>
 
       {/* 2. Grouped Apple / GPay Style Sidebar */}
@@ -142,7 +142,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
       {/* 4. Main Content Canvas */}
       <div
-        className={`relative z-10 flex flex-col min-h-screen flex-grow transition-all duration-300 ease-in-out w-full ${
+        className={`relative z-10 flex flex-col min-h-screen flex-grow transition-all duration-300 ease-in-out w-full max-w-full overflow-x-hidden ${
           isSidebarOpen ? 'lg:pl-72' : 'lg:pl-0'
         }`}
       >
@@ -150,7 +150,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         <Header onMenuToggle={toggleSidebar} />
 
         {/* Main Content Area with generous whitespace */}
-        <main className="flex-grow w-full max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 pb-28 lg:pb-10">
+        <main className="flex-grow w-full max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-4 sm:py-5 pb-28 lg:pb-10 overflow-x-hidden">
           {children}
         </main>
 
