@@ -104,7 +104,7 @@ export default function AddShopForm() {
       // 1. ImgBB Upload
       const uploadedImageUrl = await uploadToImgBB(imageFile);
 
-      // 2. Save document to Firestore 'shops' collection
+      // 2. Save document to Firestore 'shops' collection with default status: 'pending'
       await addDoc(collection(db, 'shops'), {
         shopName: shopName.trim(),
         ownerName: ownerName.trim(),
@@ -112,11 +112,12 @@ export default function AddShopForm() {
         mobileNumber: mobileNumber.trim(),
         address: address.trim(),
         imageUrl: uploadedImageUrl,
+        status: 'pending',
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
 
-      setSuccessMsg('दुकान/व्यवसाय प्रोफाइल यशस्वीपणे जोडले गेले!');
+      setSuccessMsg('दुकान नोंदणी यशस्वी! प्रशासक मंजुरीनंतर (Admin Approval) आपले दुकान मुख्य पृष्ठावर दिसेल.');
 
       // Reset form
       setShopName('');

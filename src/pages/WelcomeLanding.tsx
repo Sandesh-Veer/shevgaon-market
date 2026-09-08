@@ -10,7 +10,7 @@ export default function WelcomeLanding() {
   };
 
   return (
-    <div className="relative w-full h-screen min-h-screen overflow-hidden flex flex-col justify-between items-center select-none bg-white font-sans">
+    <div className="relative w-full h-[100dvh] min-h-[100dvh] max-h-[100dvh] overflow-hidden flex flex-col justify-between items-center select-none bg-white font-sans">
       {/* 1. 100% RAW, UNTOUCHED, BRIGHT FULL HD HERO BACKGROUND IMAGE */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <img

@@ -3,11 +3,35 @@ import {
   Settings, Check, X, ShieldAlert, Edit2, Trash2, ArrowUp, ArrowDown, 
   Layout, HelpCircle, UserCheck, MessageSquare, AlertTriangle, Eye, EyeOff, 
   BarChart2, Plus, Star, History, Download, Ban, Search, FileText,
-  Phone, Mail, MapPin, ExternalLink, Clock, Package
+  Phone, Mail, MapPin, ExternalLink, Clock, Package, Store, CheckCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  collection, 
+  query, 
+  where, 
+  onSnapshot, 
+  doc, 
+  updateDoc, 
+  deleteDoc, 
+  serverTimestamp 
+} from 'firebase/firestore';
+import { db as firestoreDb } from '../services/firebase';
 import { db, Business, Review, Section, WebsiteSettings, Report, ActivityLog, SubscriptionPlan } from '../services/db';
 import AddShopForm from '../components/admin/AddShopForm';
+
+export interface FirestoreShop {
+  id: string;
+  shopName: string;
+  ownerName: string;
+  category: string;
+  mobileNumber: string;
+  address: string;
+  imageUrl: string;
+  status: 'pending' | 'approved';
+  createdAt?: any;
+  updatedAt?: any;
+}
 
 export default function AdminDashboard() {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(() => {
@@ -30,6 +54,11 @@ export default function AdminDashboard() {
   const [reports, setReports] = useState<Report[]>([]);
   const [activityLogs, setActivityLogs] = useState<ActivityLog[]>([]);
   const [subscriptionPlans, setSubscriptionPlans] = useState<SubscriptionPlan[]>([]);
+
+  // Firestore Shops states (Real-time pending approval and active shops)
+  const [pendingShops, setPendingShops] = useState<FirestoreShop[]>([]);
+  const [allFirestoreShops, setAllFirestoreShops] = useState<FirestoreShop[]>([]);
+  const [isProcessingShop, setIsProcessingShop] = useState<string | null>(null);
 
   // Editing & Viewing modal states
   const [editingBiz, setEditingBiz] = useState<Business | null>(null);
@@ -65,6 +94,85 @@ export default function AdminDashboard() {
     setReports(db.getReports());
     setActivityLogs(db.getActivityLogs());
     setSubscriptionPlans(db.getSubscriptionPlans());
+  };
+
+  // Real-time Firestore Shops listener for Admin Approvals
+  useEffect(() => {
+    if (!isAdminLoggedIn) return;
+
+    // 1. Listen for shops where status === 'pending'
+    const pendingQuery = query(
+      collection(firestoreDb, 'shops'),
+      where('status', '==', 'pending')
+    );
+
+    const unsubPending = onSnapshot(
+      pendingQuery,
+      (snapshot: any) => {
+        const shops: FirestoreShop[] = [];
+        snapshot.forEach((d: any) => {
+          shops.push({ id: d.id, ...(d.data() as Omit<FirestoreShop, 'id'>) });
+        });
+        setPendingShops(shops);
+      },
+      (err: any) => {
+        console.error('Firestore pending shops listener error:', err);
+      }
+    );
+
+    // 2. Listen for all shops in Firestore
+    const allQuery = collection(firestoreDb, 'shops');
+    const unsubAll = onSnapshot(
+      allQuery,
+      (snapshot: any) => {
+        const shops: FirestoreShop[] = [];
+        snapshot.forEach((d: any) => {
+          shops.push({ id: d.id, ...(d.data() as Omit<FirestoreShop, 'id'>) });
+        });
+        setAllFirestoreShops(shops);
+      },
+      (err: any) => {
+        console.error('Firestore all shops listener error:', err);
+      }
+    );
+
+    return () => {
+      unsubPending();
+      unsubAll();
+    };
+  }, [isAdminLoggedIn]);
+
+  // Firestore Shop Approval Handlers
+  const handleApproveFirestoreShop = async (shopId: string, shopName: string) => {
+    setIsProcessingShop(shopId);
+    try {
+      const shopRef = doc(firestoreDb, 'shops', shopId);
+      await updateDoc(shopRef, {
+        status: 'approved',
+        updatedAt: serverTimestamp(),
+      });
+      alert(`"${shopName}" दुकान यशस्वीरीत्या मंजूर (Approved) करण्यात आले आहे! आता हे दुकान मुख्य पृष्ठावर ग्राहकांना दिसेल.`);
+    } catch (err: any) {
+      console.error('Error approving shop:', err);
+      alert('दुकान मंजूर करताना त्रुटी आली: ' + err.message);
+    } finally {
+      setIsProcessingShop(null);
+    }
+  };
+
+  const handleRejectFirestoreShop = async (shopId: string, shopName: string) => {
+    if (!confirm(`"${shopName}" ही दुकान नोंदणी खरोखर नाकारायची / हटवायची आहे का?`)) return;
+    setIsProcessingShop(shopId);
+    try {
+      const shopRef = doc(firestoreDb, 'shops', shopId);
+      await deleteDoc(shopRef);
+      alert(`"${shopName}" दुकान नोंदणी हटवली गेली आहे.`);
+    } catch (err: any) {
+      console.error('Error deleting shop:', err);
+      alert('दुकान हटवताना त्रुटी आली: ' + err.message);
+    } finally {
+      setIsProcessingShop(null);
+    }
   };
 
   // Secure admin login check
@@ -319,11 +427,11 @@ export default function AdminDashboard() {
     loadData();
   };
 
-  // Analytics Metrics
-  const totalProfiles = businesses.length;
-  const activeProfiles = businesses.filter(b => b.subscriptionStatus === 'active' && !b.isSuspended).length;
+  // Analytics Metrics (Aggregating Local DB + Firestore Shops)
+  const totalProfiles = businesses.length + allFirestoreShops.length;
+  const activeProfiles = businesses.filter(b => b.subscriptionStatus === 'active' && !b.isSuspended).length + allFirestoreShops.filter(s => s.status === 'approved').length;
   const expiredSubscriptions = businesses.filter(b => b.subscriptionStatus === 'expired').length;
-  const pendingApprovals = businesses.filter(b => !b.isApproved).length;
+  const pendingApprovals = businesses.filter(b => !b.isApproved).length + pendingShops.length;
   const suspendedProfiles = businesses.filter(b => b.isSuspended).length;
 
   // Filtered Businesses list for Requests Management
@@ -437,6 +545,7 @@ export default function AdminDashboard() {
       <div className="flex gap-2 border-b border-gray-200/60 dark:border-slate-800 pb-3 overflow-x-auto touch-scroll-x custom-scrollbar">
         {[
           { id: 'analytics', label: 'सांख्यिकी (Analytics)', icon: BarChart2 },
+          { id: 'pending-shops', label: 'दुकान मंजुरी अर्ज (Shop Requests)', icon: Store },
           { id: 'add-shop', label: 'नवीन दुकान जोडा (Add Shop)', icon: Plus },
           { id: 'businesses', label: 'व्यापारी प्रोफाइल व्यवस्थापन', icon: UserCheck },
           { id: 'plans', label: 'सबस्क्रिप्शन प्लॅन्स (Post Limits)', icon: Package },
@@ -458,9 +567,14 @@ export default function AdminDashboard() {
               }`}
             >
               <Icon size={14} /> {tab.label}
-              {tab.id === 'businesses' && pendingApprovals > 0 && (
-                <span className="w-5 h-5 bg-rose-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
-                  {pendingApprovals}
+              {tab.id === 'pending-shops' && pendingShops.length > 0 && (
+                <span className="w-5 h-5 bg-rose-500 text-white rounded-full flex items-center justify-center text-xs font-bold animate-pulse">
+                  {pendingShops.length}
+                </span>
+              )}
+              {tab.id === 'businesses' && businesses.filter(b => !b.isApproved).length > 0 && (
+                <span className="w-5 h-5 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  {businesses.filter(b => !b.isApproved).length}
                 </span>
               )}
               {tab.id === 'reports' && reports.length > 0 && (
@@ -481,6 +595,185 @@ export default function AdminDashboard() {
         transition={{ duration: 0.3 }}
       >
         
+        {/* SHOP REGISTRATION APPROVAL REQUESTS VIEW */}
+        {activeTab === 'pending-shops' && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 pb-3 border-b border-gray-100 dark:border-slate-800">
+              <div>
+                <h2 className="text-xl font-extrabold text-brand-dark dark:text-white flex items-center gap-2">
+                  <Store className="text-blue-600 dark:text-blue-400" size={22} />
+                  दुकान नोंदणी व मंजुरी अर्ज (Shop Approval Requests)
+                </h2>
+                <p className="text-xs text-brand-muted dark:text-slate-400 mt-1">
+                  दुकानदारांनी 'दुकान नोंदणी करा' फॉर्मद्वारे सबमिट केलेले अर्ज तपासा आणि एका क्लिकवर मंजूर किंवा फेटाळा.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-xs px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 font-bold flex items-center gap-1.5">
+                  <Clock size={14} /> प्रलंबित अर्ज: {pendingShops.length}
+                </span>
+                <span className="text-xs px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1.5">
+                  <CheckCircle size={14} /> मंजूर दुकाने: {allFirestoreShops.filter(s => s.status === 'approved').length}
+                </span>
+              </div>
+            </div>
+
+            {/* Pending Shops List */}
+            <div className="space-y-4">
+              <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                ⏳ मंजुरीसाठी प्रलंबित दुकाने ({pendingShops.length})
+              </h3>
+
+              {pendingShops.length === 0 ? (
+                <div className="p-8 text-center glass-card border border-gray-200/60 dark:border-slate-800 rounded-2xl">
+                  <CheckCircle size={36} className="mx-auto text-emerald-500 mb-2" />
+                  <h4 className="text-base font-bold text-brand-dark dark:text-white">कोणताही अर्ज प्रलंबित नाही!</h4>
+                  <p className="text-xs text-brand-muted dark:text-slate-400 mt-1">
+                    सर्व नोंदणीकृत दुकाने मंजूर आहेत. जेव्हा एखादा विक्रेता दुकान नोंदणी करेल, तेव्हा त्याचा अर्ज येथे दिसेल.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {pendingShops.map((shop) => (
+                    <div
+                      key={shop.id}
+                      className="p-5 glass-card border-2 border-amber-200 dark:border-amber-900/50 rounded-2xl shadow-sm space-y-4 flex flex-col justify-between"
+                    >
+                      <div className="flex gap-4">
+                        {shop.imageUrl ? (
+                          <img
+                            src={shop.imageUrl}
+                            alt={shop.shopName}
+                            className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border border-gray-100 dark:border-slate-700 shrink-0 shadow-xs"
+                          />
+                        ) : (
+                          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 shrink-0">
+                            <Store size={28} />
+                          </div>
+                        )}
+
+                        <div className="space-y-1.5 flex-1 min-w-0">
+                          <div className="flex flex-wrap items-center justify-between gap-1.5">
+                            <h4 className="text-base font-bold text-brand-dark dark:text-white truncate">
+                              {shop.shopName}
+                            </h4>
+                            <span className="text-[11px] px-2 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+                              प्रलंबित
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-1.5 text-xs text-brand-purple dark:text-purple-300 font-semibold">
+                            <span className="px-2 py-0.5 rounded-md bg-purple-50 dark:bg-purple-950/40 border border-purple-200/60 dark:border-purple-800/60">
+                              {shop.category}
+                            </span>
+                          </div>
+
+                          <div className="text-xs text-brand-muted dark:text-slate-400 space-y-0.5 pt-1">
+                            <p className="flex items-center gap-1.5 truncate">
+                              <UserCheck size={13} className="shrink-0 text-slate-400" />
+                              <span>मालक: <b className="text-brand-dark dark:text-slate-200">{shop.ownerName}</b></span>
+                            </p>
+                            <p className="flex items-center gap-1.5">
+                              <Phone size={13} className="shrink-0 text-slate-400" />
+                              <a href={`tel:${shop.mobileNumber}`} className="text-blue-600 hover:underline">
+                                {shop.mobileNumber}
+                              </a>
+                            </p>
+                            <p className="flex items-center gap-1.5 text-[11px]">
+                              <MapPin size={13} className="shrink-0 text-slate-400" />
+                              <span className="truncate">{shop.address}</span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="pt-3 border-t border-gray-100 dark:border-slate-800 flex gap-2">
+                        <button
+                          disabled={isProcessingShop === shop.id}
+                          onClick={() => handleApproveFirestoreShop(shop.id, shop.shopName)}
+                          className="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm cursor-pointer disabled:opacity-50"
+                        >
+                          <Check size={14} strokeWidth={2.5} />
+                          <span>मंजूर करा (Approve)</span>
+                        </button>
+                        <button
+                          disabled={isProcessingShop === shop.id}
+                          onClick={() => handleRejectFirestoreShop(shop.id, shop.shopName)}
+                          className="py-2.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400 border border-rose-200 dark:border-rose-800 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
+                        >
+                          <Trash2 size={14} />
+                          <span>फेटाळा</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Approved Shops List */}
+            {allFirestoreShops.filter(s => s.status === 'approved').length > 0 && (
+              <div className="space-y-4 pt-6 border-t border-gray-200/60 dark:border-slate-800">
+                <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                  ✓ मुख्य पृष्ठावर प्रदर्शित मंजूर दुकाने ({allFirestoreShops.filter(s => s.status === 'approved').length})
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {allFirestoreShops.filter(s => s.status === 'approved').map((shop) => (
+                    <div
+                      key={shop.id}
+                      className="p-4 glass-card border border-emerald-200/60 dark:border-emerald-900/40 rounded-2xl shadow-xs space-y-3 flex flex-col justify-between"
+                    >
+                      <div className="flex gap-3">
+                        {shop.imageUrl ? (
+                          <img
+                            src={shop.imageUrl}
+                            alt={shop.shopName}
+                            className="w-16 h-16 rounded-xl object-cover border border-gray-100 dark:border-slate-700 shrink-0"
+                          />
+                        ) : (
+                          <div className="w-16 h-16 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 shrink-0">
+                            <Store size={22} />
+                          </div>
+                        )}
+                        <div className="space-y-1 min-w-0 flex-1">
+                          <div className="flex items-center justify-between gap-1">
+                            <h4 className="text-sm font-bold text-brand-dark dark:text-white truncate">
+                              {shop.shopName}
+                            </h4>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+                              मंजूर
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-brand-purple dark:text-purple-300 font-medium truncate">
+                            {shop.category}
+                          </p>
+                          <p className="text-[11px] text-brand-muted dark:text-slate-400 truncate">
+                            मालक: {shop.ownerName} | 📞 {shop.mobileNumber}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="pt-2 border-t border-gray-100 dark:border-slate-800 flex justify-between items-center text-xs">
+                        <span className="text-[11px] text-slate-400 truncate max-w-[180px]">
+                          📍 {shop.address}
+                        </span>
+                        <button
+                          onClick={() => handleRejectFirestoreShop(shop.id, shop.shopName)}
+                          className="text-rose-500 hover:text-rose-700 font-semibold text-[11px] flex items-center gap-1 hover:underline cursor-pointer"
+                        >
+                          <Trash2 size={12} /> काढून टाका
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* ADD SHOP PROFILE VIEW */}
         {activeTab === 'add-shop' && (
           <div className="py-4">
@@ -657,11 +950,71 @@ export default function AdminDashboard() {
 
             {/* Quick pending approval log */}
             <div className="glass-card p-6 border border-white/70 space-y-4">
-              <h3 className="text-base font-bold text-brand-dark dark:text-white">मंजुरी प्रलंबित व्यापारी यादी</h3>
-              {businesses.filter(b => !b.isApproved).length === 0 ? (
-                <p className="text-xs text-brand-muted dark:text-slate-400 font-light">कोणताही व्यवसाय मंजुरीसाठी प्रलंबित नाही.</p>
+              <div className="flex justify-between items-center">
+                <h3 className="text-base font-bold text-brand-dark dark:text-white">
+                  मंजुरी प्रलंबित व्यापारी व दुकाने यादी
+                </h3>
+                {pendingShops.length > 0 && (
+                  <button
+                    onClick={() => setActiveTab('pending-shops')}
+                    className="text-xs text-blue-600 hover:underline font-bold"
+                  >
+                    सर्व प्रलंबित दुकाने पहा ({pendingShops.length}) →
+                  </button>
+                )}
+              </div>
+
+              {pendingShops.length === 0 && businesses.filter(b => !b.isApproved).length === 0 ? (
+                <p className="text-xs text-brand-muted dark:text-slate-400 font-light">कोणताही व्यवसाय किंवा दुकान मंजुरीसाठी प्रलंबित नाही.</p>
               ) : (
                 <div className="space-y-3">
+                  {/* 1. Firestore Pending Shops */}
+                  {pendingShops.map(shop => (
+                    <div key={shop.id} className="flex flex-col sm:flex-row justify-between sm:items-center p-4 bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl gap-4 text-xs">
+                      <div className="flex items-center gap-3">
+                        {shop.imageUrl ? (
+                          <img
+                            src={shop.imageUrl}
+                            alt={shop.shopName}
+                            className="w-12 h-12 rounded-lg object-cover border border-amber-200 shrink-0"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 rounded-lg bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center text-amber-700 shrink-0">
+                            <Store size={20} />
+                          </div>
+                        )}
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-extrabold text-brand-dark dark:text-white">{shop.shopName}</h4>
+                            <span className="text-[10px] px-2 py-0.2 rounded-full bg-purple-100 text-purple-700 font-bold">
+                              {shop.category}
+                            </span>
+                          </div>
+                          <p className="text-xs text-brand-muted dark:text-slate-400 font-light">
+                            मालक: {shop.ownerName} | 📞 <a href={`tel:${shop.mobileNumber}`} className="text-blue-600 hover:underline">{shop.mobileNumber}</a> | {shop.address}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2 shrink-0">
+                        <button 
+                          disabled={isProcessingShop === shop.id}
+                          onClick={() => handleApproveFirestoreShop(shop.id, shop.shopName)}
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                        >
+                          <Check size={12} /> मंजूर (Approve)
+                        </button>
+                        <button 
+                          disabled={isProcessingShop === shop.id}
+                          onClick={() => handleRejectFirestoreShop(shop.id, shop.shopName)}
+                          className="bg-rose-500 hover:bg-rose-600 text-white font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                        >
+                          <X size={12} /> फेटाळा (Delete)
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* 2. Local Pending Businesses */}
                   {businesses.filter(b => !b.isApproved).map(b => (
                     <div key={b.id} className="flex flex-col sm:flex-row justify-between sm:items-center p-4 bg-slate-50/50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-700 rounded-xl gap-4 text-xs">
                       <div>

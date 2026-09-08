@@ -73,7 +73,6 @@ export const defaultSidebarGroups: SidebarGroup[] = [
       { id: 'add-shop', label: '🏪 दुकान नोंदणी करा (Add Shop)', link: '/add-shop' },
       { id: 'merchant-login', label: '🔐 दुकानदार लॉगिन (Merchant Login)', link: '/merchant-login' },
       { id: 'merchant-dashboard', label: '💼 दुकानदार डॅशबोर्ड (Merchant Dashboard)', link: '/merchant-dashboard' },
-      { id: 'admin-panel', label: '🛡️ प्रशासक पॅनेल (Admin Panel)', link: '/admin' },
       { id: 'welcome-page', label: '✨ वेल्कम स्क्रीन (Welcome Page)', link: '/welcome' },
     ],
   },
@@ -110,9 +109,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside
       aria-label="Application Sidebar"
-      className={`fixed left-0 top-0 h-screen w-72 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-xl border-r border-slate-200/60 dark:border-slate-800/80 z-50 flex flex-col justify-between transition-transform duration-300 ease-in-out ${
+      onClick={(e) => e.stopPropagation()}
+      className={`fixed left-0 top-0 h-[100dvh] max-h-[100dvh] w-72 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-xl border-r border-slate-200/60 dark:border-slate-800/80 z-50 flex flex-col justify-between transition-transform duration-300 ease-in-out ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
-      } shadow-2xl lg:shadow-none p-4 text-left`}
+      } shadow-2xl lg:shadow-none p-4 text-left overscroll-contain`}
     >
       {/* 1. Header with Brand & Close Button */}
       <div className="flex items-center justify-between pb-3.5 px-1 border-b border-slate-200/60 dark:border-slate-800/80 shrink-0">
@@ -148,7 +148,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* 2. Scrollable Navigation: Containerized Apple / GPay Card Groups */}
-      <div className="flex-1 overflow-y-auto py-4 space-y-4 pr-1 custom-scrollbar">
+      <div
+        onClick={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
+        className="flex-1 overflow-y-auto overscroll-contain py-4 space-y-4 pr-1 custom-scrollbar"
+      >
         {defaultSidebarGroups.map((group) => {
           const isGroupOpen = openGroups[group.id] ?? true;
 

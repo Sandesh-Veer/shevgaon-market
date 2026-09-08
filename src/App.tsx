@@ -33,7 +33,7 @@ function AppContent() {
   // Dedicated Fullscreen Landing Page rendering
   if (isLandingPage) {
     return (
-      <div className="w-full min-h-screen bg-slate-950">
+      <div className="w-full h-[100dvh] min-h-[100dvh] max-h-[100dvh] overflow-hidden bg-slate-950">
         <OfflineFallback />
         <Routes>
           <Route path="/" element={<WelcomeLanding />} />

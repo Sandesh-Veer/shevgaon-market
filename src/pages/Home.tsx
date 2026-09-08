@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { db, Business, Section, WebsiteSettings } from '../services/db';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { db as firestoreDb } from '../services/firebase';
 import UniversalCard from '../components/ui/UniversalCard';
 import {
   Sparkles,
@@ -13,8 +15,21 @@ import {
   Phone,
   MapPin,
   PlusCircle,
-  Store
+  Store,
+  BadgeCheck
 } from 'lucide-react';
+
+export interface FirestoreShop {
+  id: string;
+  shopName: string;
+  ownerName: string;
+  category: string;
+  mobileNumber: string;
+  address: string;
+  imageUrl: string;
+  status: 'pending' | 'approved';
+  createdAt?: any;
+}
 
 // Countdown Timer Component in Marathi
 function Countdown({ initialSeconds, seconds }: { initialSeconds?: number; seconds?: number }) {
@@ -408,6 +423,32 @@ export default function Home() {
   const mechanics = businesses.filter(b => b.category === 'mechanics');
   const offers = businesses.filter(b => b.category === 'offers');
 
+  // Firestore Approved Shops (Filtered: ONLY status === 'approved')
+  const [approvedShops, setApprovedShops] = useState<FirestoreShop[]>([]);
+
+  useEffect(() => {
+    const q = query(
+      collection(firestoreDb, 'shops'),
+      where('status', '==', 'approved')
+    );
+
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot: any) => {
+        const shops: FirestoreShop[] = [];
+        snapshot.forEach((doc: any) => {
+          shops.push({ id: doc.id, ...(doc.data() as Omit<FirestoreShop, 'id'>) });
+        });
+        setApprovedShops(shops);
+      },
+      (error: any) => {
+        console.error('Error fetching approved shops from Firestore:', error);
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
+
   // Trigger data refresh from database
   const refreshData = () => {
     setBusinesses(db.getApprovedBusinesses());
@@ -560,97 +601,140 @@ export default function Home() {
     switch (s.id) {
       case 'hero':
         return (
-          <section id="home" key={s.id} className="relative pt-6 sm:pt-12 flex flex-col items-center text-center w-full overflow-x-hidden">
-            {/* Glow Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 glass-badge mb-4 sm:mb-6 max-w-[95%] text-center"
-            >
-              <Sparkles size={13} className="text-brand-purple animate-pulse shrink-0" />
-              <span className="truncate">✨ शेवगावचा स्वतःचा प्रीमियम डिजिटल प्लॅटफॉर्म</span>
-            </motion.div>
-
-            {/* Large Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="text-2xl sm:text-5xl lg:text-7xl font-extrabold w-full max-w-4xl tracking-tight leading-[1.2] sm:leading-[1.15] mb-3 sm:mb-6 text-brand-dark text-center px-2 break-words"
-            >
-              {settings.title !== 'Shevgaon Market' ? settings.title : <>सर्व स्थानिक सेवा आणि व्यवहार <br className="hidden sm:inline" /> <span className="text-gradient">आता एकाच ठिकाणी</span></>}
-            </motion.h1>
-
-            {/* Sub-headline */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-xs sm:text-base md:text-lg text-brand-muted w-full max-w-2xl font-light mb-6 sm:mb-10 px-3 sm:px-4 leading-relaxed text-center"
-            >
-              {settings.description}
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 w-full justify-center px-2 sm:px-6 max-w-lg mb-8 sm:mb-16 z-10 mx-auto"
-            >
-              <a
-                href="#offers"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById('offers')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                className="w-full sm:w-auto bg-gradient-brand text-white font-semibold px-5 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl hover:shadow-[0_12px_24px_rgba(79,124,255,0.3)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 group text-sm sm:text-base"
+          <div key={s.id} className="space-y-12 sm:space-y-16 w-full">
+            <section id="home" className="relative pt-6 sm:pt-12 flex flex-col items-center text-center w-full overflow-x-hidden">
+              {/* Glow Badge */}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="inline-flex items-center gap-2 glass-badge mb-4 sm:mb-6 max-w-[95%] text-center"
               >
-                नवीन ऑफर्स पहा
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </a>
+                <Sparkles size={13} className="text-brand-purple animate-pulse shrink-0" />
+                <span className="truncate">✨ शेवगावचा स्वतःचा प्रीमियम डिजिटल प्लॅटफॉर्म</span>
+              </motion.div>
 
-              <Link
-                to="/add-shop"
-                className="w-full sm:w-auto bg-white/70 dark:bg-slate-900/70 border border-brand-purple/30 backdrop-blur-md text-brand-purple dark:text-purple-300 font-bold px-5 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl hover:bg-brand-purple hover:text-white hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 text-center shadow-sm text-sm sm:text-base"
+              {/* Large Headline */}
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="text-2xl sm:text-5xl lg:text-7xl font-extrabold w-full max-w-4xl tracking-tight leading-[1.2] sm:leading-[1.15] mb-3 sm:mb-6 text-brand-dark text-center px-2 break-words"
               >
-                <Store size={18} />
-                <span>दुकान नोंदणी करा</span>
-              </Link>
-            </motion.div>
+                {settings.title !== 'Shevgaon Market' ? settings.title : <>सर्व स्थानिक सेवा आणि व्यवहार <br className="hidden sm:inline" /> <span className="text-gradient">आता एकाच ठिकाणी</span></>}
+              </motion.h1>
 
-            {/* Glass Mockup Preview */}
-            <motion.div
-              initial={{ opacity: 0, y: 50, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 1, delay: 0.4 }}
-              className="w-full max-w-5xl rounded-2xl sm:rounded-3xl overflow-hidden glass-card p-1.5 sm:p-2 md:p-3 relative shadow-soft border border-white/80"
-            >
-              <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-gray-100 shadow-inner bg-slate-50 relative aspect-[16/9] w-full">
-                {/* Header control buttons */}
-                <div className="absolute top-2.5 left-2.5 sm:top-4 sm:left-4 flex gap-1.5 z-20">
-                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#FF5F56]" />
-                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#FFBD2E]" />
-                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#27C93F]" />
+              {/* Sub-headline */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-xs sm:text-base md:text-lg text-brand-muted w-full max-w-2xl font-light mb-6 sm:mb-10 px-3 sm:px-4 leading-relaxed text-center"
+              >
+                {settings.description}
+              </motion.p>
+
+              {/* CTAs */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 w-full justify-center px-2 sm:px-6 max-w-lg mb-8 sm:mb-16 z-10 mx-auto"
+              >
+                <a
+                  href="#offers"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('offers')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className="w-full sm:w-auto bg-gradient-brand text-white font-semibold px-5 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl hover:shadow-[0_12px_24px_rgba(79,124,255,0.3)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 group text-sm sm:text-base"
+                >
+                  नवीन ऑफर्स पहा
+                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </a>
+
+                <Link
+                  to="/add-shop"
+                  className="w-full sm:w-auto bg-white/70 dark:bg-slate-900/70 border border-brand-purple/30 backdrop-blur-md text-brand-purple dark:text-purple-300 font-bold px-5 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl hover:bg-brand-purple hover:text-white hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 text-center shadow-sm text-sm sm:text-base"
+                >
+                  <Store size={18} />
+                  <span>दुकान नोंदणी करा</span>
+                </Link>
+              </motion.div>
+
+              {/* Glass Mockup Preview */}
+              <motion.div
+                initial={{ opacity: 0, y: 50, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 1, delay: 0.4 }}
+                className="w-full max-w-5xl rounded-2xl sm:rounded-3xl overflow-hidden glass-card p-1.5 sm:p-2 md:p-3 relative shadow-soft border border-white/80"
+              >
+                <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-gray-100 shadow-inner bg-slate-50 relative aspect-[16/9] w-full">
+                  {/* Header control buttons */}
+                  <div className="absolute top-2.5 left-2.5 sm:top-4 sm:left-4 flex gap-1.5 z-20">
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#FF5F56]" />
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#FFBD2E]" />
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#27C93F]" />
+                  </div>
+
+                  {/* Ambient image background */}
+                  <img
+                    src={settings.bannerUrl || "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80"}
+                    alt="Mandi Market UI"
+                    className="w-full h-full object-cover select-none pointer-events-none hover:scale-[1.02] transition-transform duration-700"
+                  />
+
+                  {/* Floating glass panel overlay */}
+                  <div className="absolute bottom-6 right-6 p-5 glass-card max-w-[280px] hidden md:block text-left z-20 border border-white/70 animate-float-slow">
+                    <span className="text-xs font-semibold text-brand-purple">ताजा भाजीपाला बाजार</span>
+                    <h3 className="text-base sm:text-lg font-bold text-brand-dark mt-1 mb-1"> थेट शेतकरी विक्री </h3>
+                    <p className="text-xs text-brand-muted">ग्राहकांना थेट शेतातील ताजी पिके आणि सेंद्रिय माल खरेदी करण्याची संधी.</p>
+                  </div>
+                </div>
+              </motion.div>
+            </section>
+
+            {/* Approved Shops Showcase (Only Firestore status === 'approved') */}
+            {approvedShops.length > 0 && (
+              <section id="approved-shops" className="max-w-6xl mx-auto px-3 sm:px-6 md:px-8 text-left scroll-mt-24 w-full overflow-x-hidden">
+                <div className="text-center space-y-3 mb-8 sm:mb-10">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-xs font-bold">
+                    <BadgeCheck size={14} />
+                    <span>प्रमाणित दुकाने व व्यवसाय (Verified Shops)</span>
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-dark dark:text-white text-center">
+                    शेवगावची नोंदणीकृत दुकाने
+                  </h2>
+                  <p className="text-brand-muted dark:text-slate-400 max-w-xl mx-auto font-light text-xs sm:text-sm text-center">
+                    प्रशासक मंजूर स्थानिक दुकानांची अधिकृत यादी आणि थेट संपर्क माहिती.
+                  </p>
                 </div>
 
-                {/* Ambient image background */}
-                <img
-                  src={settings.bannerUrl || "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80"}
-                  alt="Mandi Market UI"
-                  className="w-full h-full object-cover select-none pointer-events-none hover:scale-[1.02] transition-transform duration-700"
-                />
-
-                {/* Floating glass panel overlay */}
-                <div className="absolute bottom-6 right-6 p-5 glass-card max-w-[280px] hidden md:block text-left z-20 border border-white/70 animate-float-slow">
-                  <span className="text-xs font-semibold text-brand-purple">ताजा भाजीपाला बाजार</span>
-                  <h3 className="text-base sm:text-lg font-bold text-brand-dark mt-1 mb-1"> थेट शेतकरी विक्री </h3>
-                  <p className="text-xs text-brand-muted">ग्राहकांना थेट शेतातील ताजी पिके आणि सेंद्रिय माल खरेदी करण्याची संधी.</p>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  {approvedShops.map((shop) => (
+                    <UniversalCard
+                      key={shop.id}
+                      id={shop.id}
+                      title={shop.shopName}
+                      subtitle={shop.ownerName}
+                      location={shop.address || 'शेवगाव'}
+                      categoryBadge={shop.category}
+                      categoryBadgeColor="bg-blue-50/95 dark:bg-blue-950/90 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
+                      image={shop.imageUrl || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80'}
+                      phone={shop.mobileNumber}
+                      whatsapp={shop.mobileNumber}
+                      whatsappMessage={`नमस्कार ${shop.shopName}, मी Shevgaon Market पोर्टलवरून संपर्क करत आहे.`}
+                      showWhatsappInsteadOfDetails={true}
+                      metaItems={[
+                        { label: 'दुकानदार', value: shop.ownerName },
+                        { label: 'पत्ता', value: shop.address || 'शेवगाव' }
+                      ]}
+                    />
+                  ))}
                 </div>
-              </div>
-            </motion.div>
-          </section>
+              </section>
+            )}
+          </div>
         );
 
       case 'shetkari':
