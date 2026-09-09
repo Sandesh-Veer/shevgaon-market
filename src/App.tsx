@@ -96,6 +96,9 @@ function AppContent() {
           }
         />
 
+
+{/* 
+donne */}
         {/* 4. Admin Panel Route (Handles its own secure login session) */}
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
