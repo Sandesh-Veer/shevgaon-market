@@ -5,6 +5,8 @@ import { db, Business, Section, WebsiteSettings } from '../services/db';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { db as firestoreDb } from '../services/firebase';
 import UniversalCard from '../components/ui/UniversalCard';
+import AdvancedSearchBar from '../components/search/AdvancedSearchBar';
+import AddOfferModal from '../components/offers/AddOfferModal';
 import {
   Sparkles,
   ArrowRight,
@@ -27,7 +29,12 @@ export interface FirestoreShop {
   mobileNumber: string;
   address: string;
   imageUrl: string;
+  items?: string | string[];
+  description?: string;
+  rating?: number;
   status: 'pending' | 'approved';
+  paymentStatus?: string;
+  planType?: string;
   createdAt?: any;
 }
 
@@ -449,6 +456,29 @@ export default function Home() {
     return () => unsubscribe();
   }, []);
 
+  // Real-time Firestore Paid Offers
+  const [firestoreOffers, setFirestoreOffers] = useState<any[]>([]);
+  const [isAddOfferModalOpen, setIsAddOfferModalOpen] = useState(false);
+
+  useEffect(() => {
+    const q = query(collection(firestoreDb, 'offers'));
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot: any) => {
+        const list: any[] = [];
+        snapshot.forEach((d: any) => {
+          list.push({ id: d.id, ...d.data() });
+        });
+        setFirestoreOffers(list);
+      },
+      (error: any) => {
+        console.error('Error fetching firestore offers:', error);
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
+
   // Trigger data refresh from database
   const refreshData = () => {
     setBusinesses(db.getApprovedBusinesses());
@@ -571,11 +601,42 @@ export default function Home() {
     ? vehicles
     : vehicles.filter(v => v.vehicleCat === vehicleCatFilter || v.category === vehicleCatFilter);
 
+  // Combined offers from Firestore (paid offers) and default database offers
+  const allOffers = [
+    ...firestoreOffers.map((o) => ({
+      id: o.id,
+      name: o.shopName || o.name || 'दुकान ऑफर',
+      ownerName: o.shopName || o.name || 'दुकानदार',
+      category: 'offers' as const,
+      phone: o.phone || '',
+      whatsapp: o.phone || '',
+      email: '',
+      address: 'शेवगाव',
+      village: 'शेवगाव',
+      taluka: 'शेवगाव',
+      district: 'अहमदनगर',
+      mapLink: '',
+      openingTime: '०९:०० AM',
+      closingTime: '०९:०० PM',
+      description: o.description || o.offerDesc || '',
+      offerBanner: o.title || o.offerBanner || 'मोठी सूट!',
+      offerDiscount: o.discount || o.offerDiscount || '20',
+      offerDesc: o.category || 'विशेष ऑफर',
+      logo: o.imageUrl || o.logo || 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=400&q=80',
+      banner: o.imageUrl || '',
+      photos: o.photos || (o.imageUrl ? [o.imageUrl] : []),
+      isApproved: true,
+      paymentStatus: o.paymentStatus,
+      amountPaid: o.amountPaid,
+    })),
+    ...offers
+  ];
+
   // Offers filter logic
-  const filteredOffers = offers.filter(o => {
+  const filteredOffers = allOffers.filter(o => {
     const matchesSearch = o.name.toLowerCase().includes(offersSearch.toLowerCase()) ||
-      o.offerBanner?.toLowerCase().includes(offersSearch.toLowerCase()) ||
-      o.description.toLowerCase().includes(offersSearch.toLowerCase());
+      (o.offerBanner && o.offerBanner.toLowerCase().includes(offersSearch.toLowerCase())) ||
+      (o.description && o.description.toLowerCase().includes(offersSearch.toLowerCase()));
     const matchesCategory = offersFilter === 'All' || o.offerDesc === offersFilter || o.category === offersFilter;
     return matchesSearch && matchesCategory;
   });
@@ -695,45 +756,28 @@ export default function Home() {
             </section>
 
             {/* Approved Shops Showcase (Only Firestore status === 'approved') */}
-            {approvedShops.length > 0 && (
-              <section id="approved-shops" className="max-w-6xl mx-auto px-3 sm:px-6 md:px-8 text-left scroll-mt-24 w-full overflow-x-hidden">
-                <div className="text-center space-y-3 mb-8 sm:mb-10">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-xs font-bold">
-                    <BadgeCheck size={14} />
-                    <span>प्रमाणित दुकाने व व्यवसाय (Verified Shops)</span>
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-dark dark:text-white text-center">
-                    शेवगावची नोंदणीकृत दुकाने
-                  </h2>
-                  <p className="text-brand-muted dark:text-slate-400 max-w-xl mx-auto font-light text-xs sm:text-sm text-center">
-                    प्रशासक मंजूर स्थानिक दुकानांची अधिकृत यादी आणि थेट संपर्क माहिती.
-                  </p>
+            {/* Approved Shops Showcase with Advanced Search & Rating Sort */}
+            <section id="approved-shops" className="max-w-6xl mx-auto px-3 sm:px-6 md:px-8 text-left scroll-mt-24 w-full overflow-x-hidden">
+              <div className="text-center space-y-3 mb-6 sm:mb-8">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-xs font-bold">
+                  <BadgeCheck size={14} />
+                  <span>प्रमाणित दुकाने व व्यवसाय (Verified Shops)</span>
                 </div>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-dark dark:text-white text-center">
+                  शेवगावची नोंदणीकृत दुकाने
+                </h2>
+                <p className="text-brand-muted dark:text-slate-400 max-w-xl mx-auto font-light text-xs sm:text-sm text-center">
+                  प्रशासक मंजूर स्थानिक दुकानांची अधिकृत यादी, थेट शोध आणि सर्वोच्च रेटिंगनुसार क्रमवारी.
+                </p>
+              </div>
 
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                  {approvedShops.map((shop) => (
-                    <UniversalCard
-                      key={shop.id}
-                      id={shop.id}
-                      title={shop.shopName}
-                      subtitle={shop.ownerName}
-                      location={shop.address || 'शेवगाव'}
-                      categoryBadge={shop.category}
-                      categoryBadgeColor="bg-blue-50/95 dark:bg-blue-950/90 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
-                      image={shop.imageUrl || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80'}
-                      phone={shop.mobileNumber}
-                      whatsapp={shop.mobileNumber}
-                      whatsappMessage={`नमस्कार ${shop.shopName}, मी Shevgaon Market पोर्टलवरून संपर्क करत आहे.`}
-                      showWhatsappInsteadOfDetails={true}
-                      metaItems={[
-                        { label: 'दुकानदार', value: shop.ownerName },
-                        { label: 'पत्ता', value: shop.address || 'शेवगाव' }
-                      ]}
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
+              {/* Task 2: Advanced Search Bar with Rating Sort */}
+              <AdvancedSearchBar
+                shops={approvedShops}
+                renderResults={true}
+                placeholder="दुकान, श्रेणी, वस्तू किंवा सेवा शोधा... (उदा. किराणा, इलेक्ट्रॉनिक्स, कापड)"
+              />
+            </section>
           </div>
         );
 
@@ -1100,11 +1144,23 @@ export default function Home() {
 
       case 'offers':
         return (
-          <section id="offers" key={s.id} className="max-w-6xl mx-auto px-3 sm:px-6 md:px-8 text-left scroll-mt-20 w-full overflow-x-hidden">
-            <div className="text-center space-y-3 mb-8 sm:mb-12">
+          <section id="offers" key={s.id} className="max-w-6xl mx-auto px-3 sm:px-6 md:px-8 text-left scroll-mt-20 w-full overflow-x-hidden relative">
+            <div className="text-center space-y-3 mb-6 sm:mb-8">
               <span className="text-xs font-bold text-brand-purple">🛍️ ऑफर्स विभाग</span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
               <p className="text-brand-muted max-w-xl mx-auto font-light text-xs sm:text-sm text-center">{s.desc}</p>
+              
+              {/* Task 4: Floating "Add Offer" Action Button with ₹49 pay-per-post fee */}
+              <div className="pt-1 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setIsAddOfferModalOpen(true)}
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-full shadow-lg shadow-rose-500/25 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 group cursor-pointer"
+                >
+                  <Sparkles size={16} className="animate-pulse" />
+                  <span>+ नवीन ऑफर जोडा (Add Offer - Pay ₹49)</span>
+                </button>
+              </div>
             </div>
 
             <div className="space-y-6">
@@ -1611,6 +1667,12 @@ export default function Home() {
           </motion.button>
         )}
       </AnimatePresence>
+
+      {/* Task 4: Paid Add Offer Modal with Pay-per-post fee */}
+      <AddOfferModal
+        isOpen={isAddOfferModalOpen}
+        onClose={() => setIsAddOfferModalOpen(false)}
+      />
 
     </div>
   );

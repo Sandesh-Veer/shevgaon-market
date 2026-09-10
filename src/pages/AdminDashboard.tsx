@@ -28,7 +28,14 @@ export interface FirestoreShop {
   mobileNumber: string;
   address: string;
   imageUrl: string;
+  items?: string | string[];
+  description?: string;
+  rating?: number;
   status: 'pending' | 'approved';
+  paymentStatus?: 'paid' | 'pending';
+  planType?: string;
+  amountPaid?: number;
+  paymentId?: string;
   createdAt?: any;
   updatedAt?: any;
 }
@@ -663,10 +670,22 @@ export default function AdminDashboard() {
                             </span>
                           </div>
 
-                          <div className="flex items-center gap-1.5 text-xs text-brand-purple dark:text-purple-300 font-semibold">
+                          <div className="flex items-center gap-1.5 text-xs text-brand-purple dark:text-purple-300 font-semibold flex-wrap">
                             <span className="px-2 py-0.5 rounded-md bg-purple-50 dark:bg-purple-950/40 border border-purple-200/60 dark:border-purple-800/60">
                               {shop.category}
                             </span>
+                            <span className={`px-2 py-0.5 rounded-md text-[11px] font-bold ${
+                              shop.paymentStatus === 'paid' 
+                                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300' 
+                                : 'bg-amber-100 text-amber-800'
+                            }`}>
+                              पेमेंट: {shop.paymentStatus === 'paid' ? `Paid (₹${shop.amountPaid || '199'})` : 'प्रलंबित'}
+                            </span>
+                            {shop.planType && (
+                              <span className="px-2 py-0.5 rounded-md bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 text-[11px] font-bold">
+                                प्लॅन: {shop.planType}
+                              </span>
+                            )}
                           </div>
 
                           <div className="text-xs text-brand-muted dark:text-slate-400 space-y-0.5 pt-1">

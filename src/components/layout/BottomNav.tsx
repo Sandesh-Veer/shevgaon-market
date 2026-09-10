@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Home, Grid, PlusCircle, Store, Shield } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 interface BottomNavProps {
   onOpenSidebar?: () => void;
@@ -15,6 +16,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { hasRegisteredShop, role } = useAuth();
 
   const isHome = location.pathname === '/home';
 
@@ -74,13 +76,22 @@ export const BottomNav: React.FC<BottomNavProps> = ({
     },
   ];
 
+  // Hide the "Merchant/Shopkeeper" bottom navigation link from regular users.
+  // It should only be visible if the logged-in user has a registered shop.
+  const visibleNavItems = navItems.filter((item) => {
+    if (item.id === 'vendor') {
+      return hasRegisteredShop || role === 'admin';
+    }
+    return true;
+  });
+
   return (
     <div className="fixed bottom-3 inset-x-0 z-40 px-3 max-w-md mx-auto pointer-events-none lg:hidden">
       <nav
         aria-label="Mobile Navigation"
         className="pointer-events-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/60 dark:border-slate-800/80 rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)] p-1.5 flex items-center justify-between"
       >
-        {navItems.map((item) => {
+        {visibleNavItems.map((item) => {
           const Icon = item.icon;
           const active = item.isActive;
 

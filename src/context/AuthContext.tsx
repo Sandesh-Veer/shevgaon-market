@@ -6,10 +6,31 @@ import {
   signInWithPhoneNumber
 } from 'firebase/auth';
 import type { User, ConfirmationResult, RecaptchaVerifier as RecaptchaVerifierType } from '@firebase/auth-types';
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc, serverTimestamp, query, where, collection, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../services/firebase';
 
 export type UserRole = 'admin' | 'merchant' | null;
+
+export interface MerchantShop {
+  id: string;
+  ownerUid?: string;
+  shopName: string;
+  ownerName: string;
+  category: string;
+  mobileNumber: string;
+  address: string;
+  imageUrl?: string;
+  items?: string | string[];
+  description?: string;
+  rating?: number;
+  status: 'pending' | 'approved';
+  paymentStatus?: 'paid' | 'pending';
+  planType?: 'basic' | 'premium' | string;
+  amountPaid?: number;
+  paymentId?: string;
+  createdAt?: any;
+  updatedAt?: any;
+}
 
 export interface UserProfile {
   uid: string;
@@ -38,11 +59,14 @@ interface AuthContextType {
   sendOtp: (phoneNumber: string) => Promise<boolean>;
   verifyOtp: (otpCode: string) => Promise<{ success: boolean; role: UserRole; error?: string }>;
   logout: () => Promise<void>;
-  // Dedicated Shopkeeper (Merchant) Auth
+  // Dedicated Shopkeeper (Merchant) Auth & Shop Profile
   merchantSession: MerchantSession | null;
   isMerchantLoggedIn: boolean;
   loginMerchant: (phoneNumber: string, shopName?: string, pin?: string) => Promise<{ success: boolean; error?: string }>;
   logoutMerchant: () => void;
+  hasRegisteredShop: boolean;
+  userShop: MerchantShop | null;
+  isShopLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -64,6 +88,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return null;
     }
   });
+
+  // Registered Shop state
+  const [hasRegisteredShop, setHasRegisteredShop] = useState<boolean>(false);
+  const [userShop, setUserShop] = useState<MerchantShop | null>(null);
+  const [isShopLoading, setIsShopLoading] = useState<boolean>(true);
 
   const isMerchantLoggedIn = Boolean(
     merchantSession || (user && (role === 'merchant' || role === 'admin'))
@@ -142,6 +171,84 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return () => unsubscribe();
   }, []);
+
+  // Real-time listener: Check if logged-in user has a registered shop document (ownerUid === user.uid)
+  useEffect(() => {
+    if (!user?.uid) {
+      // If user is not logged in via Firebase Auth, check merchantSession phone if any
+      if (merchantSession?.phoneNumber) {
+        setIsShopLoading(true);
+        const qPhone = query(
+          collection(db, 'shops'),
+          where('mobileNumber', '==', merchantSession.phoneNumber)
+        );
+        const unsub = onSnapshot(qPhone, (snapshot: any) => {
+          if (!snapshot.empty) {
+            const firstDoc = snapshot.docs[0];
+            setUserShop({ id: firstDoc.id, ...(firstDoc.data() as any) });
+            setHasRegisteredShop(true);
+          } else {
+            setUserShop(null);
+            setHasRegisteredShop(false);
+          }
+          setIsShopLoading(false);
+        }, (err: any) => {
+          console.error('Error fetching merchant shop by phone:', err);
+          setIsShopLoading(false);
+        });
+        return () => unsub();
+      }
+
+      setUserShop(null);
+      setHasRegisteredShop(false);
+      setIsShopLoading(false);
+      return;
+    }
+
+    setIsShopLoading(true);
+    // Listen for shops where ownerUid === user.uid
+    const qOwner = query(
+      collection(db, 'shops'),
+      where('ownerUid', '==', user.uid)
+    );
+
+    const unsub = onSnapshot(qOwner, (snapshot: any) => {
+      if (!snapshot.empty) {
+        const firstDoc = snapshot.docs[0];
+        setUserShop({ id: firstDoc.id, ...(firstDoc.data() as any) });
+        setHasRegisteredShop(true);
+      } else {
+        // Also check if shop mobile matches user's phone number as a fallback
+        if (user.phoneNumber) {
+          const cleanPhone = user.phoneNumber.replace(/\D/g, '').slice(-10);
+          const qPhone = query(
+            collection(db, 'shops'),
+            where('mobileNumber', '==', cleanPhone)
+          );
+          onSnapshot(qPhone, (phoneSnap: any) => {
+            if (!phoneSnap.empty) {
+              const pDoc = phoneSnap.docs[0];
+              setUserShop({ id: pDoc.id, ...(pDoc.data() as any) });
+              setHasRegisteredShop(true);
+            } else {
+              setUserShop(null);
+              setHasRegisteredShop(false);
+            }
+            setIsShopLoading(false);
+          });
+          return;
+        }
+        setUserShop(null);
+        setHasRegisteredShop(false);
+      }
+      setIsShopLoading(false);
+    }, (err: any) => {
+      console.error('Error listening to user shop:', err);
+      setIsShopLoading(false);
+    });
+
+    return () => unsub();
+  }, [user?.uid, user?.phoneNumber, merchantSession?.phoneNumber]);
 
   // Initialize Invisible RecaptchaVerifier
   const setupRecaptcha = (containerId: string = 'recaptcha-container'): RecaptchaVerifierType => {
@@ -241,6 +348,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUserProfile(null);
     setRole(null);
     setConfirmationResult(null);
+    setHasRegisteredShop(false);
+    setUserShop(null);
     logoutMerchant();
   };
 
@@ -259,7 +368,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         merchantSession,
         isMerchantLoggedIn,
         loginMerchant,
-        logoutMerchant
+        logoutMerchant,
+        hasRegisteredShop,
+        userShop,
+        isShopLoading
       }}
     >
       {children}
