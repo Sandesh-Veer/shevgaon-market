@@ -149,8 +149,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         {/* Sticky Header */}
         <Header onMenuToggle={toggleSidebar} />
 
-        {/* Main Content Area with generous whitespace */}
-        <main className="flex-grow w-full max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-4 sm:py-5 pb-28 lg:pb-10 overflow-x-hidden">
+        {/* Main Content Area */}
+        <main className="flex-grow w-full pb-28 lg:pb-10 overflow-x-hidden">
           {children}
         </main>
 

@@ -14,7 +14,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { db as firestoreDb } from '../../services/firebase';
 import { useAuth } from '../../context/AuthContext';
 import RazorpayModal from '../payment/RazorpayModal';
@@ -78,6 +78,9 @@ export const AddOfferModal: React.FC<AddOfferModalProps> = ({
       const finalImage = imageUrl.trim() || 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=600&q=80';
       const ownerUid = user?.uid || (merchantSession ? merchantSession.phoneNumber : 'merchant_' + Date.now());
 
+      // Calculate expiresAt timestamp: exactly 24 hours ahead of the current time
+      const expiresAt = Timestamp.fromDate(new Date(Date.now() + 24 * 60 * 60 * 1000));
+
       // Save to Firebase 'offers' collection
       await addDoc(collection(firestoreDb, 'offers'), {
         title: offerTitle.trim(),
@@ -100,6 +103,7 @@ export const AddOfferModal: React.FC<AddOfferModalProps> = ({
         paymentMethod: paymentResponse.method,
         status: 'active',
         createdAt: serverTimestamp(),
+        expiresAt,
       });
 
       setSuccessMsg('ऑफर यशस्वीरीत्या पोस्ट झाली! शेवगाव मार्केटच्या चालू ऑफर्स विभागात ही ऑफर झळकेल.');

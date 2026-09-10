@@ -36,10 +36,10 @@ export default function Header({ onMenuToggle }: HeaderProps) {
 
   return (
     <header 
-      className={`sticky top-0 z-40 transition-all duration-300 ${
+      className={`sticky top-0 z-40 transition-all duration-300 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-b border-white/20 dark:border-slate-800/60 ${
         isScrolled 
-          ? 'bg-white/80 dark:bg-slate-900/85 backdrop-blur-md border-b border-gray-200/50 dark:border-slate-800 shadow-sm py-2.5 sm:py-3' 
-          : 'bg-transparent py-3 sm:py-5'
+          ? 'shadow-xs py-2.5 sm:py-3' 
+          : 'py-3 sm:py-4'
       }`}
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 flex justify-between items-center gap-2">

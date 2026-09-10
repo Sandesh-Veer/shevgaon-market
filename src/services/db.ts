@@ -65,6 +65,7 @@ export interface Business {
   offerDiscount?: string;
   offerBanner?: string;
   offerDesc?: string;
+  expiresAt?: any;
 }
 
 export interface ActivityLog {
