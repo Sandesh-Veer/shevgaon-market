@@ -17,7 +17,7 @@ import { motion } from 'framer-motion';
 import { collection, addDoc, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { db as firestoreDb } from '../../services/firebase';
 import { useAuth } from '../../context/AuthContext';
-import RazorpayModal from '../payment/RazorpayModal';
+import { handlePayment, RazorpaySuccessResponse } from '../../utils/razorpay';
 
 interface AddOfferModalProps {
   isOpen: boolean;
@@ -42,12 +42,11 @@ export const AddOfferModal: React.FC<AddOfferModalProps> = ({
   const [imageUrl, setImageUrl] = useState('');
 
   // Payment states
-  const [isRazorpayOpen, setIsRazorpayOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  const PAY_PER_POST_FEE = 49; // Pay-per-post fee in INR
+  const PAY_PER_POST_FEE = 49; // Pay-per-post fee in INR (₹49)
 
   if (!isOpen) return null;
 
@@ -65,12 +64,25 @@ export const AddOfferModal: React.FC<AddOfferModalProps> = ({
       return;
     }
 
-    // Open Razorpay for ₹49 pay-per-post fee
-    setIsRazorpayOpen(true);
+    // Open Razorpay modal for ₹49
+    handlePayment({
+      amount: PAY_PER_POST_FEE,
+      name: shopName.trim() || 'Shevgaon Market',
+      description: `ऑफर प्रसिद्धी फी: ${offerTitle.trim()}`,
+      prefill: {
+        contact: phone.trim(),
+      },
+      onSuccess: (response: RazorpaySuccessResponse) => {
+        handlePaymentSuccess(response);
+      },
+      onError: (err: any) => {
+        console.warn('Razorpay payment error or cancelled:', err);
+        setErrorMsg('पेमेंट प्रक्रिया पूर्ण झाली नाही किंवा रद्द झाली.');
+      },
+    });
   };
 
-  const handlePaymentSuccess = async (paymentResponse: { paymentId: string; amount: number; method: string }) => {
-    setIsRazorpayOpen(false);
+  const handlePaymentSuccess = async (paymentResponse: RazorpaySuccessResponse) => {
     setIsSubmitting(true);
     setErrorMsg(null);
 
@@ -99,14 +111,13 @@ export const AddOfferModal: React.FC<AddOfferModalProps> = ({
         ownerUid,
         paymentStatus: 'paid',
         amountPaid: PAY_PER_POST_FEE,
-        paymentId: paymentResponse.paymentId,
-        paymentMethod: paymentResponse.method,
+        paymentId: paymentResponse.razorpay_payment_id,
         status: 'active',
         createdAt: serverTimestamp(),
         expiresAt,
       });
 
-      setSuccessMsg('ऑफर यशस्वीरीत्या पोस्ट झाली! शेवगाव मार्केटच्या चालू ऑफर्स विभागात ही ऑफर झळकेल.');
+      setSuccessMsg('ऑफर यशस्वीरीत्या प्रसिद्ध झाली! २४ तास ही ऑफर शेवगाव मार्केटवर सक्रिय राहील.');
 
       if (onOfferAdded) {
         onOfferAdded();
@@ -114,7 +125,7 @@ export const AddOfferModal: React.FC<AddOfferModalProps> = ({
 
       setTimeout(() => {
         onClose();
-      }, 2000);
+      }, 1800);
     } catch (err: any) {
       console.error('Error saving paid offer to Firestore:', err);
       setErrorMsg(err.message || 'ऑफर जतन करताना त्रुटी आली. कृपया पुन्हा प्रयत्न करा.');
@@ -327,7 +338,7 @@ export const AddOfferModal: React.FC<AddOfferModalProps> = ({
                 ) : (
                   <>
                     <CreditCard size={16} />
-                    <span>₹{PAY_PER_POST_FEE} भरा आणि ऑफर प्रसिद्ध करा (Pay & Post)</span>
+                    <span>Pay ₹49 & Publish Offer</span>
                   </>
                 )}
               </button>
@@ -335,17 +346,6 @@ export const AddOfferModal: React.FC<AddOfferModalProps> = ({
           </div>
         </motion.div>
       </div>
-
-      {/* Razorpay Checkout Trigger for ₹49 */}
-      <RazorpayModal
-        isOpen={isRazorpayOpen}
-        onClose={() => setIsRazorpayOpen(false)}
-        amount={PAY_PER_POST_FEE}
-        title={`ऑफर पोस्टिंग फी: ${offerTitle}`}
-        merchantName={shopName || 'Shevgaon Market'}
-        customerPhone={phone}
-        onSuccess={handlePaymentSuccess}
-      />
     </>
   );
 };

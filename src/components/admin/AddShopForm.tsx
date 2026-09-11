@@ -24,7 +24,7 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useNavigate, Link } from 'react-router-dom';
 import { db } from '../../services/firebase';
 import { useAuth } from '../../context/AuthContext';
-import RazorpayModal from '../payment/RazorpayModal';
+import { handlePayment, RazorpaySuccessResponse } from '../../utils/razorpay';
 
 const CATEGORIES = [
   { id: 'Grocery', label: '🛒 किराणा (Grocery)' },
@@ -90,10 +90,9 @@ export default function AddShopForm() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   // Step 2: Subscription Plan
-  const [selectedPlan, setSelectedPlan] = useState<Plan>(PLANS[1]); // Default to Premium
+  const [selectedPlan, setSelectedPlan] = useState<Plan>(PLANS[0]); // Default to Basic (₹199)
 
   // Step 3: Payment & Submission States
-  const [isRazorpayOpen, setIsRazorpayOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [registrationComplete, setRegistrationComplete] = useState(false);
@@ -173,16 +172,33 @@ export default function AddShopForm() {
     setCurrentStep(3);
   };
 
-  // Step 3 Payment Handler Trigger
+  // Step 3 Payment Handler Trigger - Opens Razorpay Modal
   const handleTriggerPayment = () => {
-    setIsRazorpayOpen(true);
+    setErrorMsg(null);
+
+    handlePayment({
+      amount: selectedPlan.price,
+      name: shopName.trim() || 'Shevgaon Market',
+      description: `दुकान नोंदणी शुल्क - ${selectedPlan.name}`,
+      prefill: {
+        name: ownerName.trim(),
+        contact: mobileNumber.trim(),
+      },
+      onSuccess: (response: RazorpaySuccessResponse) => {
+        handlePaymentSuccess(response);
+      },
+      onError: (err: any) => {
+        console.warn('Razorpay payment cancelled or failed:', err);
+        setErrorMsg('पेमेंट प्रक्रिया पूर्ण झाली नाही किंवा रद्द केली गेली. कृपया पुन्हा प्रयत्न करा.');
+      },
+    });
   };
 
   // Payment Success & Database Logic
   // Upon successful payment, save the shop data to Firestore with fields:
-  // status: 'pending', paymentStatus: 'paid', and planType.
-  const handlePaymentSuccess = async (paymentResponse: { paymentId: string; amount: number; method: string }) => {
-    setIsRazorpayOpen(false);
+  // status: 'pending', paymentStatus: 'paid', and paymentId: response.razorpay_payment_id.
+  // Then redirect the merchant to the dashboard.
+  const handlePaymentSuccess = async (paymentResponse: RazorpaySuccessResponse) => {
     setIsSubmitting(true);
     setErrorMsg(null);
 
@@ -202,7 +218,7 @@ export default function AddShopForm() {
       // Determine ownerUid
       const ownerUid = user?.uid || (merchantSession ? `phone_${merchantSession.phoneNumber}` : `uid_${Date.now()}`);
 
-      // 2. Save shop data to Firestore with required fields
+      // 2. Save complete shop data to Firestore with required fields
       await addDoc(collection(db, 'shops'), {
         ownerUid,
         shopName: shopName.trim(),
@@ -217,18 +233,20 @@ export default function AddShopForm() {
         // Database logic requirements from prompt:
         status: 'pending',
         paymentStatus: 'paid',
+        paymentId: paymentResponse.razorpay_payment_id,
         planType: selectedPlan.id,
         planName: selectedPlan.name,
         amountPaid: selectedPlan.price,
-        paymentId: paymentResponse.paymentId,
-        paymentMethod: paymentResponse.method,
         paidAt: serverTimestamp(),
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
 
-      setCompletedPaymentId(paymentResponse.paymentId);
+      setCompletedPaymentId(paymentResponse.razorpay_payment_id);
       setRegistrationComplete(true);
+
+      // Redirect the merchant to the dashboard
+      navigate('/merchant-dashboard');
     } catch (err: any) {
       console.error('Firestore save error after payment:', err);
       setErrorMsg(err.message || 'माहिती जतन करताना त्रुटी आली. कृपया समर्थनाशी संपर्क साधा.');
@@ -714,12 +732,12 @@ export default function AddShopForm() {
             {isSubmitting ? (
               <>
                 <Loader2 size={18} className="animate-spin text-blue-400" />
-                <span>डेटा सेव्ह होत आहे... (Saving Shop)</span>
+                <span>दुकान नोंदणी सेव्ह होत आहे... (Saving Shop)</span>
               </>
             ) : (
               <>
                 <CreditCard size={18} className="text-blue-400" />
-                <span>₹{selectedPlan.price} पेमेंट करा (Pay Now via Razorpay)</span>
+                <span>Pay ₹{selectedPlan.price} to Register</span>
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </>
             )}
@@ -739,17 +757,6 @@ export default function AddShopForm() {
           </div>
         </div>
       )}
-
-      {/* Razorpay Checkout Modal */}
-      <RazorpayModal
-        isOpen={isRazorpayOpen}
-        onClose={() => setIsRazorpayOpen(false)}
-        amount={selectedPlan.price}
-        title={`${selectedPlan.name} - ${shopName}`}
-        merchantName="Shevgaon Market"
-        customerPhone={mobileNumber}
-        onSuccess={handlePaymentSuccess}
-      />
 
     </div>
   );
