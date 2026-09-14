@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Shevgaon Market - SEO & Business Metadata
+  Maintained by: Sandesh Veer
+  Brand Partner: I Love Shevgaon (@iloveshevgaon414502)
+-->
+<seoMetadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1">
+
+    <website>
+        <name>Shevgaon Market</name>
+        <title>Shevgaon Market | Shevgaon Local Marketplace</title>
+        <url>https://shevgaonmarket.netlify.app</url>
+        <canonicalUrl>https://shevgaonmarket.netlify.app/</canonicalUrl>
+        <sitemapUrl>https://shevgaonmarket.netlify.app/sitemap.xml</sitemapUrl>
+        <description>
+            Shevgaon Market is a digital marketplace created for Shevgaon Taluka,
+            connecting local businesses, farmers, service providers, hotels,
+            vendors and customers in one place.
+        </description>
+        <language>mr</language>
+        <alternateLanguage>en</alternateLanguage>
+        <region>Shevgaon, Maharashtra, India</region>
+        <pincode>414502</pincode>
+        <geo>
+            <latitude>19.3400</latitude>
+            <longitude>75.2970</longitude>
+        </geo>
+    </website>
+
+    <creator>
+        <name>Sandesh Veer</name>
+        <role>Founder &amp; Creator of Shevgaon Market</role>
+        <location>Shevgaon, Maharashtra, India</location>
+        <profileUrl>https://shevgaonmarket.netlify.app/</profileUrl>
+    </creator>
+
+    <brand>
+        <name>I Love Shevgaon</name>
+        <instagram>iloveshevgaon414502</instagram>
+        <instagramUrl>https://www.instagram.com/iloveshevgaon414502</instagramUrl>
+        <description>
+            I Love Shevgaon is a local digital platform promoting Shevgaon,
+            its businesses, events, places and local community.
+        </description>
+    </brand>
+
+    <!-- Categories Served in Shevgaon Taluka -->
+    <categories>
+        <category name="Local Businesses" marathi="स्थानिक व्यवसाय" />
+        <category name="Farmers &amp; Agriculture" marathi="शेतकरी व कृषी उत्पादने" />
+        <category name="Service Providers" marathi="स्थानिक सेवा" />
+        <category name="Hotels &amp; Food" marathi="हॉटेल्स व खाद्यपदार्थ" />
+        <category name="Shops &amp; Vendors" marathi="दुकाने व व्यापारी" />
+    </categories>
+
+    <searchKeywords>
+
+        <!-- General Brand & Location Keywords -->
+        <keyword>Shevgaon Market</keyword>
+        <keyword>Shevgaon</keyword>
+        <keyword>Shevgaon Taluka</keyword>
+        <keyword>Shevgaon Maharashtra</keyword>
+
+        <!-- Creator Keywords -->
+        <keyword>Sandesh Veer</keyword>
+        <keyword>Sandesh Veer Shevgaon</keyword>
+
+        <!-- Brand & Social Keywords -->
+        <keyword>I Love Shevgaon</keyword>
+        <keyword>iloveshevgaon414502</keyword>
+        <keyword>i love shevgaon 414502</keyword>
+
+        <!-- Local Directory & Category Keywords -->
+        <keyword>Shevgaon local market</keyword>
+        <keyword>Shevgaon businesses</keyword>
+        <keyword>Shevgaon shops</keyword>
+        <keyword>Shevgaon services</keyword>
+        <keyword>Shevgaon hotels</keyword>
+        <keyword>Shevgaon farmers</keyword>
+        <keyword>Shevgaon vendors</keyword>
+        <keyword>Shevgaon marketplace</keyword>
+
+    </searchKeywords>
+
+    <!-- Local Marathi Language Keywords for High Regional Ranking -->
+    <regionalKeywords language="mr">
+        <keyword>शेवगाव मार्केट</keyword>
+        <keyword>शेवगाव</keyword>
+        <keyword>शेवगाव तालुका</keyword>
+        <keyword>शेवगाव बाजारपेठ</keyword>
+        <keyword>संदेश वीर</keyword>
+        <keyword>शेवगाव दुकाने</keyword>
+        <keyword>शेवगाव शेतकरी</keyword>
+        <keyword>शेवगाव हॉटेल्स</keyword>
+        <keyword>शेवगाव व्यवसाय</keyword>
+    </regionalKeywords>
+
+    <seo>
+        <primaryKeyword>Shevgaon Market</primaryKeyword>
+        <secondaryKeywords>
+            Shevgaon, Sandesh Veer, I Love Shevgaon, iloveshevgaon414502
+        </secondaryKeywords>
+        <targetAudience>Residents, shoppers, tourists, and business owners in Shevgaon Taluka</targetAudience>
+    </seo>
+
+</seoMetadata>
