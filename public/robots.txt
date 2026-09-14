@@ -1,0 +1,23 @@
+# Robots.txt for Shevgaon Market
+# Website: https://shevgaonmarket.netlify.app
+# Created by Sandesh Veer
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /merchant-dashboard
+Disallow: /vendor/dashboard
+Disallow: /merchant-profile
+
+# Disallow specific bots if needed, or allow standard search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap Location
+Sitemap: https://shevgaonmarket.netlify.app/sitemap.xml
