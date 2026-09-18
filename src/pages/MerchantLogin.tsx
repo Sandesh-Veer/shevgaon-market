@@ -13,10 +13,6 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-
-
-
-// done
 export default function MerchantLogin() {
   const navigate = useNavigate();
   const location = useLocation();
