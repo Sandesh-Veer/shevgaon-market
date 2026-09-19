@@ -10,15 +10,13 @@ export default function WelcomeLanding() {
   };
 
   return (
-    <div className="relative w-full h-[100dvh] min-h-[100dvh] max-h-[100dvh] overflow-hidden flex flex-col justify-between items-center select-none bg-white font-sans">
+    <div className="relative w-full min-h-screen h-screen overflow-hidden flex flex-col justify-between items-center select-none bg-white font-sans">
       {/* 1. 100% RAW, UNTOUCHED, BRIGHT FULL HD HERO BACKGROUND IMAGE */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <img
-          src="/shevgaon-hero.jpg"
-          alt="Shevgaon Hero Background"
-          className="w-full h-full object-cover object-center"
-        />
-      </div>
+      <img
+        src="/shevgaon-hero.jpg"
+        alt="Shevgaon Hero Background"
+        className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none z-0"
+      />
 
       {/* 2. TOP-LEFT BRAND LOGO */}
       <header className="relative z-20 w-full px-6 py-6 sm:px-10 sm:py-8 flex justify-start items-center">

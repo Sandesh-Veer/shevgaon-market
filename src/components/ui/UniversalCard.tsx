@@ -88,7 +88,7 @@ export const UniversalCard: React.FC<UniversalCardProps> = ({
             src={image}
             alt={title}
             loading="lazy"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
           />
 
           {/* Floating Category Badge */}

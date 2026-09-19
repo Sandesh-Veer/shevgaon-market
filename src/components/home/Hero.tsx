@@ -186,7 +186,7 @@ export const Hero: React.FC<HeroProps> = ({ settings, onOffersClick }) => {
             <img
               src={settings.bannerUrl || "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80"}
               alt="Shevgaon Market UI"
-              className="w-full h-full object-cover select-none pointer-events-none hover:scale-[1.02] transition-transform duration-700"
+              className="w-full h-full object-cover object-center select-none pointer-events-none hover:scale-[1.02] transition-transform duration-700"
             />
 
             <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 p-4 sm:p-5 glass-card max-w-[280px] hidden md:block text-left z-20 border border-white/70 dark:border-slate-700/70 animate-float-slow backdrop-blur-xl">

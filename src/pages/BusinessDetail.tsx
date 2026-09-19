@@ -196,7 +196,7 @@ export default function BusinessDetail() {
         {/* Banner Cover */}
         <div className="h-48 md:h-72 w-full bg-slate-100 relative">
           {biz.banner ? (
-            <img src={biz.banner} alt="cover banner" className="w-full h-full object-cover" />
+            <img src={biz.banner} alt="cover banner" className="w-full h-full object-cover object-center" />
           ) : (
             <div className="w-full h-full bg-gradient-to-r from-brand-blue/15 to-brand-purple/15 flex items-center justify-center font-display font-extrabold text-3xl text-brand-purple/40">
               {biz.name}
