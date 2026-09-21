@@ -1,14 +1,14 @@
 import React, { useState, useRef } from 'react';
-import { 
-  Store, 
-  User, 
-  Tag, 
-  Phone, 
-  MapPin, 
-  UploadCloud, 
-  CheckCircle2, 
-  AlertCircle, 
-  Loader2, 
+import {
+  Store,
+  User,
+  Tag,
+  Phone,
+  MapPin,
+  UploadCloud,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
   X,
   ImageIcon,
   Sparkles,
@@ -85,7 +85,7 @@ export default function AddShopForm() {
   const [address, setAddress] = useState('');
   const [items, setItems] = useState('');
   const [description, setDescription] = useState('');
-  
+
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -194,10 +194,6 @@ export default function AddShopForm() {
     });
   };
 
-  // Payment Success & Database Logic
-  // Upon successful payment, save the shop data to Firestore with fields:
-  // status: 'pending', paymentStatus: 'paid', and paymentId: response.razorpay_payment_id.
-  // Then redirect the merchant to the dashboard.
   const handlePaymentSuccess = async (paymentResponse: RazorpaySuccessResponse) => {
     setIsSubmitting(true);
     setErrorMsg(null);
@@ -323,7 +319,7 @@ export default function AddShopForm() {
 
   return (
     <div className="w-full max-w-2xl mx-auto glass-card border border-white/80 dark:border-slate-800 p-6 md:p-8 rounded-3xl shadow-xl space-y-6 text-left">
-      
+
       {/* Stepper Progress Bar */}
       <div className="pb-4 border-b border-gray-200/60 dark:border-slate-800">
         <div className="flex items-center justify-between">
@@ -334,29 +330,26 @@ export default function AddShopForm() {
           ].map((s, idx) => (
             <React.Fragment key={s.step}>
               <div className="flex items-center gap-2">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all ${
-                  currentStep === s.step
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all ${currentStep === s.step
                     ? 'bg-gradient-brand text-white shadow-md ring-4 ring-purple-100 dark:ring-purple-950/60'
                     : currentStep > s.step
-                    ? 'bg-emerald-500 text-white'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-400'
-                }`}>
+                      ? 'bg-emerald-500 text-white'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-400'
+                  }`}>
                   {currentStep > s.step ? <Check size={14} strokeWidth={3} /> : s.step}
                 </div>
-                <span className={`text-xs font-bold hidden sm:inline ${
-                  currentStep === s.step
+                <span className={`text-xs font-bold hidden sm:inline ${currentStep === s.step
                     ? 'text-brand-dark dark:text-white'
                     : 'text-slate-400'
-                }`}>
+                  }`}>
                   {s.title}
                 </span>
               </div>
               {idx < 2 && (
-                <div className={`flex-1 h-0.5 mx-2 ${
-                  currentStep > idx + 1 
-                    ? 'bg-emerald-500' 
+                <div className={`flex-1 h-0.5 mx-2 ${currentStep > idx + 1
+                    ? 'bg-emerald-500'
                     : 'bg-slate-200 dark:bg-slate-800'
-                }`} />
+                  }`} />
               )}
             </React.Fragment>
           ))}
@@ -517,7 +510,7 @@ export default function AddShopForm() {
             </label>
 
             {!imagePreview ? (
-              <div 
+              <div
                 onClick={() => fileInputRef.current?.click()}
                 className="border-2 border-dashed border-gray-300 dark:border-slate-700 rounded-2xl p-5 text-center bg-slate-50/50 dark:bg-slate-900/50 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 cursor-pointer transition-all space-y-1.5 group"
               >
@@ -535,10 +528,10 @@ export default function AddShopForm() {
               </div>
             ) : (
               <div className="relative w-full h-36 rounded-2xl overflow-hidden border border-gray-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800">
-                <img 
-                  src={imagePreview} 
-                  alt="Shop preview" 
-                  className="w-full h-full object-cover" 
+                <img
+                  src={imagePreview}
+                  alt="Shop preview"
+                  className="w-full h-full object-cover"
                 />
                 <button
                   type="button"
@@ -590,11 +583,10 @@ export default function AddShopForm() {
                 <div
                   key={plan.id}
                   onClick={() => setSelectedPlan(plan)}
-                  className={`p-5 rounded-3xl border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between space-y-4 relative ${
-                    isSelected
+                  className={`p-5 rounded-3xl border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between space-y-4 relative ${isSelected
                       ? 'border-brand-purple bg-gradient-to-b from-purple-50/70 to-white dark:from-purple-950/40 dark:to-slate-900 ring-2 ring-brand-purple/20 shadow-lg'
                       : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 hover:border-slate-300'
-                  }`}
+                    }`}
                 >
                   {plan.badge && (
                     <span className="absolute -top-3 right-4 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-gradient-brand text-white shadow-sm">
@@ -607,9 +599,8 @@ export default function AddShopForm() {
                       <h3 className="text-base font-extrabold text-slate-900 dark:text-white">
                         {plan.name}
                       </h3>
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                        isSelected ? 'border-brand-purple bg-brand-purple text-white' : 'border-slate-300'
-                      }`}>
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${isSelected ? 'border-brand-purple bg-brand-purple text-white' : 'border-slate-300'
+                        }`}>
                         {isSelected && <Check size={12} strokeWidth={3} />}
                       </div>
                     </div>
@@ -634,11 +625,10 @@ export default function AddShopForm() {
                   <button
                     type="button"
                     onClick={() => setSelectedPlan(plan)}
-                    className={`w-full py-2.5 rounded-xl font-bold text-xs transition-all ${
-                      isSelected
+                    className={`w-full py-2.5 rounded-xl font-bold text-xs transition-all ${isSelected
                         ? 'bg-brand-purple text-white shadow-sm'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
-                    }`}
+                      }`}
                   >
                     {isSelected ? 'निवडलेला प्लॅन (Selected)' : 'हा प्लॅन निवडा'}
                   </button>
