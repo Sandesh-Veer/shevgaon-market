@@ -33,25 +33,35 @@ export const getButtonClasses = (
   const variantClasses: Record<ButtonVariant, string> = {
     // 1. Primary: Solid Brand Gradient filled
     primary: 'bg-gradient-brand text-white shadow-sm hover:shadow-md hover:shadow-brand-blue/20 hover:brightness-105 border border-transparent',
-    
+
     // 2. Secondary: Interactive bordered with light background
     secondary: 'border-2 border-slate-200 dark:border-slate-700 bg-white/90 dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-xs',
-    
+
     // 3. Ghost: Transparent background with subtle hover
     ghost: 'bg-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800/80 border border-transparent',
-    
+
     // 4. Call (Primary Action): Globally consistent Solid Emerald Green
     call: 'bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold shadow-sm shadow-emerald-600/25 border border-transparent',
-    
+
     // 5. Details (Secondary Action): Highly interactive thickened border with purple tint
     details: 'border-2 border-brand-purple/40 hover:border-brand-purple bg-brand-purple/5 hover:bg-brand-purple/10 text-brand-purple dark:text-purple-300 dark:border-purple-500/40 dark:hover:border-purple-400 shadow-xs',
-    
+
     // Danger
     danger: 'bg-rose-500 hover:bg-rose-600 active:bg-rose-700 text-white shadow-sm border border-transparent',
-    
+
     // WhatsApp
     whatsapp: 'bg-emerald-500 hover:bg-emerald-600 text-white font-bold shadow-sm shadow-emerald-500/25 border border-transparent',
   };
+
+
+
+
+
+
+  // done
+
+
+
 
   const widthClass = fullWidth ? 'w-full' : '';
 
