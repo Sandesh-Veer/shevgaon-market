@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { 
-  RecaptchaVerifier, 
-  onAuthStateChanged, 
-  signOut, 
+import {
+  RecaptchaVerifier,
+  onAuthStateChanged,
+  signOut,
   signInWithPhoneNumber
 } from 'firebase/auth';
 import type { User, ConfirmationResult, RecaptchaVerifier as RecaptchaVerifierType } from '@firebase/auth-types';
@@ -98,14 +98,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     merchantSession || (user && (role === 'merchant' || role === 'admin'))
   );
 
-  const adminPhoneNumber = import.meta.env.VITE_ADMIN_PHONE_NUMBER || '+919876543210';
+  const adminPhoneNumber = import.meta.env.VITE_ADMIN_PHONE_NUMBER || 'import.meta.env.VITE_ADMIN_PHONE_NUMBER';
 
   // Determine user role strictly from phone number or Firestore profile
   const determineRole = (phoneNumber: string | null, firestoreRole?: string): UserRole => {
     if (!phoneNumber) return 'merchant';
     const cleanPhone = phoneNumber.replace(/\s+/g, '');
     const cleanAdminPhone = adminPhoneNumber.replace(/\s+/g, '');
-    
+
     if (cleanPhone === cleanAdminPhone || firestoreRole === 'admin') {
       return 'admin';
     }
@@ -272,8 +272,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const sendOtp = async (phoneNumber: string): Promise<boolean> => {
     try {
       const cleanNumber = phoneNumber.replace(/\D/g, '');
-      const formattedPhone = cleanNumber.startsWith('91') && cleanNumber.length === 12 
-        ? `+${cleanNumber}` 
+      const formattedPhone = cleanNumber.startsWith('91') && cleanNumber.length === 12
+        ? `+${cleanNumber}`
         : `+91${cleanNumber}`;
 
       const verifier = recaptchaVerifier || setupRecaptcha('recaptcha-container');
