@@ -139,11 +139,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           role: computedRole,
           updatedAt: serverTimestamp()
 
-
-
-
-
-          // eytr6ud
         };
         await setDoc(userRef, { role: computedRole, updatedAt: serverTimestamp() }, { merge: true });
         return updatedProfile;
