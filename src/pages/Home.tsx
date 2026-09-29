@@ -9,6 +9,7 @@ import AdvancedSearchBar from '../components/search/AdvancedSearchBar';
 import AddOfferModal from '../components/offers/AddOfferModal';
 import OfferCard from '../components/offers/OfferCard';
 import Hero from '../components/home/Hero';
+import FarmerProfileModal from '../components/home/FarmerProfileModal';
 import {
   Sparkles,
   Search as SearchIcon,
@@ -483,16 +484,6 @@ export default function Home() {
   const [mandiVillageFilter, setMandiVillageFilter] = useState('All');
   const [showCropUploadModal, setShowCropUploadModal] = useState(false);
 
-  // Crop upload states
-  const [newFarmer, setNewFarmer] = useState('');
-  const [newCropName, setNewCropName] = useState('');
-  const [newCropCat, setNewCropCat] = useState('भाजीपाला');
-  const [newPrice, setNewPrice] = useState('');
-  const [newUnit, setNewUnit] = useState('किलो');
-  const [newQty, setNewQty] = useState('');
-  const [newVillage, setNewVillage] = useState('शेवगांव');
-  const [newPhone, setNewPhone] = useState('');
-
   // 2. Home Services State
   const [techCatFilter, setTechCatFilter] = useState('All');
 
@@ -510,49 +501,6 @@ export default function Home() {
   const [contactForm, setContactForm] = useState({ name: '', email: '', phone: '', msg: '' });
   const [contactErrors, setContactErrors] = useState<Record<string, string>>({});
   const [contactSuccess, setContactSuccess] = useState(false);
-
-  // Crop Upload submit to database
-  const handleCropSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newFarmer.trim() || !newCropName.trim() || !newPrice.trim() || !newQty.trim() || !newPhone.trim()) {
-      return;
-    }
-    const newCropObj: Business = {
-      id: 'crop_' + Date.now(),
-      name: newFarmer,
-      ownerName: newFarmer,
-      description: newCropName,
-      category: 'mandi',
-      phone: newPhone,
-      whatsapp: newPhone,
-      email: '',
-      address: newVillage,
-      village: newVillage,
-      taluka: 'शेवगांव',
-      district: 'अहमदनगर',
-      mapLink: 'https://maps.google.com',
-      openingTime: 'सकाळी ०८:००',
-      closingTime: 'संध्याकाळी ०६:००',
-      logo: 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=150&h=150&q=80',
-      banner: '',
-      photos: [],
-      isApproved: true,
-      cropCat: newCropCat,
-      cropPrice: newPrice,
-      cropUnit: newUnit,
-      cropQty: newQty
-    };
-    db.saveBusiness(newCropObj);
-    refreshData();
-    setShowCropUploadModal(false);
-
-    // Clear inputs
-    setNewFarmer('');
-    setNewCropName('');
-    setNewPrice('');
-    setNewQty('');
-    setNewPhone('');
-  };
 
 
 
@@ -747,7 +695,7 @@ export default function Home() {
                         subtitle={c.name}
                         location={c.village}
                         categoryBadge={c.cropCat || 'भाजीपाला'}
-                        image={c.logo || c.photos[0] || 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=400&q=80'}
+                        image={c.logo || c.photos[0] || ''}
                         phone={c.phone}
                         whatsapp={c.phone}
                         whatsappMessage={`नमस्कार, मला तुमच्याकडील ${c.description} खरेदी करायचे आहे.`}
@@ -1382,152 +1330,12 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* Crop Upload Dialog Box */}
-      <AnimatePresence>
-        {showCropUploadModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/20 backdrop-blur-md"
-          >
-            <motion.div
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.95 }}
-              className="w-full max-w-md glass-card p-6 border border-white shadow-2xl relative text-left"
-            >
-              <button
-                onClick={() => setShowCropUploadModal(false)}
-                className="absolute top-4 right-4 w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center hover:bg-white text-brand-dark transition-colors shadow-sm font-bold text-xs"
-              >
-                ✕
-              </button>
-
-              <form onSubmit={handleCropSubmit} className="space-y-4">
-                <div>
-                  <span className="text-xs font-bold text-brand-purple">मंडी माल अपलोड</span>
-                  <h3 className="text-lg font-bold text-brand-dark">🌾 नवीन पीक / माल विक्री जोडा</h3>
-                </div>
-
-                {/* Farmer Name */}
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-brand-dark">शेतकरी नाव</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="उदा. रामचंद्र देवकर"
-                    value={newFarmer}
-                    onChange={(e) => setNewFarmer(e.target.value)}
-                    className="w-full bg-white/60 border border-gray-200 rounded-xl px-3 py-2 text-xs text-brand-dark focus:outline-none focus:border-brand-purple"
-                  />
-                </div>
-
-                {/* Crop Name */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-brand-dark">पिकाचे नाव</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="उदा. गावरान लसूण"
-                      value={newCropName}
-                      onChange={(e) => setNewCropName(e.target.value)}
-                      className="w-full bg-white/60 border border-gray-200 rounded-xl px-3 py-2 text-xs text-brand-dark focus:outline-none focus:border-brand-purple"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-brand-dark">माल श्रेणी (Category)</label>
-                    <select
-                      value={newCropCat}
-                      onChange={(e) => setNewCropCat(e.target.value)}
-                      className="w-full bg-white/60 border border-gray-200 rounded-xl px-3 py-2 text-xs text-brand-dark focus:outline-none focus:border-brand-purple"
-                    >
-                      <option value="भाजीपाला">भाजीपाला</option>
-                      <option value="फळे">फळे</option>
-                      <option value="धान्य">धान्य</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Price and quantity */}
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-brand-dark">किंमत (₹)</label>
-                    <input
-                      type="number"
-                      required
-                      placeholder="उदा. ५०"
-                      value={newPrice}
-                      onChange={(e) => setNewPrice(e.target.value)}
-                      className="w-full bg-white/60 border border-gray-200 rounded-xl px-3 py-2 text-xs text-brand-dark focus:outline-none focus:border-brand-purple"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-brand-dark">एकक (Unit)</label>
-                    <select
-                      value={newUnit}
-                      onChange={(e) => setNewUnit(e.target.value)}
-                      className="w-full bg-white/60 border border-gray-200 rounded-xl px-3 py-2 text-xs text-brand-dark focus:outline-none focus:border-brand-purple"
-                    >
-                      <option value="किलो">किलो (Kg)</option>
-                      <option value="जुडी">जुडी (Bundle)</option>
-                      <option value="डझन">डझन (Dozen)</option>
-                      <option value="क्विंटल">क्विंटल (Quintal)</option>
-                    </select>
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-brand-dark">प्रमाण (Qty)</label>
-                    <input
-                      type="number"
-                      required
-                      placeholder="उदा. ५०"
-                      value={newQty}
-                      onChange={(e) => setNewQty(e.target.value)}
-                      className="w-full bg-white/60 border border-gray-200 rounded-xl px-3 py-2 text-xs text-brand-dark focus:outline-none focus:border-brand-purple"
-                    />
-                  </div>
-                </div>
-
-                {/* Village and phone */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-brand-dark">गाव</label>
-                    <select
-                      value={newVillage}
-                      onChange={(e) => setNewVillage(e.target.value)}
-                      className="w-full bg-white/60 border border-gray-200 rounded-xl px-3 py-2 text-xs text-brand-dark focus:outline-none focus:border-brand-purple"
-                    >
-                      <option value="शेवगांव">शेवगांव</option>
-                      <option value="दहिगाव">दहिगाव</option>
-                      <option value="बाभुळगांव">बाभुळगांव</option>
-                      <option value="तांदूळनेर">तांदूळनेर</option>
-                    </select>
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-brand-dark">संपर्क क्रमांक (Mobile)</label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="उदा. ९८xxxxxx१०"
-                      value={newPhone}
-                      onChange={(e) => setNewPhone(e.target.value)}
-                      className="w-full bg-white/60 border border-gray-200 rounded-xl px-3 py-2 text-xs text-brand-dark focus:outline-none focus:border-brand-purple"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-brand text-white font-semibold py-3.5 rounded-xl text-center shadow-sm"
-                >
-                  माल बाजारात विक्रीसाठी ठेवा
-                </button>
-              </form>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Farmer Profile / Shetkari Upload Modal */}
+      <FarmerProfileModal
+        isOpen={showCropUploadModal}
+        onClose={() => setShowCropUploadModal(false)}
+        onFarmerAdded={refreshData}
+      />
 
       {/* Floating Back to Top Button */}
       <AnimatePresence>

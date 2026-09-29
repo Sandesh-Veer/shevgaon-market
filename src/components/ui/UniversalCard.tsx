@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Phone, MapPin, Star } from 'lucide-react';
+import { Phone, MapPin, Star, Image as ImageIcon } from 'lucide-react';
 import Button from './Button';
 
 export interface CardMetaItem {
@@ -84,12 +84,19 @@ export const UniversalCard: React.FC<UniversalCardProps> = ({
       <div className="space-y-2 sm:space-y-3">
         {/* Compact Responsive Image Container (h-24 on mobile, h-32 on desktop) */}
         <div className="relative h-24 sm:h-32 w-full rounded-lg sm:rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-gray-100/80 dark:border-slate-700/60 shadow-inner">
-          <img
-            src={image}
-            alt={title}
-            loading="lazy"
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
-          />
+          {image ? (
+            <img
+              src={image}
+              alt={title}
+              loading="lazy"
+              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+            />
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-slate-800 dark:to-slate-900 text-emerald-600 dark:text-emerald-400">
+              <ImageIcon size={28} className="opacity-60 mb-1" />
+              <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 px-2 truncate max-w-full">{title}</span>
+            </div>
+          )}
 
           {/* Floating Category Badge */}
           {categoryBadge && (
