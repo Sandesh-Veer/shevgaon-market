@@ -33,19 +33,6 @@ export default function WelcomeLanding() {
         className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
       />
 
-
-
-
-
-
-
-
-
-
-
-
-
-      {/* done */}
       {/* 2. TOP-LEFT BRAND LOGO */}
       <header className="absolute top-0 left-0 z-30 w-full px-6 py-6 sm:px-10 sm:py-8 flex justify-start items-center pointer-events-none">
         <motion.div
