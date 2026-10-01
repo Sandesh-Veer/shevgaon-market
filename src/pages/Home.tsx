@@ -441,8 +441,8 @@ export default function Home() {
           const expTime = data.expiresAt?.toDate
             ? data.expiresAt.toDate().getTime()
             : data.expiresAt
-            ? new Date(data.expiresAt).getTime()
-            : null;
+              ? new Date(data.expiresAt).getTime()
+              : null;
 
           // Only add offers that have not expired
           if (!expTime || expTime > nowMs) {
@@ -523,18 +523,6 @@ export default function Home() {
     ? hotelsList
     : hotelsList.filter(h => h.hotelType === hotelFilter || (hotelFilter === 'Veg' && h.hotelType === 'Pure Veg'));
 
-
-
-
-
-
-
-
-
-
-
-    
-  // Vehicles filter logic
   const filteredVehicles = vehicleCatFilter === 'All'
     ? vehicles
     : vehicles.filter(v => v.vehicleCat === vehicleCatFilter || v.category === vehicleCatFilter);
@@ -894,7 +882,7 @@ export default function Home() {
                             {h.hotelOffer && (
                               <div className="bg-brand-purple/5 border border-brand-purple/20 p-1.5 rounded-xl text-brand-purple">
                                 <p className="text-xs font-semibold flex items-center gap-1 line-clamp-1">
-                                   {h.hotelOffer}
+                                  {h.hotelOffer}
                                 </p>
                               </div>
                             )}
@@ -1005,7 +993,7 @@ export default function Home() {
               <span className="text-xs font-bold text-brand-purple">🛍️ ऑफर्स विभाग</span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
               <p className="text-brand-muted max-w-xl mx-auto font-light text-xs sm:text-sm text-center">{s.desc}</p>
-              
+
               {/* Task 4: Floating "Add Offer" Action Button with ₹49 pay-per-post fee */}
               <div className="pt-1 flex justify-center">
                 <button
