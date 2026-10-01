@@ -523,6 +523,17 @@ export default function Home() {
     ? hotelsList
     : hotelsList.filter(h => h.hotelType === hotelFilter || (hotelFilter === 'Veg' && h.hotelType === 'Pure Veg'));
 
+
+
+
+
+
+
+
+
+
+
+    
   // Vehicles filter logic
   const filteredVehicles = vehicleCatFilter === 'All'
     ? vehicles
