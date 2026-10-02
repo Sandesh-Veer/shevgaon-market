@@ -527,7 +527,6 @@ export default function Home() {
     ? vehicles
     : vehicles.filter(v => v.vehicleCat === vehicleCatFilter || v.category === vehicleCatFilter);
 
-  // Combined offers from Firestore (paid offers) and default database offers
   const allOffers = [
     ...firestoreOffers.map((o) => ({
       id: o.id,
