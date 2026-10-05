@@ -527,21 +527,6 @@ export default function Home() {
     ? vehicles
     : vehicles.filter(v => v.vehicleCat === vehicleCatFilter || v.category === vehicleCatFilter);
 
-
-
-
-
-    .
-
-
-
-
-  <div className=".
-    .
-    .
-    .
-    .
-    "></div>
   const allOffers = [
     ...firestoreOffers.map((o) => ({
       id: o.id,
