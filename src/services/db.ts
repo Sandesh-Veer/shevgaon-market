@@ -41,21 +41,6 @@ export interface Business {
   isSuspended?: boolean;
   createdAt?: string;
 
-
-
-
-
-
-
-  // .
-  // .
-  // .
-  // .
-  // .
-  // .
-  // .
-  // done
-
   // Category specific fields
   cropCat?: string;
   cropPrice?: string;
