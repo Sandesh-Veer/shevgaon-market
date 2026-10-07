@@ -3,23 +3,23 @@ export interface Business {
   name: string;
   ownerName: string;
   description: string;
-  category: 
-    | 'mandi' 
-    | 'technician' 
-    | 'material' 
-    | 'hotel' 
-    | 'vehicle' 
-    | 'mechanics' 
-    | 'offers'
-    | 'beauty'
-    | 'water'
-    | 'cyber'
-    | 'mess'
-    | 'photoshop'
-    | 'gym'
-    | 'hospital'
-    | 'mobileshop'
-    | 'sweethome';
+  category:
+  | 'mandi'
+  | 'technician'
+  | 'material'
+  | 'hotel'
+  | 'vehicle'
+  | 'mechanics'
+  | 'offers'
+  | 'beauty'
+  | 'water'
+  | 'cyber'
+  | 'mess'
+  | 'photoshop'
+  | 'gym'
+  | 'hospital'
+  | 'mobileshop'
+  | 'sweethome';
   phone: string;
   whatsapp: string;
   email: string;
@@ -40,6 +40,21 @@ export interface Business {
   postLimit?: number;
   isSuspended?: boolean;
   createdAt?: string;
+
+
+
+
+
+
+
+  // .
+  // .
+  // .
+  // .
+  // .
+  // .
+  // .
+  // done
 
   // Category specific fields
   cropCat?: string;
@@ -700,7 +715,7 @@ class LocalDatabase {
       const agriItems = defaultBusinesses.filter(b => b.id.startsWith('agri_'));
       list.push(...agriItems);
       localStorage.setItem('db_my_businesses', JSON.stringify(list));
-      
+
       // Seed individual keys for compatibility
       this.propagateLegacyArrays('mandi');
     }
@@ -751,7 +766,7 @@ class LocalDatabase {
   private propagateLegacyArrays(category: string) {
     const list = this.getBusinesses();
     const filtered = list.filter(b => b.category === category);
-    
+
     // Map internal business listings schema to legacy public arrays
     let legacyKey = '';
     let legacyData: any[] = [];
