@@ -42,20 +42,6 @@ export interface Business {
   createdAt?: string;
 
 
-
-
-
-
-  // done
-  // .
-  // .
-  // .
-  // .
-  // .
-  // .
-  // .
-  // .
-
   // Category specific fields
   cropCat?: string;
   cropPrice?: string;
