@@ -527,7 +527,18 @@ export default function Home() {
     ? vehicles
     : vehicles.filter(v => v.vehicleCat === vehicleCatFilter || v.category === vehicleCatFilter);
 
-  const allOffers = [
+// .
+// .
+// .
+// .
+// .
+// .
+// .
+// ..
+// rttdr
+
+
+const allOffers = [
     ...firestoreOffers.map((o) => ({
       id: o.id,
       name: o.shopName || o.name || 'दुकान ऑफर',
