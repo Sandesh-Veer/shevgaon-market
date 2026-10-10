@@ -9,4 +9,22 @@ dist/
 .env.production.local
 *.env
 !env.example
-!.env.example
+!.env.example
+
+
+
+
+
+
+# .
+# ..
+# .
+# .
+# ..
+# .
+# .
+
+# .
+# .
+# .
+# .
