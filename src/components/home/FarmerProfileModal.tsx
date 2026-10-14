@@ -16,20 +16,7 @@ import {
 import { Business, db } from '../../services/db';
 import { uploadImage, uploadMultipleImages } from '../../services/imageUpload';
 
-// .
-// .
-// .
-// <div className="..
 
-// .
-// .
-// .
-// .
-// .
-// .
-// .
-// .
-// "></div>
 interface FarmerProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -406,8 +393,8 @@ export const FarmerProfileModal: React.FC<FarmerProfileModalProps> = ({
                       key={pkg.id}
                       onClick={() => handlePackageSelect(pkg.id)}
                       className={`cursor-pointer rounded-2xl p-3.5 border-2 transition-all relative ${isSelected
-                          ? 'border-emerald-600 bg-emerald-50/60 dark:bg-emerald-950/30 shadow-sm'
-                          : 'border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 bg-white dark:bg-slate-800/40'
+                        ? 'border-emerald-600 bg-emerald-50/60 dark:bg-emerald-950/30 shadow-sm'
+                        : 'border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 bg-white dark:bg-slate-800/40'
                         }`}
                     >
                       {pkg.badge && (
@@ -421,8 +408,8 @@ export const FarmerProfileModal: React.FC<FarmerProfileModalProps> = ({
                         </span>
                         <div
                           className={`w-4 h-4 rounded-full border flex items-center justify-center ${isSelected
-                              ? 'border-emerald-600 bg-emerald-600 text-white'
-                              : 'border-gray-300'
+                            ? 'border-emerald-600 bg-emerald-600 text-white'
+                            : 'border-gray-300'
                             }`}
                         >
                           {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
@@ -529,8 +516,8 @@ export const FarmerProfileModal: React.FC<FarmerProfileModalProps> = ({
                 </div>
                 <span
                   className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${galleryFiles.length >= maxPhotosAllowed
-                      ? 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400'
-                      : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400'
+                    ? 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400'
+                    : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400'
                     }`}
                 >
                   {galleryFiles.length >= maxPhotosAllowed ? 'मर्यादा पूर्ण' : 'फोटो जोडा'}
