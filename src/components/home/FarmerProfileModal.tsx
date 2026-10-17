@@ -84,6 +84,33 @@ export const FarmerProfileModal: React.FC<FarmerProfileModalProps> = ({
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
+  // .
+  // .
+
+  // ..
+  // .
+  // .
+
+  // .
+  // .
+  // .
+  // .
+  // .
+  // .
+  // .
+  // .
+  // .
+  // .
+
+
+  // gtiuyogtt
+  // muithhiurrg
+  // nghrhbfuyrfnrkj
+
+  // jenfiufpygrjbf
+  // f ufyfgoygfjhwebewoyyu
+
+  // fnnjy4gryruy
   // File input refs
   const profileInputRef = useRef<HTMLInputElement | null>(null);
   const galleryInputRef = useRef<HTMLInputElement | null>(null);
