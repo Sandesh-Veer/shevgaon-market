@@ -135,16 +135,28 @@ export const UniversalCard: React.FC<UniversalCardProps> = ({
             )}
 
             {/* Rating / Location on right */}
-            {typeof rating === 'number' && rating > 0 ? (
-              <div className="flex items-center gap-0.5 sm:gap-1 shrink-0 font-bold text-slate-800 dark:text-slate-200 text-[10px] sm:text-xs">
-                <Star size={11} className="fill-amber-400 text-amber-400" />
-                <span>{rating.toFixed(1)}</span>
-                {typeof reviewsCount === 'number' && (
-                  <span className="text-brand-muted dark:text-slate-400 font-normal text-[9px] sm:text-[11px]">
-                    ({reviewsCount})
+            {typeof rating === 'number' ? (
+              rating > 0 ? (
+                <div className="flex items-center gap-0.5 sm:gap-1 shrink-0 font-bold text-slate-800 dark:text-slate-200 text-[10px] sm:text-xs">
+                  <Star size={11} className="fill-amber-400 text-amber-400" />
+                  <span>{rating.toFixed(1)}</span>
+                  {typeof reviewsCount === 'number' && reviewsCount > 0 && (
+                    <span className="text-brand-muted dark:text-slate-400 font-normal text-[9px] sm:text-[11px]">
+                      ({reviewsCount})
+                    </span>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center gap-1 shrink-0">
+                  <span className="px-1.5 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/60 dark:border-blue-900 text-[9px] sm:text-[10px] font-bold">
+                    नवीन (New)
                   </span>
-                )}
-              </div>
+                  <span className="flex items-center gap-0.5 text-slate-400 dark:text-slate-500 text-[10px]">
+                    <Star size={10} className="text-slate-300 dark:text-slate-600" />
+                    <span>०</span>
+                  </span>
+                </div>
+              )
             ) : location && subtitle ? (
               <span className="flex items-center gap-0.5 text-brand-muted dark:text-slate-400 shrink-0 text-[10px] sm:text-xs">
                 <MapPin size={10} className="shrink-0 text-slate-400" />

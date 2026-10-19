@@ -225,7 +225,7 @@ export default function AddShopForm() {
         items: itemsList.length > 0 ? itemsList : [category],
         description: description.trim() || `${shopName.trim()} - ${category} शेवगाव.`,
         imageUrl: finalImageUrl,
-        rating: 5.0, // Initial default rating
+        rating: 0, // Real initial rating: 0 until actual reviews exist
         // Database logic requirements from prompt:
         status: 'pending',
         paymentStatus: 'paid',

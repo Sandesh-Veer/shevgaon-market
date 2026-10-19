@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import { Business, db } from '../../services/db';
 import { uploadImage, uploadMultipleImages } from '../../services/imageUpload';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db as firestoreDb } from '../../services/firebase';
 
 
 interface FarmerProfileModalProps {
@@ -279,6 +281,16 @@ export const FarmerProfileModal: React.FC<FarmerProfileModalProps> = ({
 
       // D. Save to local/persistent storage database
       db.saveBusiness(newFarmerObj);
+
+      // E. Also save to Firestore cloud database to ensure images and product never disappear
+      try {
+        await addDoc(collection(firestoreDb, 'crops'), {
+          ...newFarmerObj,
+          firestoreCreatedAt: serverTimestamp(),
+        });
+      } catch (fErr) {
+        console.warn('Firestore crop document sync notice:', fErr);
+      }
 
       setSuccessMsg('शेतकरी प्रोफाइल व शेतमाल यशस्वीरित्या नोंदणीकृत झाला!');
       setTimeout(() => {

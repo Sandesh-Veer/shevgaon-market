@@ -262,18 +262,30 @@ export default function BusinessDetail() {
               
               {/* Average Ratings */}
               <div className="flex items-center gap-1.5 pt-1.5">
-                <div className="flex items-center gap-0.5 text-amber-500">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star 
-                      key={s} 
-                      size={14} 
-                      className={s <= Math.round(db.getAverageRating(biz.id)) ? 'fill-amber-400 text-amber-400' : 'text-gray-300'} 
-                    />
-                  ))}
-                </div>
-                <span className="text-xs font-bold text-brand-dark">
-                  {db.getAverageRating(biz.id)} ({reviews.length} पुनरावलोकने)
-                </span>
+                {(() => {
+                  const avg = db.getAverageRating(biz.id);
+                  const hasReviews = reviews.length > 0 && avg > 0;
+                  return (
+                    <>
+                      <div className="flex items-center gap-0.5 text-amber-500">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <Star 
+                            key={s} 
+                            size={14} 
+                            className={hasReviews && s <= Math.round(avg) ? 'fill-amber-400 text-amber-400' : 'text-gray-300 dark:text-slate-600'} 
+                          />
+                        ))}
+                      </div>
+                      <span className="text-xs font-bold text-brand-dark dark:text-slate-200">
+                        {hasReviews ? (
+                          `${avg.toFixed(1)} (${reviews.length} पुनरावलोकने)`
+                        ) : (
+                          <span className="text-blue-600 dark:text-blue-400 font-semibold">नवीन दुकान (New - ० पुनरावलोकने)</span>
+                        )}
+                      </span>
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </div>

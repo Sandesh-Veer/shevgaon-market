@@ -877,7 +877,7 @@ class LocalDatabase {
 
   getAverageRating(businessId: string): number {
     const list = this.getReviewsForBusiness(businessId);
-    if (list.length === 0) return 5.0; // default rating
+    if (list.length === 0) return 0; // Real rating: 0 when no reviews exist
     const total = list.reduce((sum, r) => sum + r.rating, 0);
     return Math.round((total / list.length) * 10) / 10;
   }

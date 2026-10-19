@@ -120,7 +120,25 @@ export async function uploadImage(
   }
 
   // Default to Firebase Storage (already initialized in this repo)
-  return await uploadToFirebaseStorage(file, folder);
+  try {
+    return await uploadToFirebaseStorage(file, folder);
+  } catch (firebaseErr) {
+    console.warn('Firebase Storage upload failed, saving permanent Data URL fallback:', firebaseErr);
+    // Fallback: Convert to permanent Data URL so the uploaded image is preserved in database
+    return await fileToDataUrl(file);
+  }
+}
+
+/**
+ * Convert file to base64 Data URL as bulletproof persistent fallback
+ */
+export function fileToDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (err) => reject(err);
+    reader.readAsDataURL(file);
+  });
 }
 
 /**

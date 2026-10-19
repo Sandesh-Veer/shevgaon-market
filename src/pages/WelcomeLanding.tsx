@@ -56,7 +56,7 @@ export default function WelcomeLanding() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="fixed bottom-12 left-0 right-0 z-[9999] w-full flex justify-center px-4 pointer-events-none"
+        className="fixed bottom-12 left-0 right-0 flex justify-center z-[9999] pointer-events-none"
       >
         <button
           onClick={handleStart}

@@ -5,7 +5,7 @@ import { db, Business, Section, WebsiteSettings } from '../services/db';
 import { collection, query, where, onSnapshot, Timestamp } from 'firebase/firestore';
 import { db as firestoreDb } from '../services/firebase';
 import UniversalCard from '../components/ui/UniversalCard';
-import AdvancedSearchBar from '../components/search/AdvancedSearchBar';
+import AdvancedSearchBar, { matchesStrictCategory } from '../components/search/AdvancedSearchBar';
 import AddOfferModal from '../components/offers/AddOfferModal';
 import OfferCard from '../components/offers/OfferCard';
 import Hero from '../components/home/Hero';
@@ -741,7 +741,7 @@ const allOffers = [
                       categoryBadge={s.cropQty === 'सक्रिय' ? 'कृषी सेवा' : s.cropCat || 'कृषी सेवा'}
                       categoryBadgeColor="bg-emerald-50/95 dark:bg-emerald-950/90 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
                       image={s.logo || s.photos[0] || 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80'}
-                      rating={db.getAverageRating(s.id) || undefined}
+                      rating={db.getAverageRating(s.id)}
                       reviewsCount={db.getReviewsForBusiness(s.id).length}
                       phone={s.phone}
                       metaItems={[
@@ -795,7 +795,7 @@ const allOffers = [
                     categoryBadge={t.techCat || 'कारागीर'}
                     categoryBadgeColor="bg-purple-50/95 dark:bg-purple-950/90 text-brand-purple dark:text-purple-300 border border-purple-200 dark:border-purple-800"
                     image={t.photos[0] || t.logo || 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=400&q=80'}
-                    rating={db.getAverageRating(t.id) || undefined}
+                    rating={db.getAverageRating(t.id)}
                     reviewsCount={db.getReviewsForBusiness(t.id).length}
                     phone={t.phone}
                     metaItems={[
@@ -878,7 +878,7 @@ const allOffers = [
                       categoryBadge={h.hotelType || 'Veg'}
                       categoryBadgeColor={(h.hotelType || 'Veg') === 'Pure Veg' ? 'bg-emerald-50/90 text-emerald-700' : (h.hotelType || 'Veg') === 'Veg' ? 'bg-green-50/90 text-green-700' : 'bg-red-50/90 text-red-700'}
                       image={h.logo || h.photos[0] || 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80'}
-                      rating={avgRating || undefined}
+                      rating={avgRating}
                       reviewsCount={totalReviews}
                       phone={h.phone}
                       callLabel="ऑर्डर"
@@ -1172,14 +1172,19 @@ const allOffers = [
         );
 
       default: {
-        const catBusinesses = businesses.filter(b => b.category === s.id);
+        // Strict category filtering:
+        // Ensure businesses and approved shops strictly match this section's category
+        const catBusinesses = businesses.filter(b => b.category === s.id || matchesStrictCategory(b.category, s.id));
+        const catShops = approvedShops.filter(shop => matchesStrictCategory(shop.category, s.id));
+        const totalItemsCount = catBusinesses.length + catShops.length;
+
         return (
           <section id={s.id} key={s.id} className="scroll-mt-24 max-w-6xl mx-auto px-3 sm:px-6 md:px-8 text-left space-y-6 w-full overflow-x-hidden">
             <div className="text-center space-y-3 mb-8 sm:mb-12">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-dark text-center">{s.title}</h2>
               <p className="text-brand-muted max-w-xl mx-auto font-light text-xs sm:text-sm text-center">{s.desc}</p>
             </div>
-            {catBusinesses.length > 0 ? (
+            {totalItemsCount > 0 ? (
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {catBusinesses.map((b) => (
                   <UniversalCard
@@ -1190,12 +1195,39 @@ const allOffers = [
                     location={b.village || 'शेवगांव'}
                     categoryBadge={s.title.split(' ')[1] || s.title}
                     image={b.logo || b.photos[0] || 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=400&q=80'}
-                    rating={db.getAverageRating(b.id) || undefined}
+                    rating={db.getAverageRating(b.id)}
                     reviewsCount={db.getReviewsForBusiness(b.id).length}
                     phone={b.phone}
                     whatsapp={b.whatsapp || b.phone}
                     detailsPath={`/business/${b.category}/${b.id}`}
                     onCardClick={() => navigate(`/business/${b.category}/${b.id}`)}
+                  />
+                ))}
+                {catShops.map((shop) => (
+                  <UniversalCard
+                    key={shop.id}
+                    id={shop.id}
+                    title={shop.shopName}
+                    subtitle={shop.ownerName}
+                    location={shop.address || 'शेवगाव'}
+                    categoryBadge={shop.category}
+                    categoryBadgeColor="bg-blue-50/95 dark:bg-blue-950/90 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
+                    image={shop.imageUrl || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80'}
+                    phone={shop.mobileNumber}
+                    whatsapp={shop.mobileNumber}
+                    rating={db.getAverageRating(shop.id) || (typeof shop.rating === 'number' ? shop.rating : 0)}
+                    reviewsCount={db.getReviewsForBusiness(shop.id).length}
+                    whatsappMessage={`नमस्कार ${shop.shopName}, मी Shevgaon Market पोर्टलवरून संपर्क करत आहे.`}
+                    showWhatsappInsteadOfDetails={true}
+                    metaItems={[
+                      { label: 'दुकानदार', value: shop.ownerName },
+                      { 
+                        label: 'वस्तू', 
+                        value: Array.isArray(shop.items) 
+                          ? shop.items.slice(0, 2).join(', ') 
+                          : (shop.items || shop.address || 'शेवगाव').slice(0, 25) 
+                      }
+                    ]}
                   />
                 ))}
               </div>

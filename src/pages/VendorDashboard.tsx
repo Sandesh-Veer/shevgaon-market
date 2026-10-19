@@ -378,10 +378,19 @@ export default function VendorDashboard() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-xl bg-amber-400 text-slate-900 font-extrabold text-xs flex items-center gap-1 shadow-md">
-                    <Star size={13} fill="currentColor" />
-                    <span>{shop.rating || 5.0} रेटिंग</span>
-                  </span>
+                  {(() => {
+                    const avg = db.getAverageRating(shop.id) || (typeof shop.rating === 'number' ? shop.rating : 0);
+                    return (
+                      <span className={`px-3 py-1 rounded-xl font-extrabold text-xs flex items-center gap-1 shadow-md ${
+                        avg > 0 
+                          ? 'bg-amber-400 text-slate-900' 
+                          : 'bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800'
+                      }`}>
+                        <Star size={13} fill={avg > 0 ? "currentColor" : "none"} className={avg > 0 ? "" : "text-blue-500"} />
+                        <span>{avg > 0 ? `${avg.toFixed(1)} रेटिंग` : 'नवीन दुकान (New - ० रेटिंग)'}</span>
+                      </span>
+                    );
+                  })()}
                 </div>
               </div>
             </div>

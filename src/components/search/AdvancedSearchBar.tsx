@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Search as SearchIcon, X, Star, ArrowUpDown, Sparkles } from 'lucide-react';
 import UniversalCard from '../ui/UniversalCard';
+import { db } from '../../services/db';
 
 export interface ShopItem {
   id: string;
@@ -37,6 +38,59 @@ const CATEGORY_CHIPS = [
   { id: 'Other', label: '✨ इतर' }
 ];
 
+/**
+ * Strict category check ensuring shops appear strictly in their assigned sections:
+ * - 'Kirana' strictly in Grocery
+ * - 'Services' strictly in Services section
+ */
+export const matchesStrictCategory = (shopCategory: string | undefined, filterCategory: string): boolean => {
+  if (filterCategory === 'all') return true;
+  const cat = (shopCategory || '').toLowerCase().trim();
+  const filter = filterCategory.toLowerCase().trim();
+
+  const isGrocery = (c: string) =>
+    c === 'grocery' || c === 'kirana' || c === 'किराणा' || c === 'किराणा दुकान';
+
+  const isServices = (c: string) =>
+    c === 'services' || c === 'service' || c === 'सेवा' || c === 'technician' || c === 'कारागीर';
+
+  const isElectronics = (c: string) =>
+    c === 'electronics' || c === 'electronic' || c === 'इलेक्ट्रॉनिक्स' || c === 'mobileshop' || c === 'cyber';
+
+  const isClothing = (c: string) =>
+    c === 'clothing' || c === 'clothes' || c === 'कपडे' || c === 'कापड' || c === 'रेडीमेड कपडे';
+
+  const isFood = (c: string) =>
+    c === 'food' || c === 'खाद्यपदार्थ' || c === 'hotel' || c === 'restaurant' || c === 'हॉटेल' || c === 'mess' || c === 'sweethome';
+
+  if (filter === 'grocery') {
+    return isGrocery(cat);
+  }
+  if (filter === 'services') {
+    return isServices(cat);
+  }
+  if (filter === 'electronics') {
+    return isElectronics(cat);
+  }
+  if (filter === 'clothing') {
+    return isClothing(cat);
+  }
+  if (filter === 'food') {
+    return isFood(cat);
+  }
+  if (filter === 'other') {
+    return (
+      !isGrocery(cat) &&
+      !isServices(cat) &&
+      !isElectronics(cat) &&
+      !isClothing(cat) &&
+      !isFood(cat)
+    );
+  }
+
+  return cat === filter;
+};
+
 export const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
   shops,
   onResultsChange,
@@ -47,16 +101,14 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  // Task 2 Logic: Filter approved shops by checking if search term exists in
-  // shopName, category, items, OR description (case-insensitive)
-  // Sorting: Sort filtered search results by the rating field in descending order (highest-rated first)
+  // Strict category filtering & real ratings sorting
   const filteredAndSortedShops = useMemo(() => {
     const term = searchTerm.trim().toLowerCase();
 
-    // 1. Filter
+    // 1. Strict Category & Search Term Filter
     const filtered = shops.filter((shop) => {
-      // Category filter check
-      if (selectedCategory !== 'all' && shop.category !== selectedCategory) {
+      // Strict category filter check
+      if (!matchesStrictCategory(shop.category, selectedCategory)) {
         return false;
       }
 
@@ -84,11 +136,26 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
       return matchName || matchCategory || matchItems || matchDescription;
     });
 
-    // 2. Sort: Sort by rating field in descending order (highest-rated shops appear first)
+    // 2. Sort: Real Rating & Ranking Logic (NO fake 5-stars)
+    // Pull actual database average rating. Unrated shops have 0.
     const sorted = [...filtered].sort((a, b) => {
-      const ratingA = typeof a.rating === 'number' ? a.rating : parseFloat(a.rating as any) || 0;
-      const ratingB = typeof b.rating === 'number' ? b.rating : parseFloat(b.rating as any) || 0;
-      return ratingB - ratingA;
+      const getRealRating = (item: ShopItem) => {
+        const dbAvg = db.getAverageRating(item.id);
+        if (dbAvg > 0) return dbAvg;
+        if (typeof item.rating === 'number') return item.rating;
+        const parsed = parseFloat(item.rating as any);
+        return isNaN(parsed) ? 0 : parsed;
+      };
+
+      const ratingA = getRealRating(a);
+      const ratingB = getRealRating(b);
+
+      if (ratingB !== ratingA) {
+        return ratingB - ratingA;
+      }
+
+      // Secondary: preserve natural registration order
+      return 0;
     });
 
     return sorted;
@@ -219,7 +286,8 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
                   image={shop.imageUrl || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80'}
                   phone={shop.mobileNumber}
                   whatsapp={shop.mobileNumber}
-                  rating={shop.rating || 5.0}
+                  rating={db.getAverageRating(shop.id) || (typeof shop.rating === 'number' ? shop.rating : 0)}
+                  reviewsCount={db.getReviewsForBusiness(shop.id).length}
                   whatsappMessage={`नमस्कार ${shop.shopName}, मी Shevgaon Market पोर्टलवरून संपर्क करत आहे.`}
                   showWhatsappInsteadOfDetails={true}
                   metaItems={[
