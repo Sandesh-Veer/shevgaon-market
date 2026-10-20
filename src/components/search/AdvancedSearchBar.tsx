@@ -22,20 +22,6 @@ export interface ShopItem {
 
 
 
-
-
-// ]eqKFOIHOUHFOIW
-
-// EWVFFWEFF
-// W
-// RWRRR
-// GGEGDG
-// ERGERG
-// ERGERGEREGQERGERGER
-// getReviewsForBusinessEGFERGER
-
-// ERRE
-
 interface AdvancedSearchBarProps {
   shops: ShopItem[];
   onResultsChange?: (results: ShopItem[]) => void;
@@ -241,8 +227,8 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 flex items-center gap-1.5 ${isSelected
-                  ? 'bg-gradient-brand text-white shadow-sm scale-105'
-                  : 'bg-white/70 dark:bg-slate-800/70 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-slate-700'
+                ? 'bg-gradient-brand text-white shadow-sm scale-105'
+                : 'bg-white/70 dark:bg-slate-800/70 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-slate-700'
                 }`}
             >
               <span>{cat.label}</span>
