@@ -20,6 +20,22 @@ export interface ShopItem {
   createdAt?: any;
 }
 
+
+
+
+
+// ]eqKFOIHOUHFOIW
+
+// EWVFFWEFF
+// W
+// RWRRR
+// GGEGDG
+// ERGERG
+// ERGERGEREGQERGERGER
+// getReviewsForBusinessEGFERGER
+
+// ERRE
+
 interface AdvancedSearchBarProps {
   shops: ShopItem[];
   onResultsChange?: (results: ShopItem[]) => void;
@@ -175,7 +191,7 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
 
   return (
     <div className={`w-full space-y-4 text-left ${className}`}>
-      
+
       {/* Search Bar Input Container */}
       <div className="relative w-full max-w-3xl mx-auto">
         <div className="relative flex items-center">
@@ -204,7 +220,7 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
             )}
 
             {/* Rating Sort Badge Indicator */}
-            <div 
+            <div
               className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200/80 dark:border-amber-900 text-amber-700 dark:text-amber-300 text-[11px] font-bold"
               title="रेटिंगनुसार क्रमवारी लावलेली आहे (Sorted by highest rating first)"
             >
@@ -224,11 +240,10 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 flex items-center gap-1.5 ${
-                isSelected
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 flex items-center gap-1.5 ${isSelected
                   ? 'bg-gradient-brand text-white shadow-sm scale-105'
                   : 'bg-white/70 dark:bg-slate-800/70 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-slate-700'
-              }`}
+                }`}
             >
               <span>{cat.label}</span>
             </button>
@@ -292,11 +307,11 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
                   showWhatsappInsteadOfDetails={true}
                   metaItems={[
                     { label: 'दुकानदार', value: shop.ownerName },
-                    { 
-                      label: 'वस्तू', 
-                      value: Array.isArray(shop.items) 
-                        ? shop.items.slice(0, 2).join(', ') 
-                        : (shop.items || shop.address || 'शेवगाव').slice(0, 25) 
+                    {
+                      label: 'वस्तू',
+                      value: Array.isArray(shop.items)
+                        ? shop.items.slice(0, 2).join(', ')
+                        : (shop.items || shop.address || 'शेवगाव').slice(0, 25)
                     }
                   ]}
                 />
