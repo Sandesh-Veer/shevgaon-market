@@ -9,6 +9,23 @@ interface ProtectedRouteProps {
   redirectTo?: string;
   requireMerchant?: boolean;
 }
+// f lwlrfknkfwr
+
+// wrf;rg
+// g
+// trwt
+// tbwr
+// tgtwgtdrxgtrg
+// tg
+// trgtwgwt
+// gtg
+// t
+// grgs
+// gef
+// gtrg
+// trg
+// tgrew
+
 
 export default function ProtectedRoute({
   children,
