@@ -1,5 +1,5 @@
 # Robots.txt for Shevgaon Market
-# Website: https://shevgaonmarket.netlify.app
+# Website: https://shevgaon.online
 # Created by Sandesh Veer
 
 User-agent: *
@@ -20,4 +20,4 @@ User-agent: Bingbot
 Allow: /
 
 # Sitemap Location
-Sitemap: https://shevgaonmarket.netlify.app/sitemap.xml
+Sitemap: https://shevgaon.online/sitemap.xml
